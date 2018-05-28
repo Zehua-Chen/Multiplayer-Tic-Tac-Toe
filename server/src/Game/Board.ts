@@ -1,5 +1,4 @@
-import { IPlayer } from "./IPlayer";
-import { IBoard } from "./IBoard";
+import { IBoard, IPlayer } from 'tic-tac-toe-interfaces';
 
 /**
  * Tic Tac Toe Gameboard

@@ -1,11 +1,14 @@
 {
     "compilerOptions": {
+        "strict": true,
         "target": "es2015",
         "module": "commonjs",
         "outDir": "./bin",
-        "removeComments": true
+        "removeComments": true,
+        "esModuleInterop": true,
+        "typeRoots": [
+            "./node_modules/@types",
+            "../shared/"
+        ]
     },
-    "include": [
-        "./src"
-    ]
 }
