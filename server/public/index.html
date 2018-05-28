@@ -1,0 +1,30 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+  <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      var socket = io();
+
+      socket.on("enough-player", function () {
+        $("#mode-label").html("Viewer");
+      });
+    });
+  </script>
+
+  <h1>Tic Tac Toe Sample Server</h1>
+
+  <h2>Max User Capcity Test</h2>
+  <div>
+    <label>Mode:</label>
+    <label id="mode-label">Player</label>
+  </div>
+</body>
+
+</html>

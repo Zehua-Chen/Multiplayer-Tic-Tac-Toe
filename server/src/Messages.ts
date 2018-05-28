@@ -1,0 +1,1 @@
+export const MSG_ENOUGH_PLAYER = "enough-player";
