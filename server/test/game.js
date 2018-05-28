@@ -20,12 +20,6 @@ describe("Setting and Set Position", function () {
             assert.equal(temp.board.length, 2);
             assert.equal(temp.board[0].length, 2);
         });
-
-        it("Create 0 x 0 game", function () {
-
-            var temp = new game.Board(0);
-            assert.equal(temp.board, null);
-        })
     });
 
     describe("#setAt()", function () {

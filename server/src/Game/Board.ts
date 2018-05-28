@@ -20,8 +20,8 @@ export class Board<T> implements IBoard<T> {
     }
 
 
-    private playerA: IPlayer<T>;
-    private playerB: IPlayer<T>;
+    private playerA?: IPlayer<T>;
+    private playerB?: IPlayer<T>;
 
     /**
      * Create a new gameboard
@@ -34,14 +34,20 @@ export class Board<T> implements IBoard<T> {
     ) {
 
         if (this.dimension == 0) {
-            this._board = null;
-        } else {
-            this._board = new Array<T[]>(this.dimension);
-            for (var y = 0; y < this.board.length; y++) {
-                this.board[y] = new Array<T>(this.dimension);
+            throw new Error("Dimension needs to be bigger than 0!");
+        }
 
-                for (var x = 0; x < this.board[y].length; x++) {
-                    this.board[y][x] = defaultValue;
+        this._board = new Array<T[]>(this.dimension);
+        if (this._board) {
+
+            for (var y = 0; y < this._board.length; y++) {
+                this._board[y] = new Array<T>(this.dimension);
+
+                for (var x = 0; x < this._board[y].length; x++) {
+                    if (this.defaultValue) {
+                        this._board[y][x] = this.defaultValue;
+                    }
+
                 }
             }
         }
@@ -52,13 +58,16 @@ export class Board<T> implements IBoard<T> {
      */
     toString(): string {
         var temp = "";
-        this.board.forEach((row) => {
-            var rowString = "";
-            row.forEach((item) => {
-                rowString += item + " ";
+        if (this._board) {
+            this._board.forEach((row) => {
+                var rowString = "";
+                row.forEach((item) => {
+                    rowString += item + " ";
+                });
+                temp += rowString + "\n";
             });
-            temp += rowString + "\n";
-        });
+        }
+
 
         return temp;
     }
@@ -70,6 +79,7 @@ export class Board<T> implements IBoard<T> {
      * @param value player to set
      */
     setAt(y: number, x: number, value: IPlayer<T>): void {
+
         this._board[y][x] = value.character;
 
         if (!this.playerA) {
@@ -77,17 +87,20 @@ export class Board<T> implements IBoard<T> {
         } else if (this.playerA != value && !this.playerB) {
             this.playerB = value;
         }
+
     }
 
     /**
      * Given a character, find the matching player
      * @param character the character
      */
-    protected findMatchingPlayer(character: T): IPlayer<T> {
-        if (character == this.playerA.character) {
+    protected findMatchingPlayer(character: T): IPlayer<T> | null {
+        if (this.playerA && character == this.playerA.character) {
             return this.playerA;
-        } else {
+        } else if (this.playerB) {
             return this.playerB;
+        } else {
+            return null;
         }
     }
 
@@ -98,8 +111,8 @@ export class Board<T> implements IBoard<T> {
 
         for (var x = 0; x < this.dimension; x++) {
 
-            var playerAChar: T;
-            var playerBChar: T;
+            var playerAChar: T | undefined;
+            var playerBChar: T | undefined;
 
             var playerACount = 0;
             var playerBCount = 0;
@@ -127,9 +140,9 @@ export class Board<T> implements IBoard<T> {
                 }
             }
 
-            if (playerACount == this.dimension) {
+            if (playerACount == this.dimension && playerAChar) {
                 return this.findMatchingPlayer(playerAChar);
-            } else if (playerBCount == this.dimension) {
+            } else if (playerBCount == this.dimension && playerBChar) {
                 return this.findMatchingPlayer(playerBChar);
             }
         }
@@ -144,8 +157,8 @@ export class Board<T> implements IBoard<T> {
 
         for (var y = 0; y < this.dimension; y++) {
 
-            var playerAChar: T = null;
-            var playerBChar: T = null;
+            var playerAChar: T | undefined;
+            var playerBChar: T | undefined;
 
             var playerACount = 0;
             var playerBCount = 0;
@@ -175,9 +188,9 @@ export class Board<T> implements IBoard<T> {
                 }
             }
 
-            if (playerACount == this.dimension) {
+            if (playerACount == this.dimension && playerAChar) {
                 return this.findMatchingPlayer(playerAChar);
-            } else if (playerBCount == this.dimension) {
+            } else if (playerBCount == this.dimension && playerBChar) {
                 return this.findMatchingPlayer(playerBChar);
             }
         }
@@ -212,8 +225,8 @@ export class Board<T> implements IBoard<T> {
 
     private findDiagnolWinnerTopLeftToBottomRight(): T | null {
 
-        var playerAChar: T = null;
-        var playerBChar: T = null;
+        var playerAChar: T | undefined;
+        var playerBChar: T | undefined;
 
         var playerACount = 0;
         var playerBCount = 0;
@@ -223,7 +236,7 @@ export class Board<T> implements IBoard<T> {
 
         while (x < this.dimension && y < this.dimension) {
 
-            var value = this.board[y][x];
+            var value = this._board[y][x];
 
             if (value && value != this.defaultValue) {
 
@@ -248,9 +261,9 @@ export class Board<T> implements IBoard<T> {
             y++;
         }
 
-        if (playerACount == this.dimension) {
+        if (playerACount == this.dimension && playerAChar) {
             return playerAChar;
-        } else if (playerBCount == this.dimension) {
+        } else if (playerBCount == this.dimension && playerBChar) {
             return playerBChar;
         }
 
@@ -259,8 +272,8 @@ export class Board<T> implements IBoard<T> {
 
     private findDiagnolWinnerTopRightToBottomLeft(): T | null {
 
-        var playerAChar: T = null;
-        var playerBChar: T = null;
+        var playerAChar: T | undefined;
+        var playerBChar: T | undefined;
 
         var playerACount = 0;
         var playerBCount = 0;
@@ -270,7 +283,7 @@ export class Board<T> implements IBoard<T> {
 
         while (x >= 0 && y < this.dimension) {
 
-            var value = this.board[y][x];
+            var value = this._board[y][x];
 
             if (value && value != this.defaultValue) {
 
@@ -295,9 +308,9 @@ export class Board<T> implements IBoard<T> {
             y++;
         }
 
-        if (playerACount == this.dimension) {
+        if (playerACount == this.dimension && playerAChar) {
             return playerAChar;
-        } else if (playerBCount == this.dimension) {
+        } else if (playerBCount == this.dimension && playerBChar) {
             return playerBChar;
         }
 
