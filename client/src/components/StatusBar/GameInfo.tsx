@@ -42,13 +42,12 @@ class GameInfo extends React.Component<IGameInfoProps> {
 
     if (this.props.centering) {
       return (
-        <div className="text-center">
+        <div className="text-center bg-secondary text-white rounded">
           <div>
-            <label className="ml-2">{localNetworkAddress}</label>
+            <label className="mt-1">{localNetworkAddress}</label>
           </div>
           <div>
-            <label>{peopleWatching}</label>
-            <label className="ml-2">Watching</label>
+            <label>{peopleWatching} Watching</label>
           </div>
         </div>
       );
@@ -57,14 +56,12 @@ class GameInfo extends React.Component<IGameInfoProps> {
     // Not centering
 
     return (
-      <div>
-        <div>
-          <label>Hosted At: </label>
-          <label className="ml-2">{localNetworkAddress}</label>
+      <div className="bg-secondary text-white rounded">
+        <div className="ml-3">
+          <label className="mt-1">{localNetworkAddress}</label>
         </div>
-        <div>
-          <label>{peopleWatching}</label>
-          <label className="ml-2">Watching</label>
+        <div className="ml-3">
+          <label>{peopleWatching} Watching</label>
         </div>
       </div>
     );

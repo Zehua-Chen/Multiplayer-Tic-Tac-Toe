@@ -16,7 +16,7 @@ class StatusBar extends React.Component {
   render() {
     return (
       <div>
-        <div className="row mt-3">
+        <div className="row mt-3 justify-content-center">
         
           {/* Title of the game */}
           
@@ -40,7 +40,7 @@ class StatusBar extends React.Component {
         {/* Progress bar */}
         <div className="row mt-2">
           <div className="col">
-            <ProgressBar value={0}/>
+            <ProgressBar value={50}/>
           </div>
         </div>
       </div>

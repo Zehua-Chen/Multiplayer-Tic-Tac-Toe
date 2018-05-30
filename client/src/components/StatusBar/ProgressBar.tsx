@@ -28,7 +28,7 @@ class ProgressBar extends React.Component<IProgressBarProps> {
     
     return (
       <div className="progress">
-        <div className="progress-bar" style={style}></div>
+        <div className="progress-bar bg-dark" style={style}></div>
       </div>
     );
   }
