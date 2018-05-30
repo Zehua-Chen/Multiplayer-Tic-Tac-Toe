@@ -16,7 +16,7 @@ class StatusBar extends React.Component {
   render() {
     return (
       <div>
-        <div className="row mt-3 justify-content-center">
+        <div className="row mt-3">
         
           {/* Title of the game */}
           
