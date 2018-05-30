@@ -9,13 +9,13 @@ import * as msg from './Messages';
 const app = express();
 var staticPath = path.resolve(path.join(".", "/"), path.join(".", "public"));
 // console.log(staticPath);
-app.use(express.static("./public"));
+app.use(express.static(staticPath));
 
 /* Configure server and web sockiet */
 const server = http.createServer(app);
 const socketIO = io(server, { serveClient: false });
 
-var playerCount = 0;
+var userCount = 0;
 
 /* Server */
 
@@ -26,21 +26,23 @@ app.get("/", (req, res) => {
 });
 
 socketIO.on("connection", (socket) => {
-    
-    console.log("User connected");
-    
-    if (playerCount >= 2) {
-        socket.emit(msg.MSG_ENOUGH_PLAYER);
-        console.log("User assigned to viewer since the server can only host two players");
+
+    userCount++;
+    socketIO.emit(msg.UPDATE_USER_AMOUNT, userCount);
+
+    if (userCount >= 2) {
+        socket.emit(msg.ENOUGH_PLAYER);
+        console.log("Player Capacity Reached (max = 2)");
     } else {
-        playerCount++;
+        console.log(`New player, ${2 - userCount} remains`);
     }
     
-    
+    /* Listeners */
+
     socket.on("disconnect", () => {
         console.log("User disconnected");
-        playerCount--;
+        userCount--;
+        socketIO.emit(msg.UPDATE_USER_AMOUNT, userCount);
     });
-    
-});
 
+});
