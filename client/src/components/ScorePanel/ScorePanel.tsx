@@ -4,16 +4,16 @@ class ScorePanel extends React.Component {
   render() {
     return (
 
-      <div className="bg-light rounded">
+      <div className="card">
 
-        <div className="text-center">
+        <div className="card-header">
           <h5>Scores</h5>
         </div>
 
-        <div className="list-group">
+        <ul className="list-group list-group-flush">
           <div className="list-group-item">Player 1</div>
           <div className="list-group-item">Player 2</div>
-        </div>
+        </ul>
 
       </div>
     );

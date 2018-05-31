@@ -1,17 +1,13 @@
 import React from 'react';
 
+import ProgressBar from './ProgressBar';
+
 export interface IGameInfoProps {
-  /**
-   * If the content should be centering.
-   * Changing this props does not trigger render.
-   */
-  centering?: boolean;
-  
   /**
    * Web app location on local network.
    */
   localNetworkAddress: string;
-  
+
   /**
    * Amount of people watching.
    */
@@ -23,46 +19,45 @@ export interface IGameInfoProps {
  * the amount of people watching the game.
  */
 class GameInfo extends React.Component<IGameInfoProps> {
-  
+
   shouldComponentUpdate(nextProps: IGameInfoProps, nextState: any) {
     if (nextProps.localNetworkAddress != this.props.localNetworkAddress
-        || nextProps.peopleWatching != this.props.peopleWatching) {
+      || nextProps.peopleWatching != this.props.peopleWatching) {
       return true;
     }
-    
+
     return false;
   }
-  
-  
-  render() {
-    
-    const { localNetworkAddress, peopleWatching } = this.props;
-    
-    // Centering
 
-    if (this.props.centering) {
-      return (
-        <div className="text-center bg-secondary text-white rounded">
-          <div>
-            <label className="mt-1">{localNetworkAddress}</label>
-          </div>
-          <div>
-            <label>{peopleWatching} Watching</label>
-          </div>
-        </div>
-      );
-    }
-    
+
+  render() {
+
+    const { localNetworkAddress, peopleWatching } = this.props;
+
     // Not centering
 
     return (
-      <div className="bg-secondary text-white rounded">
-        <div className="ml-3">
-          <label className="mt-1">{localNetworkAddress}</label>
+      <div className="card">
+
+        <div className="card-header">
+          <h5>Status</h5>
         </div>
-        <div className="ml-3">
-          <label>{peopleWatching} Watching</label>
-        </div>
+
+        <ul className="list-group list-group-flush">
+
+          <li className="list-group-item">
+            <p>{localNetworkAddress}</p>
+          </li>
+
+          <li className="list-group-item">
+            <p>{peopleWatching} Watching</p>
+          </li>
+
+          <li className="list-group-item">
+            <label>Progress</label>
+            <ProgressBar value={20} />
+          </li>
+        </ul>
       </div>
     );
   }
