@@ -1,0 +1,27 @@
+.container-fullheight {
+  height: 100vh;
+}
+
+.row-fullheight {
+  height: 100vh;
+}
+
+.sidebar {
+  height: 100vh;
+  overflow: scroll;
+}
+
+@media (max-width: 768px) {
+  .container-fullheight {
+    height: auto;
+  }
+  
+  .container-fullheight {
+    height: auto;
+  }
+  
+  .sidebar {
+    height: auto;
+    overflow: initial;
+  }
+}

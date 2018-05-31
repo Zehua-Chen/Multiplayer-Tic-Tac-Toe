@@ -1,44 +1,40 @@
 import * as React from 'react';
 
 // import logo from './logo.svg';
+import './App.css';
 
-import { GameInfoPanel, BoardPanel, ScorePanel } from './components/panels';
+import { GameInfoPanel, BoardPanel, ScorePanel, NewGamePanel } from './components/panels';
 
 class App extends React.Component {
   public render() {
     return (
-      <div className="container">
-
-        <div className="row mt-3">
-        
-          {/* Game Title */}
-        
-          <div className="col-4 d-none d-md-block">
-            <h1>Tic Tac Toe</h1>
-          </div>
-          
-        </div>
+      <div className="container-fluid container-fullheight">
         
         {/* Main Content */}
 
-        <div className="row mt-3">
+        <div className="row row-fullheight">
         
           {/* Board */}
 
-          <div className="col-md-8">
+          <div className="col-md-8 mt-3">
             <BoardPanel />
           </div>
           
           {/* ScorePanel */}
 
-          <div className="col-md-4">
-            <div>
+          <div className="col-md-4 sidebar">
+            
+            <div className="mt-3">
+              <NewGamePanel />
+            </div>
+          
+            <div className="mt-2">
               <GameInfoPanel localNetworkAddress="http:xxx.xxxx.xxxx.xxx:xxxx/" peopleWatching={0} />
             </div>
             
-            <div className="mt-2">
+            <div className="mt-2 mb-3">
               <ScorePanel />
-            </div>
+            </div> 
             
           </div>
 
