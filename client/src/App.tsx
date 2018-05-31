@@ -2,10 +2,7 @@ import * as React from 'react';
 
 // import logo from './logo.svg';
 
-import GameInfo from './components/GameInfo';
-
-import Board from './components/Board';
-import ScorePanel from './components/ScorePanel';
+import { GameInfoPanel, BoardPanel, ScorePanel } from './components/panels';
 
 class App extends React.Component {
   public render() {
@@ -29,14 +26,20 @@ class App extends React.Component {
           {/* Board */}
 
           <div className="col-md-8">
-            <Board />
+            <BoardPanel />
           </div>
           
           {/* ScorePanel */}
 
           <div className="col-md-4">
-            <GameInfo localNetworkAddress="http:xxx.xxxx.xxxx.xxx:xxxx/" peopleWatching={0} />
-            <ScorePanel />
+            <div>
+              <GameInfoPanel localNetworkAddress="http:xxx.xxxx.xxxx.xxx:xxxx/" peopleWatching={0} />
+            </div>
+            
+            <div className="mt-2">
+              <ScorePanel />
+            </div>
+            
           </div>
 
         </div>

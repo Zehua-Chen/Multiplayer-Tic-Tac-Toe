@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ProgressBar from './ProgressBar';
+import ProgressBar from '../../ui-components/ProgressBar';
 
 export interface IGameInfoProps {
   /**
