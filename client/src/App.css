@@ -1,22 +1,17 @@
-.container-fullheight {
+/* 
+ * CSS classes that make sure the side bar is stretched to the height of the view port and
+ * the side bar can be scrolled.
+ */
+.fullheight {
   height: 100vh;
 }
-
-.row-fullheight {
-  height: 100vh;
-}
-
 .sidebar {
   height: 100vh;
   overflow: scroll;
 }
 
 @media (max-width: 768px) {
-  .container-fullheight {
-    height: auto;
-  }
-  
-  .container-fullheight {
+  .fullheight {
     height: auto;
   }
   

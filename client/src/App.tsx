@@ -8,11 +8,11 @@ import { GameInfoPanel, BoardPanel, ScorePanel, NewGamePanel } from './component
 class App extends React.Component {
   public render() {
     return (
-      <div className="container-fluid container-fullheight">
+      <div className="container-fluid fullheight">
         
         {/* Main Content */}
 
-        <div className="row row-fullheight">
+        <div className="row fullheight">
         
           {/* Board */}
 

@@ -1,3 +1,3 @@
-import Board from './Board';
+import Board from './BoardPanel';
 
 export default Board;
