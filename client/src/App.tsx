@@ -3,7 +3,7 @@ import * as React from 'react';
 // import logo from './logo.svg';
 import './App.css';
 
-import { GameInfoPanel, BoardPanel, ScorePanel, NewGamePanel } from './components/panels';
+import { GameInfoPanel, BoardPanel, ScorePanel, WelcomePanel } from './components/panels';
 
 class App extends React.Component {
   public render() {
@@ -25,7 +25,7 @@ class App extends React.Component {
           <div className="col-md-4 sidebar">
             
             <div className="mt-3">
-              <NewGamePanel />
+              <WelcomePanel />
             </div>
           
             <div className="mt-2">
