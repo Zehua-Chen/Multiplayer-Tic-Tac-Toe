@@ -10,12 +10,12 @@ export interface IGameInfoProps {
   /**
    * Web app location on local network.
    */
-  localNetworkAddress: string;
+  hostUrl: string;
 
   /**
    * Amount of people watching.
    */
-  peopleWatching: number;
+  viewers: number;
   progress: number;
 }
 
@@ -26,8 +26,8 @@ export interface IGameInfoProps {
 class GameInfoPanel extends React.Component<IGameInfoProps> {
 
   shouldComponentUpdate(nextProps: IGameInfoProps, nextState: any) {
-    if (nextProps.localNetworkAddress != this.props.localNetworkAddress
-      || nextProps.peopleWatching != this.props.peopleWatching) {
+    if (nextProps.hostUrl != this.props.hostUrl
+      || nextProps.viewers != this.props.viewers) {
       return true;
     }
 
@@ -37,7 +37,7 @@ class GameInfoPanel extends React.Component<IGameInfoProps> {
 
   render() {
 
-    const { localNetworkAddress, peopleWatching, progress } = this.props;
+    const { hostUrl, viewers, progress } = this.props;
 
     // Not centering
 
@@ -51,11 +51,11 @@ class GameInfoPanel extends React.Component<IGameInfoProps> {
         <ul className="list-group list-group-flush">
 
           <li className="list-group-item">
-            <p>{localNetworkAddress}</p>
+            <p>{hostUrl}</p>
           </li>
 
           <li className="list-group-item">
-            <p>{peopleWatching} Watching</p>
+            <p>{viewers} Watching</p>
           </li>
 
           <li className="list-group-item">
@@ -69,8 +69,8 @@ class GameInfoPanel extends React.Component<IGameInfoProps> {
 }
 
 function mapStateToProps(state: ITotalState, ownProps: {}): IGameInfoProps {
-  const { progress, hostUrl, viewer } = state.gameInfo;
-  return { progress: progress, localNetworkAddress: hostUrl, peopleWatching: viewer }
+  const { progress, hostUrl, viewers } = state.gameInfo;
+  return { progress: progress, hostUrl: hostUrl, viewers: viewers }
 }
 
 export default connect(mapStateToProps)(GameInfoPanel);

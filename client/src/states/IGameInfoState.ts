@@ -5,7 +5,7 @@ export interface IGameInfoState {
     /**
      * The number of people viewing the game;
      */
-    viewer: number;
+    viewers: number;
     /**
      * The current progress of the game, in percentage format;
      */
@@ -17,7 +17,7 @@ export interface IGameInfoState {
 }
 
 export var DEFAULT_GAMEINFOSTATE: IGameInfoState = {
-    viewer: 0,
+    viewers: 0,
     progress: 0,
     hostUrl: "http://localhost:3000/"  
 };

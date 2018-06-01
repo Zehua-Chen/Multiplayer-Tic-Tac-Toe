@@ -17,8 +17,8 @@ function gameInfoReducer(state: IGameInfoState = DEFAULT_GAMEINFOSTATE, action: 
         }
         case UPDATE_VIEWER:
         {
-            const { viewer, ...others } = state;
-            return { viewer: <number>action.payload, ...others };
+            const { viewers, ...others } = state;
+            return { viewers: <number>action.payload, ...others };
         }
         default:
             return state;
