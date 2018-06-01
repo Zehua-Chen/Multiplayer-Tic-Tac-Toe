@@ -30,7 +30,7 @@ class App extends React.Component {
             </div>
           
             <div className="mt-2">
-              <GameInfoPanel localNetworkAddress="http:xxx.xxxx.xxxx.xxx:xxxx/" peopleWatching={0} />
+              <GameInfoPanel />
             </div>
             
             <div className="mt-2 mb-3">

@@ -19,5 +19,5 @@ export interface IGameInfoState {
 export var DEFAULT_GAMEINFOSTATE: IGameInfoState = {
     viewer: 0,
     progress: 0,
-    hostUrl: ""  
+    hostUrl: "http://localhost:3000/"  
 };

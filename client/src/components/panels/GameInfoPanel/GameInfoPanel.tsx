@@ -1,6 +1,10 @@
 import React from 'react';
 
+import { connect } from 'react-redux';
+
 import ProgressBar from '../../ui-components/ProgressBar';
+
+import { ITotalState } from '../../../states';
 
 export interface IGameInfoProps {
   /**
@@ -12,13 +16,14 @@ export interface IGameInfoProps {
    * Amount of people watching.
    */
   peopleWatching: number;
+  progress: number;
 }
 
 /**
  * Game info displays the address at which the web app is hosted, and 
  * the amount of people watching the game.
  */
-class GameInfo extends React.Component<IGameInfoProps> {
+class GameInfoPanel extends React.Component<IGameInfoProps> {
 
   shouldComponentUpdate(nextProps: IGameInfoProps, nextState: any) {
     if (nextProps.localNetworkAddress != this.props.localNetworkAddress
@@ -32,7 +37,7 @@ class GameInfo extends React.Component<IGameInfoProps> {
 
   render() {
 
-    const { localNetworkAddress, peopleWatching } = this.props;
+    const { localNetworkAddress, peopleWatching, progress } = this.props;
 
     // Not centering
 
@@ -55,7 +60,7 @@ class GameInfo extends React.Component<IGameInfoProps> {
 
           <li className="list-group-item">
             <label>Progress</label>
-            <ProgressBar value={20} />
+            <ProgressBar value={progress} />
           </li>
         </ul>
       </div>
@@ -63,4 +68,9 @@ class GameInfo extends React.Component<IGameInfoProps> {
   }
 }
 
-export default GameInfo;
+function mapStateToProps(state: ITotalState, ownProps: {}): IGameInfoProps {
+  const { progress, hostUrl, viewer } = state.gameInfo;
+  return { progress: progress, localNetworkAddress: hostUrl, peopleWatching: viewer }
+}
+
+export default connect(mapStateToProps)(GameInfoPanel);
