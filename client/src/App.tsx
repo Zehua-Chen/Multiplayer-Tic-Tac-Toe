@@ -6,6 +6,7 @@ import './App.css';
 import { GameInfoPanel, BoardPanel, ScorePanel, WelcomePanel } from './components/panels';
 
 class App extends React.Component {
+  
   public render() {
     return (
       <div className="container-fluid fullheight">

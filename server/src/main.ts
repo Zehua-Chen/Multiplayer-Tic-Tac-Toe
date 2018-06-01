@@ -19,7 +19,7 @@ var userCount = 0;
 
 /* Server */
 
-server.listen(3000);
+server.listen(3001);
 
 app.get("/", (req, res) => {
     res.sendFile("index.html");
