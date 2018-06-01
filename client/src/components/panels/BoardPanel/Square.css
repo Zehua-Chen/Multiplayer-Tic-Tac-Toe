@@ -1,0 +1,7 @@
+.square {
+  border: transparent;
+}
+
+.square:active {
+  color: black;
+}

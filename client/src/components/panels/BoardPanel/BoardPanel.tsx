@@ -1,27 +1,29 @@
 import * as React from 'react';
 
+import "./Board.css";
+
+import Square from './Square';
+
 class Board extends React.Component {
   public render() {
     return (
-      <table className="text-center">
-        <tbody>
-          <tr>
-            <td>X</td>
-            <td>X</td>
-            <td>X</td>
-          </tr>
-          <tr>
-            <td>X</td>
-            <td>X</td>
-            <td>X</td>
-          </tr>
-          <tr>
-            <td>X</td>
-            <td>X</td>
-            <td>X</td>
-          </tr>
-        </tbody>
-      </table>
+      <div>
+        <div>
+          <Square />
+          <Square />
+          <Square />
+        </div>
+        <div>
+          <Square />
+          <Square />
+          <Square />
+        </div>
+        <div>
+          <Square />
+          <Square />
+          <Square />
+        </div>
+      </div>
     );
   }
 }
