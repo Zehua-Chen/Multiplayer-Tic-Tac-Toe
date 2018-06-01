@@ -1,7 +1,45 @@
-.square {
+.unset-square {
+  width: 50px;
+  height: 50px;
   border: transparent;
+  animation: hover-exit-animation;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
 }
 
-.square:active {
-  color: black;
+.unset-square:hover {
+  animation: hover-enter-animation;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes hover-enter-animation {
+  0% { 
+    background: lightgrey; 
+    border-radius: 25px; 
+  }
+  100% { 
+    background: darkgrey; 
+    border-radius: 5px; 
+  }
+}
+
+
+@keyframes hover-exit-animation {
+  0% { 
+    background: darkgrey; 
+    border-radius: 5px; 
+  }
+  100% {  
+    border-radius: 25px; 
+    background: lightgrey;
+  }
+}
+
+.square {
+  height: 50px;
+  width: 50px;
+  border: transparent;
+  border-radius: 25px;
+  color: white;
 }

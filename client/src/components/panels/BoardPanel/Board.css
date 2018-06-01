@@ -1,3 +1,9 @@
 .board {
-  text-align: center;
+  margin: auto;
+}
+
+.table-row {
+  display: table-row;
+  vertical-align: middle;
+  background: black;
 }

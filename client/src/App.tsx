@@ -13,7 +13,7 @@ class App extends React.Component {
         
         {/* Main Content */}
 
-        <div className="row fullheight justify-content-center">
+        <div className="row fullheight">
         
           {/* Board */}
 
