@@ -40,7 +40,7 @@ class GameInfo extends React.Component<IGameInfoProps> {
       <div className="card">
 
         <div className="card-header">
-          <h5>Status</h5>
+          <h5>Game Info</h5>
         </div>
 
         <ul className="list-group list-group-flush">

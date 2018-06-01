@@ -15,3 +15,9 @@ export interface IGameInfoState {
      */
     hostUrl: string;
 }
+
+export var DEFAULT_GAMEINFOSTATE: IGameInfoState = {
+    viewer: 0,
+    progress: 0,
+    hostUrl: ""  
+};

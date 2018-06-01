@@ -1,5 +1,5 @@
-import { IGameInfoState } from './IGameInfoState';
+import { IGameInfoState, DEFAULT_GAMEINFOSTATE } from './IGameInfoState';
 
 export {
-    IGameInfoState
+    IGameInfoState, DEFAULT_GAMEINFOSTATE
 }

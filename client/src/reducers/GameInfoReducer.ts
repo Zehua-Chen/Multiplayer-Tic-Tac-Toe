@@ -1,9 +1,9 @@
 import { Reducer } from 'redux';
 
-import { IGameInfoState } from '../states';
+import { IGameInfoState, DEFAULT_GAMEINFOSTATE } from '../states';
 import { IGameInfoAction, UPDATE_HOSTURL, UPDATE_PROGRESS, UPDATE_VIEWER } from '../actions';
 
-function gameInfoReducer(state: IGameInfoState, action: IGameInfoAction): IGameInfoState {
+function gameInfoReducer(state: IGameInfoState = DEFAULT_GAMEINFOSTATE, action: IGameInfoAction): IGameInfoState {
     switch(action.type) {
         case UPDATE_HOSTURL: 
         {
