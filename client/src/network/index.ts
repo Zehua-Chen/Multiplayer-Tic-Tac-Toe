@@ -1,5 +1,5 @@
-import { Websocket } from './Websocket';
+import io from 'socket.io-client';
 
-export {
-    Websocket
-}
+var socket = io()
+
+export default socket;
