@@ -40,11 +40,14 @@ app.get("/", (req, res) => {
     res.sendFile("index.html");
 });
 
+app.get("/host_address", (req, res) => {
+    res.send(PUBLIC_URL);
+});
+
 socketIO.on("connection", (socket) => {
 
     userCount++;
     socketIO.emit(msg.UPDATED_USER_AMOUNT, userCount);
-    socket.emit(msg.UPDATED_HOST, PUBLIC_URL);
     
 
     if (userCount >= 2) {

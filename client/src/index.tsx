@@ -21,7 +21,9 @@ import {
   IGameInfoAction, 
   UPDATE_VIEWERS, UPDATE_HOSTURL, UPDATE_PROGRESS, UPDATE_CONNECTION_STATUS 
 } from './actions';
+
 import socket from './network';
+import axios from 'axios';
 
 var store = createStore(reducers);
 
@@ -39,10 +41,6 @@ socket.on("updated-user__amount", (data: TicTacToe.IViewersAmount) => {
   store.dispatch<IGameInfoAction>({ type: UPDATE_VIEWERS, payload: data });
 });
 
-socket.on("updated_host", (data: TicTacToe.IHostAddress) => {
-  store.dispatch<IGameInfoAction>({ type: UPDATE_HOSTURL, payload: data });
-});
-
 socket.on("updated_progress", (data: TicTacToe.IProgress) => {
   var { remaining, total } = data;
   store.dispatch<IGameInfoAction>({ type: UPDATE_PROGRESS, payload: (total - remaining) / total });
@@ -50,10 +48,14 @@ socket.on("updated_progress", (data: TicTacToe.IProgress) => {
 
 socket.on("connect", () => {
   store.dispatch<IGameInfoAction>({ type: UPDATE_CONNECTION_STATUS, payload: true });
-  console.log("Connected");
 });
 
 socket.on("disconnect", () => {
   store.dispatch<IGameInfoAction>({ type: UPDATE_CONNECTION_STATUS, payload: false });
-  console.log("Disconnected");
+});
+
+/* Set up axios */
+
+axios.get<TicTacToe.IHostAddress>("/host_address").then((response) => {
+  store.dispatch<IGameInfoAction>({ type: UPDATE_HOSTURL, payload: response.data });
 });
