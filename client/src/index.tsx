@@ -10,20 +10,22 @@ import registerServiceWorker from './registerServiceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 /**
+ * Network dependencies
+ */
+import socket from './network';
+import axios from 'axios';
+
+/**
  * Import redux dependencies
  */
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-
 import reducers from './reducers';
 
 import { 
   IGameInfoAction, 
   UPDATE_VIEWERS, UPDATE_HOSTURL, UPDATE_PROGRESS, UPDATE_CONNECTION_STATUS 
 } from './actions';
-
-import socket from './network';
-import axios from 'axios';
 
 var store = createStore(reducers);
 
