@@ -51,7 +51,7 @@ class GameInfoPanel extends React.Component<IGameInfoProps> {
         <ul className="list-group list-group-flush">
 
           <li className="list-group-item">
-            <p>{hostUrl}</p>
+            Game hosted at <a href={hostUrl}>{hostUrl}</a>
           </li>
 
           <li className="list-group-item">
