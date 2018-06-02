@@ -16,8 +16,9 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
 import reducers from './reducers';
-import io from 'socket.io-client';
+
 import { IGameInfoAction, UPDATE_VIEWERS, UPDATE_HOSTURL, UPDATE_PROGRESS } from './actions';
+import { Websocket } from './network';
 
 var store = createStore(reducers);
 
@@ -31,16 +32,30 @@ registerServiceWorker();
 
 /* Setup socket.io */
 
-var socket = io();
+// var socket = io();
 
-socket.on("updated-user__amount", (newCount: number) => {
-  store.dispatch<IGameInfoAction>({ type: UPDATE_VIEWERS, payload: newCount });
+// socket.on("updated-user__amount", (newCount: number) => {
+//   store.dispatch<IGameInfoAction>({ type: UPDATE_VIEWERS, payload: newCount });
+// });
+
+// socket.on("updated_host", (host: string) => {
+//   store.dispatch<IGameInfoAction>({ type: UPDATE_HOSTURL, payload: host });
+// });
+
+// socket.on("updated_progress", (remaining: number, total: number) => {
+//   store.dispatch<IGameInfoAction>({ type: UPDATE_PROGRESS, payload: (total - remaining) / total });
+// })
+var webSocket = Websocket.getSharedSocket();
+
+webSocket.subsribe<TicTacToe.IViewersAmount>("updated-user__amount", (data) => {
+  store.dispatch<IGameInfoAction>({ type: UPDATE_VIEWERS, payload: data });
 });
 
-socket.on("updated_host", (host: string) => {
-  store.dispatch<IGameInfoAction>({ type: UPDATE_HOSTURL, payload: host });
+webSocket.subsribe<TicTacToe.IHostAddress>("updated_host", (data) => {
+  store.dispatch<IGameInfoAction>({ type: UPDATE_HOSTURL, payload: data });
 });
 
-socket.on("updated_progress", (remaining: number, total: number) => {
+webSocket.subsribe<TicTacToe.IProgress>("updated_progress", (data) => {
+  var { remaining, total } = data;
   store.dispatch<IGameInfoAction>({ type: UPDATE_PROGRESS, payload: (total - remaining) / total });
-})
+});

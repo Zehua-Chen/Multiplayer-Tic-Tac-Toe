@@ -1,7 +1,6 @@
-import { IPlayer } from 'tic-tac-toe-interfaces';
 import io from 'socket.io';
 
-class Player implements IPlayer<string> {
+class Player implements TicTacToe.IPlayer<string> {
     
     socket?: io.Socket;
     

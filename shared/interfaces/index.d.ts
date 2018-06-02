@@ -1,11 +1,19 @@
-declare module "tic-tac-toe-interfaces" {
+declare namespace TicTacToe {
     
     export interface IBoard<T> {
-       readonly  board: T[][];
+        readonly board: T[][];
     }
     
     export interface IPlayer<T> {
-        name: string;
         character: T;
+        name: string;
     }
+
+    export interface IProgress {
+        readonly remaining: number;
+        readonly total: number;
+    }
+
+    type IHostAddress = string;
+    type IViewersAmount = number;
 }

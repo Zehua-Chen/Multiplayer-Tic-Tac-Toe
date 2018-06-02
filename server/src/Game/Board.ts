@@ -1,12 +1,10 @@
-import { IBoard, IPlayer } from 'tic-tac-toe-interfaces';
-
 /**
  * Tic Tac Toe Gameboard
  * T is the type of value each item in the board holds
  * 
  * 2D array convention: board[y][x]
  */
-export class Board<T> implements IBoard<T> {
+export class Board<T> implements TicTacToe.IBoard<T> {
 
     /**
      * board holding the current state of the board
@@ -19,8 +17,8 @@ export class Board<T> implements IBoard<T> {
     }
 
 
-    private playerA?: IPlayer<T>;
-    private playerB?: IPlayer<T>;
+    private playerA?: TicTacToe.IPlayer<T>;
+    private playerB?: TicTacToe.IPlayer<T>;
 
     /**
      * Create a new gameboard
@@ -77,7 +75,7 @@ export class Board<T> implements IBoard<T> {
      * @param x x position
      * @param value player to set
      */
-    setAt(y: number, x: number, value: IPlayer<T>): void {
+    setAt(y: number, x: number, value: TicTacToe.IPlayer<T>): void {
 
         this._board[y][x] = value.character;
 
@@ -93,7 +91,7 @@ export class Board<T> implements IBoard<T> {
      * Given a character, find the matching player
      * @param character the character
      */
-    protected findMatchingPlayer(character: T): IPlayer<T> | null {
+    protected findMatchingPlayer(character: T): TicTacToe.IPlayer<T> | null {
         if (this.playerA && character == this.playerA.character) {
             return this.playerA;
         } else if (this.playerB) {
@@ -106,7 +104,7 @@ export class Board<T> implements IBoard<T> {
     /**
      * Find winner in columns (x)
      */
-    protected findVerticalWinner(): IPlayer<T> | null {
+    protected findVerticalWinner(): TicTacToe.IPlayer<T> | null {
 
         for (var x = 0; x < this.dimension; x++) {
 
@@ -152,7 +150,7 @@ export class Board<T> implements IBoard<T> {
     /**
      * Find winner in rows (y)
      */
-    protected findHorizontalWinner(): IPlayer<T> | null {
+    protected findHorizontalWinner(): TicTacToe.IPlayer<T> | null {
 
         for (var y = 0; y < this.dimension; y++) {
 
@@ -200,7 +198,7 @@ export class Board<T> implements IBoard<T> {
     /**
      * Find winner in diagnols
      */
-    protected findDiagnolWinner(): IPlayer<T> | null {
+    protected findDiagnolWinner(): TicTacToe.IPlayer<T> | null {
 
         var winner: T | null;
 
@@ -320,7 +318,7 @@ export class Board<T> implements IBoard<T> {
      * Find a winner
      * @returns the winner if there is a winner, null otherwise
      */
-    findWinner(): IPlayer<T> | null {
+    findWinner(): TicTacToe.IPlayer<T> | null {
 
         var player = this.findHorizontalWinner();
         if (player) {
