@@ -7,7 +7,7 @@ export interface IGameInfoState {
      */
     viewers: number;
     /**
-     * The current progress of the game, in percentage format;
+     * The current progress of the game, out of 100;
      */
     progress: number;
     /**
@@ -16,8 +16,11 @@ export interface IGameInfoState {
     hostUrl: string;
 }
 
+/**
+ * Default game state, used to prevent crash in gameInfoReducer
+ */
 export var DEFAULT_GAMEINFOSTATE: IGameInfoState = {
     viewers: 0,
     progress: 0,
-    hostUrl: "http://localhost:3000/"  
+    hostUrl: "http://xxx:3000/"  
 };
