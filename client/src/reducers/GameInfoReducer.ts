@@ -1,7 +1,13 @@
 import { Reducer } from 'redux';
 
 import { IGameInfoState, DEFAULT_GAMEINFOSTATE } from '../states';
-import { IGameInfoAction, UPDATE_HOSTURL, UPDATE_PROGRESS, UPDATE_VIEWERS } from '../actions';
+import { 
+    IGameInfoAction, 
+    UPDATE_HOSTURL, 
+    UPDATE_PROGRESS, 
+    UPDATE_VIEWERS,
+    UPDATE_CONNECTION_STATUS,
+} from '../actions';
 
 function gameInfoReducer(state: IGameInfoState = DEFAULT_GAMEINFOSTATE, action: IGameInfoAction): IGameInfoState {
     switch(action.type) {
@@ -23,7 +29,11 @@ function gameInfoReducer(state: IGameInfoState = DEFAULT_GAMEINFOSTATE, action: 
             const { viewers, ...others } = state;
             return { viewers: <number>action.payload, ...others };
         }
-        
+        case UPDATE_CONNECTION_STATUS:
+        {
+            const { connected, ...others  } = state;
+            return { connected: <boolean>action.payload, ...others };
+        }
         // IMPORTANT! return the state if no action performed
         default:
             return state;

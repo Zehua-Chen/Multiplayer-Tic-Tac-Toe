@@ -12,4 +12,5 @@ storing the number of viewers, the host address and the progress
 
 * `viewers: number`: the number of viewers of the game;
 * `progress: number`: the progress of the game (how many blocks have been clicked?);
-* `hostUrl: string`: the ipv4 address of the server
+* `hostUrl: string`: the ipv4 address of the server;
+* `connected: boolean`: whether the client is connected to the server;

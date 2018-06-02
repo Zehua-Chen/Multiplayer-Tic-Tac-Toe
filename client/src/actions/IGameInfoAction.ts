@@ -11,9 +11,11 @@ export interface IGameInfoAction extends Action<string> {
      * For actions:
      * - UPDATE_HOSTURL: this should be the new host url
      */
-    payload: string | number;
+    payload: string | number | boolean;
 }
 
 export const UPDATE_VIEWERS = "UPDATE_VIEWER";
 export const UPDATE_PROGRESS = "UPDATE_PROGRESS";
 export const UPDATE_HOSTURL = "UPDATE_HOSTURL";
+
+export const UPDATE_CONNECTION_STATUS = "UPDATE_CONNECTION_STATUS";

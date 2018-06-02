@@ -14,6 +14,10 @@ export interface IGameInfoState {
      * The url hosting the game, should be the ipv4 address of the host machine.
      */
     hostUrl: string;
+    /**
+     * If the client is still connected
+     */
+    connected: boolean;
 }
 
 /**
@@ -22,5 +26,6 @@ export interface IGameInfoState {
 export var DEFAULT_GAMEINFOSTATE: IGameInfoState = {
     viewers: 0,
     progress: 0,
-    hostUrl: "http://xxx:3000/"  
+    hostUrl: "http://xxx:3000/",
+    connected: true 
 };

@@ -17,7 +17,10 @@ import { createStore } from 'redux';
 
 import reducers from './reducers';
 
-import { IGameInfoAction, UPDATE_VIEWERS, UPDATE_HOSTURL, UPDATE_PROGRESS } from './actions';
+import { 
+  IGameInfoAction, 
+  UPDATE_VIEWERS, UPDATE_HOSTURL, UPDATE_PROGRESS, UPDATE_CONNECTION_STATUS 
+} from './actions';
 import socket from './network';
 
 var store = createStore(reducers);
@@ -43,4 +46,14 @@ socket.on("updated_host", (data: TicTacToe.IHostAddress) => {
 socket.on("updated_progress", (data: TicTacToe.IProgress) => {
   var { remaining, total } = data;
   store.dispatch<IGameInfoAction>({ type: UPDATE_PROGRESS, payload: (total - remaining) / total });
+});
+
+socket.on("connect", () => {
+  store.dispatch<IGameInfoAction>({ type: UPDATE_CONNECTION_STATUS, payload: true });
+  console.log("Connected");
+});
+
+socket.on("disconnect", () => {
+  store.dispatch<IGameInfoAction>({ type: UPDATE_CONNECTION_STATUS, payload: false });
+  console.log("Disconnected");
 });
