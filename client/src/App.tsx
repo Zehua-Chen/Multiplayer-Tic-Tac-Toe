@@ -4,41 +4,49 @@ import * as React from 'react';
 import './App.css';
 
 import { GameInfoPanel, BoardPanel, ScorePanel, WelcomePanel } from './components/panels';
+import { WebSocketListener } from './components/blank-components';
 
 class App extends React.Component {
-  
+
   public render() {
     return (
-      <div className="container-fluid fullheight">
+      <div>
         
-        {/* Main Content */}
-
-        <div className="row fullheight">
+        <div>
+          <WebSocketListener />
+        </div>
         
-          {/* Board */}
+        <div className="container-fluid fullheight">
 
-          <div className="col-md-8 mt-3 mb-3 text-center align-self-center">
-            <BoardPanel />
-          </div>
-          
-          {/* ScorePanel */}
+          {/* Main Content */}
 
-          <div className="col-md-4 sidebar">
-            
-            <div className="mt-3">
-              <WelcomePanel />
+          <div className="row fullheight">
+
+            {/* Board */}
+
+            <div className="col-md-8 mt-3 mb-3 text-center align-self-center">
+              <BoardPanel />
             </div>
-          
-            <div className="mt-2">
-              <GameInfoPanel />
-            </div>
-            
-            <div className="mt-2 mb-3">
-              <ScorePanel />
-            </div> 
-            
-          </div>
 
+            {/* ScorePanel */}
+
+            <div className="col-md-4 sidebar">
+
+              <div className="mt-3">
+                <WelcomePanel />
+              </div>
+
+              <div className="mt-2">
+                <GameInfoPanel />
+              </div>
+
+              <div className="mt-2 mb-3">
+                <ScorePanel />
+              </div>
+
+            </div>
+
+          </div>
         </div>
       </div>
     );
