@@ -4,7 +4,7 @@ import * as React from 'react';
 import './App.css';
 
 import { GameInfoPanel, BoardPanel, ScorePanel, WelcomePanel } from './components/panels';
-import { WebSocketListener } from './components/blank-components';
+// import { WebSocketListener } from './components/blank-components';
 
 class App extends React.Component {
 
@@ -13,7 +13,7 @@ class App extends React.Component {
       <div>
         
         <div>
-          <WebSocketListener />
+          {/* <WebSocketListener /> */}
         </div>
         
         <div className="container-fluid fullheight">
@@ -35,17 +35,14 @@ class App extends React.Component {
               <div className="mt-3">
                 <WelcomePanel />
               </div>
-
               <div className="mt-2">
                 <GameInfoPanel />
               </div>
-
               <div className="mt-2 mb-3">
                 <ScorePanel />
               </div>
 
             </div>
-
           </div>
         </div>
       </div>
