@@ -68,7 +68,7 @@ export class CreateGamePage extends React.Component<{}, ICreateGamePageState> {
           </div>
         </div>
         
-        <div className="row mt-2 mb-2">
+        <div className="row mb-2">
           <div className="col">
             <button className="btn btn-primary btn-block" onClick={this.createGame}>Create!</button>
           </div>
