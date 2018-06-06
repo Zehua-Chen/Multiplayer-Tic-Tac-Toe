@@ -1,17 +1,47 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import './MainPage.css';
 
 import { GameInfoPanel, BoardPanel, ScorePanel, WelcomePanel } from '../panels';
-// import { WebSocketListener } from './components/blank-components';
+import { ITotalState } from '../../states';
+import { WebSocketListener } from '../blank-components';
 
-class MainPage extends React.Component {
+export interface IMainPageProps {
+  connected: boolean;
+}
+
+class MainPage extends React.Component<IMainPageProps> {
   render() {
+
+    var connectedSidePanels = (
+      <div>
+        <div className="mt-3">
+          <WelcomePanel />
+        </div>
+        <div className="mt-2">
+          <GameInfoPanel />
+        </div>
+        <div className="mt-2 mb-3">
+          <ScorePanel />
+        </div>
+      </div>
+    );
+
+    var disconnectedSidePanel = (
+      <div className="mt-3 card bg-danger text-white">
+        <div className="card-body">
+          <h5 className="card-title">Disconnected</h5>
+          <p>You are disconnected from the server. Your moves are blocked.</p>
+        </div>
+      </div>
+    );
+
     return (
       <div>
 
         <div>
-          {/* <WebSocketListener /> */}
+          <WebSocketListener />
         </div>
 
         <div className="container-fluid fullheight">
@@ -29,17 +59,7 @@ class MainPage extends React.Component {
             {/* ScorePanel */}
 
             <div className="col-md-4 sidebar">
-
-              <div className="mt-3">
-                <WelcomePanel />
-              </div>
-              <div className="mt-2">
-                <GameInfoPanel />
-              </div>
-              <div className="mt-2 mb-3">
-                <ScorePanel />
-              </div>
-
+              {this.props.connected ? connectedSidePanels : disconnectedSidePanel}
             </div>
           </div>
         </div>
@@ -48,4 +68,8 @@ class MainPage extends React.Component {
   }
 }
 
-export default MainPage;
+function mapStateToProps(state: ITotalState, ownProps: {}): IMainPageProps {
+  return { connected: state.gameInfo.connected };
+}
+
+export default connect(mapStateToProps)(MainPage);
