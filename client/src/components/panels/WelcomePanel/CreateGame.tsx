@@ -12,7 +12,7 @@ export interface ICreateGamePageState {
  * - His or her player name;
  * - An invitation code used by the second player to join the game;
  */
-export class CreateGamePage extends React.Component<{}, ICreateGamePageState> {
+export class CreateGame extends React.Component<{}, ICreateGamePageState> {
   
   constructor(props: {}) {
     super(props);

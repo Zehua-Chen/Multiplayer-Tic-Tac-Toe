@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { DispatchProp, connect } from 'react-redux';
-import { CreateGamePage } from './CreateGamePage';
+import { CreateGame } from './CreateGame';
 
 type WelcomePanelMode = "create" | "join";
 
@@ -28,7 +28,7 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp> {
         <div className="card-header">
           <h5>Welcome</h5>
         </div>
-        <CreateGamePage />
+        <CreateGame />
 
       </div>
     );
