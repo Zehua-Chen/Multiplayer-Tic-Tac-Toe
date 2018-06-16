@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import './MainPage.css';
 
@@ -60,6 +61,18 @@ class MainPage extends React.Component<IMainPageProps> {
 
             <div className="col-md-4 sidebar">
               {this.props.connected ? connectedSidePanels : disconnectedSidePanel}
+              
+              {/* Navigation Link to About Page */}
+              
+              <div className="mt-3 mb-3 card">
+                <div className="card-header">
+                  <h5>About</h5>
+                </div>
+                <div className="card-body">
+                  <Link className="btn btn-outline-dark" to="/about">Visit About Page</Link>
+                </div>
+              </div>
+              
             </div>
           </div>
         </div>
