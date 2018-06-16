@@ -21,11 +21,11 @@ export interface IGameInfoProps {
 }
 
 /**
- * Game info displays the address at which the web app is hosted, and 
+ * Game info displays the address at which the web app is hosted, and
  * the amount of people watching the game.
  */
 class GameInfoPanel extends React.Component<IGameInfoProps> {
-  
+
   render() {
 
     const { hostUrl, viewers, progress } = this.props;
