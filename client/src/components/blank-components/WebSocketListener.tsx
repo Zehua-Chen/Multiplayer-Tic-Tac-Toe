@@ -10,9 +10,29 @@ import {
 
 class WebSocketListener extends React.Component<DispatchProp> {
 
+  /**
+   * Rebuild connection between
+   */
   componentDidMount() {
-    console.log("\"WebSocketListener\" did mount!");
+    // console.log("\"WebSocketListener\" will mount!");
+    this.setupWebSocket();
+  }
+  
+  componentWillUnmount() {
+    // console.log("\"WebSocketListener\" will unmount!");
     
+    socket.emit("user-unavailable");
+  }
+
+  shouldComponentUpdate(nextProps: {}, nextState: {}) {
+    return false;
+  }
+
+  render() {
+    return null;
+  }
+  
+  setupWebSocket() {
     socket.on("updated-user__amount", (data: TicTacToe.IViewersAmount) => {
       this.props.dispatch<IGameInfoAction>({ type: UPDATE_VIEWERS, payload: data });
     });
@@ -29,14 +49,6 @@ class WebSocketListener extends React.Component<DispatchProp> {
     socket.on("disconnect", () => {
       this.props.dispatch<IGameInfoAction>({ type: UPDATE_CONNECTION_STATUS, payload: false });
     });
-  }
-
-  shouldComponentUpdate(nextProps: {}, nextState: {}) {
-    return false;
-  }
-
-  render() {
-    return null;
   }
 }
 
