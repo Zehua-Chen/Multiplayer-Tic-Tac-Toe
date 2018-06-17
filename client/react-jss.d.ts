@@ -1,6 +1,13 @@
-import * as React from 'react';
 
 declare module "react-jss" {
-    export function injectSheet<PropType>(style: React.CSSProperties): 
-        { injector: (component: React.ComponentType<PropType>) => React.ComponentType<PropType> };
+    
+    import * as React from 'react';
+    
+    export interface WithClasses<ClassKeys extends string> {
+        classes: Record<ClassKeys, string>;
+    }
+    export function injectSheet(style: any): 
+        { <PropType, ClassKeys extends string>(component: React.ComponentType<PropType & WithClasses<ClassKeys>>): React.ComponentType<PropType> };
+        
+    export default injectSheet;
 }
