@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import injectSheet, { WithClasses } from 'react-jss';
 
 import './MainPage.css';
 
@@ -8,12 +9,40 @@ import { GameInfoPanel, BoardPanel, ScorePanel, WelcomePanel } from '../panels';
 import { ITotalState } from '../../states';
 import { WebSocketListener } from '../blank-components';
 
+const style = {
+  
+  fullheight: {
+    height: "100vh",
+  },
+  
+  sidebar: {
+    height: "100vh",
+    overflow: "scroll",
+  },
+    
+  "@media (max-width: 768px)": {
+    
+    fullheight: {
+      height: "auto",
+    },
+    
+    sidebar: {
+      height: "auto",
+      overflow: "initial",
+    }
+  }
+};
+
+type ClassKeys = "fullheight" | "sidebar";
+
 export interface IMainPageProps {
   connected: boolean;
 }
 
-class MainPage extends React.Component<IMainPageProps> {
+class MainPage extends React.Component<IMainPageProps & WithClasses<ClassKeys>> {
   render() {
+    
+    const { classes } = this.props;
 
     var connectedSidePanels = (
       <div>
@@ -45,11 +74,11 @@ class MainPage extends React.Component<IMainPageProps> {
           <WebSocketListener />
         </div>
 
-        <div className="container-fluid fullheight">
+        <div className={`container-fluid ${classes.fullheight}`}>
 
           {/* Main Content */}
 
-          <div className="row fullheight">
+          <div className={`row ${classes.fullheight}`}>
 
             {/* Board */}
 
@@ -59,7 +88,7 @@ class MainPage extends React.Component<IMainPageProps> {
 
             {/* ScorePanel */}
 
-            <div className="col-md-4 sidebar">
+            <div className={`col-md-4 ${classes.sidebar}`}>
               {this.props.connected ? connectedSidePanels : disconnectedSidePanel}
               
               {/* Navigation Link to About Page */}
@@ -85,4 +114,7 @@ function mapStateToProps(state: ITotalState, ownProps: {}): IMainPageProps {
   return { connected: state.gameInfo.connected };
 }
 
-export default connect(mapStateToProps)(MainPage);
+var injected = injectSheet(style)<IMainPageProps, ClassKeys>(MainPage);
+var connected = connect(mapStateToProps)(injected)
+
+export default connected;
