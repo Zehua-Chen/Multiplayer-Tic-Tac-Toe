@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import injectSheet, { WithClasses } from 'react-jss';
 
-import './MainPage.css';
-
 import { GameInfoPanel, BoardPanel, ScorePanel, WelcomePanel } from '../panels';
 import { ITotalState } from '../../states';
 import { WebSocketListener } from '../blank-components';
