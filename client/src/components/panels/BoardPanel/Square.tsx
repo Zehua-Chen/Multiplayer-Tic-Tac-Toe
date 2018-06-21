@@ -1,6 +1,5 @@
 import * as React from 'react';
-
-import './Square.css';
+import injectSheet, { WithClasses } from 'react-jss';
 
 type Player = "me" | "enemy";
 
@@ -8,7 +7,45 @@ interface ISquareProps {
   player?: Player;
 }
 
-class Square extends React.Component<ISquareProps> {
+/* Styles */
+const style = {
+  unsetSquare: {
+    height: "50px",
+    width: "50px",
+    background: "lightgrey",
+    border: "transparent",
+    borderRadius: "25px",
+    transition: [
+      ["border-radius", "0.2s", "ease-in-out"],
+      ["background", "0.2s", "ease-in-out"],
+    ],
+    
+    "&:hover": {
+      background: "darkgrey",
+      borderRadius: "5px",
+    },
+    
+    "&:focus": {
+      outline: [["none"], "!important"]
+    }
+  },
+  
+  setSquare: {
+    height: "50px",
+    width: "50px",
+    border: "transparent",
+    borderRadius: "25px",
+    color: "white",
+    
+    "&:focus": {
+      outline: [["none"], "!important"]
+    }
+  }
+}
+
+type ClassKeys = "unsetSquare" | "setSquare";
+
+class Square extends React.Component<ISquareProps & WithClasses<ClassKeys>> {
   
   mouseDown = () => {
     console.log("Mouse down");
@@ -20,14 +57,14 @@ class Square extends React.Component<ISquareProps> {
   
   render() {
     
-    const { player } = this.props;
-    var className = "unset-square";
+    const { player, classes } = this.props;
+    var className = classes.unsetSquare;
     
     if (player) {
       if (player == "me") {
-        className = "square bg-primary";
+        className = `${classes.setSquare} bg-primary`;
       } else if (player == "enemy") {
-        className = "square bg-danger";
+        className = `${classes.setSquare} bg-danger`;
       } 
     } 
     
@@ -38,4 +75,4 @@ class Square extends React.Component<ISquareProps> {
   }
 }
 
-export default Square;
+export default injectSheet(style)<ISquareProps, ClassKeys>(Square);
