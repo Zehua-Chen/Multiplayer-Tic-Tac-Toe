@@ -1,13 +1,20 @@
 import * as React from 'react';
-
-import "./Board.css";
+import injectSheet, { WithClasses } from 'react-jss';
 
 import Square from './Square';
 
-class Board extends React.Component {
+const style = {
+  board: {
+    margin: "auto",
+  }
+};
+type ClassKeys = "board";
+
+class Board extends React.Component<WithClasses<ClassKeys>> {
   public render() {
+    const { classes } = this.props;
     return (
-      <table className="board">
+      <table className={classes.board}>
         <tbody>
           <tr>
             <td>
@@ -48,4 +55,4 @@ class Board extends React.Component {
   }
 }
 
-export default Board;
+export default injectSheet(style)<{}, ClassKeys>(Board);
