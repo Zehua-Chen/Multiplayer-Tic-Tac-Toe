@@ -1,4 +1,7 @@
 import React from 'react';
+import axios from 'axios';
+import { connect, DispatchProp } from 'react-redux';
+import { ICreateGameAction, CREATE_SUCCESSFUL } from '../../../actions';
 
 export interface ICreateGamePageState {
   playerName: string;
@@ -12,9 +15,9 @@ export interface ICreateGamePageState {
  * - His or her player name;
  * - An invitation code used by the second player to join the game;
  */
-export class CreateGame extends React.Component<{}, ICreateGamePageState> {
+export class CreateGame extends React.Component<DispatchProp, ICreateGamePageState> {
   
-  constructor(props: {}) {
+  constructor(props: DispatchProp) {
     super(props);
     
     this.state = { playerName: "", invitationCode: "" };
@@ -24,8 +27,26 @@ export class CreateGame extends React.Component<{}, ICreateGamePageState> {
    * Called by the "Create Game Button" to create a game.
    */
   createGame = () => {
-    console.log("Create game");
-    console.log(this.state);
+    const { playerName, invitationCode } = this.state;
+    
+    var createGameRequest: TicTacToe.ICreateGameRequest = {
+      name: playerName,
+      passcode: invitationCode
+    };
+    
+    console.log(`Game = ${createGameRequest}`);
+    
+    axios.post<TicTacToe.ICreateGameResponse>("/create_game", createGameRequest)
+      .then((response) => {
+        var data = response.data;
+        if (data.success) {
+          //TODO: Dispatch success message
+          console.log("Create Successful");
+          this.props.dispatch<ICreateGameAction>({ type: CREATE_SUCCESSFUL });
+        } else {
+          alert(`Create Game Failed\nReason: ${data.message}`);
+        }
+    });
   }
   
   /**
@@ -77,3 +98,9 @@ export class CreateGame extends React.Component<{}, ICreateGamePageState> {
     );
   }
 }
+
+// function mapStatetoProps(state: {}, ownProps: {}): {} {
+//   return {};
+// }
+
+export default connect()(CreateGame);

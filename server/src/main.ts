@@ -1,5 +1,6 @@
 import express from 'express';
 import io from 'socket.io';
+import bodyParser from 'body-parser';
 
 import * as http from 'http';
 import * as path from 'path';
@@ -18,6 +19,8 @@ const PUBLIC_URL = `http://${IPV4}:${PORT}/`;
 const app = express();
 var staticPath = path.resolve(path.join(".", "/"), path.join(".", "public"));
 app.use(express.static(staticPath));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 /* Configure server and web sockiet */
 
@@ -42,6 +45,13 @@ app.get("/", (req, res) => {
 
 app.get("/host_address", (req, res) => {
     res.send(PUBLIC_URL);
+});
+
+app.post("/create_game", (req, res) => {
+    console.log(req.body);
+    var response: TicTacToe.ICreateGameResponse = { success: true };
+    console.log(response);
+    res.send(response);
 });
 
 socketIO.on("connection", (socket) => {
