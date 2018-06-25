@@ -10,26 +10,23 @@ import {
 type WelcomePanelMode = "create" | "join";
 
 interface IWelcomePanelProps {
-  mode?: WelcomePanelMode;
 }
 
 export interface IWelcomePanelState {
   playerName: string;
   invitationCode: string;
+  mode: WelcomePanelMode;
 }
 
 class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IWelcomePanelState> {
 
-  public static defaultProps: IWelcomePanelProps = {
-    mode: "join"
-  }
-  
   constructor(props: IWelcomePanelProps & DispatchProp) {
     super(props);
-    
+
     this.state = {
       playerName: "",
-      invitationCode: ""
+      invitationCode: "",
+      mode: "join"
     }
   }
 
@@ -39,6 +36,13 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
 
   playerNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ playerName: e.target.value });
+  }
+  
+  switchToCreateGame = () => {
+    this.setState({ mode: "create" });
+  }
+  switchToJoinGame = () => {
+    this.setState({ mode: "join" });
   }
 
   joinGame = () => {
@@ -71,7 +75,32 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
 
   public render() {
 
-    // var title = "";
+    var actions = <div></div>;
+    
+    if (this.state.mode == "create") {
+      actions = (
+        <div>
+          <button 
+            className="btn btn-outline-light btn-block" 
+            onClick={this.createGame}>Create!</button>
+          <button 
+            className="btn btn-outline-secondary btn-block"
+            onClick={this.switchToJoinGame}>Join Game?</button>
+        </div>
+      );
+    } else if (this.state.mode == "join") {
+      actions = (
+        <div>
+          <button 
+            className="btn btn-outline-light btn-block"
+            onClick={this.joinGame}>Join Game!</button>
+          <button 
+            className="btn btn-outline-secondary btn-block"
+            onClick={this.switchToCreateGame}>Create?</button>
+        </div>
+      );
+    }
+    
 
     return (
       <div className="card bg-dark text-white">
@@ -105,7 +134,7 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
 
             <div className="row mb-2">
               <div className="col">
-                <button className="btn btn-light btn-block" onClick={this.createGame}>Create!</button>
+                {actions}
               </div>
             </div>
           </div>
