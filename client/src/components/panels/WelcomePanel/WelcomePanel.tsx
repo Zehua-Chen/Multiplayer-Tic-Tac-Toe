@@ -2,6 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import { DispatchProp, connect } from 'react-redux';
 
+import Password from '../../ui-components/Password';
+
 import {
   ICreateGameAction,
   CREATE_SUCCESSFUL
@@ -116,6 +118,7 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
                   <label>Your Name</label>
                   <input
                     className="form-control" type="text"
+                    placeholder="Name"
                     onChange={this.playerNameChanged} value={this.state.playerName} />
                 </div>
               </div>
@@ -125,9 +128,10 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
               <div className="col">
                 <div className="form-group">
                   <label>Invitation Code</label>
-                  <input
-                    className="form-control" type="text"
-                    onChange={this.invitationCodeChanged} value={this.state.invitationCode} />
+                  <Password 
+                    className="form-control"
+                    placeholder="Invitation Code"
+                    onChange={this.invitationCodeChanged} value={this.state.invitationCode}/>
                 </div>
               </div>
             </div>
