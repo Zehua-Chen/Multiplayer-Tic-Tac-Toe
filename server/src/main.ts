@@ -31,8 +31,8 @@ const socketIO = io(server, { serveClient: false });
 var userCount = 0;
 
 /* Server */
-var playerA: TicTacToe.IPlayer<string> = { name: "", character: "" };
-var playerB: TicTacToe.IPlayer<string> = {  name: "", character: ""  };
+var playerA: TicTacToe.IPlayer<string> = { name: "", character: "X" };
+var playerB: TicTacToe.IPlayer<string> = {  name: "", character: "Y"  };
 var board: Board<string>;
 
 var invitationCode: string;
@@ -55,7 +55,7 @@ server.listen(PORT, () => {
     app.post("/create_game", (req, res) => {
         var body = <TicTacToe.ICreateGameRequest>req.body;
         
-        playerA.character = body.name;
+        playerA.name = body.name;
         invitationCode = body.invitationCode;
         
         board = new Board<string>(3, "?");
@@ -79,21 +79,33 @@ server.listen(PORT, () => {
             success: false
         };
         
-        if (board) {
+        if (playerB.name == "") {
             
-            if (body.invitationCode == invitationCode) {
-                playerB.name = body.name;
-                response.success = true;
+            if (board) {
+            
+                if (body.invitationCode == invitationCode) {
+                    
+                    if (body.name != playerA.name) {
+                        playerB.name = body.name;
+                        response.success = true;
+                        console.log(`'/join_game': new player joined = ${playerB.name}`);
+                    } else {
+                        response.message = "Two players cannot have the same name";
+                        console.log("/join_game': name conflict caused by the new player");
+                    }
+                    
+                } else {
+                    response.message = "Incorrect invitation code";
+                    console.log("'/join_game': incorrect invitation code");
+                }
                 
-                console.log(`'/join_game': new player joined = ${playerB.name}`);
             } else {
-                response.message = "Incorrect invitation code";
-                console.log("'/join_game': incorrect invitation code");
+                console.log("'/join_game': a game has not been created");
+                response.message = "A game has not been created";
             }
-            
         } else {
-            console.log("'/join_game': a game has not been created");
-            response.message = "A game has not been created";
+            console.log("'/join_game': already have two player, cannot take any more");
+            response.message = "Max of two player reached";
         }
         
         res.send(response);
