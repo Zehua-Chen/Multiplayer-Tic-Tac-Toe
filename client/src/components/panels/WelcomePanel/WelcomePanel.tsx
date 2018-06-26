@@ -48,7 +48,24 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
   }
 
   joinGame = () => {
+    const { playerName, invitationCode } = this.state;
 
+    var joinGameQuest: TicTacToe.ICreateGameRequest = {
+      name: playerName,
+      invitationCode: invitationCode
+    };
+
+    axios.post<TicTacToe.ICreateGameResponse>("/join_game", joinGameQuest)
+      .then((response) => {
+        var data = response.data;
+        if (data.success) {
+          //TODO: Dispatch success message
+          console.log("Create Successful");
+          this.props.dispatch<ICreateGameAction>({ type: CREATE_SUCCESSFUL });
+        } else {
+          alert(`Create Game Failed\nReason: ${data.message}`);
+        }
+      });
   }
 
   createGame = () => {
@@ -57,7 +74,7 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
 
     var createGameRequest: TicTacToe.ICreateGameRequest = {
       name: playerName,
-      passcode: invitationCode
+      invitationCode: invitationCode
     };
 
     console.log(`Game = ${createGameRequest}`);

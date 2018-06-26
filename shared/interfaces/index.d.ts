@@ -16,13 +16,16 @@ declare namespace TicTacToe {
     
     export interface ICreateGameRequest {
         name: string;
-        passcode: string;
+        invitationCode: string;
     }
     
     export interface ICreateGameResponse {
         success: boolean;
         message?: string;
     }
+    
+    export type IJoinGameRequest = ICreateGameRequest;
+    export type IJoinGameResponse = ICreateGameResponse;
 
     type IHostAddress = string;
     type IViewersAmount = number;
