@@ -6,7 +6,13 @@ import React from 'react';
  * to the <input> element.
  */
 interface IPasswordProps extends React.HTMLProps<HTMLInputElement> {
-  showPassword?: boolean;
+  /**
+   * When set to true, the password text field is followed by a button that 
+   * toggles if the password is displayed in regular letters or just ".";
+   * 
+   * Defaulted to be true
+   */
+  allowVisiblePassword?: boolean;
 }
 
 interface IPasswordState {
@@ -16,7 +22,7 @@ interface IPasswordState {
 class Password extends React.Component<IPasswordProps, IPasswordState> {
   
   public static defaultProps: IPasswordProps = {
-    showPassword: true,
+    allowVisiblePassword: true,
   }
   
   constructor(props: IPasswordProps) {
@@ -34,11 +40,11 @@ class Password extends React.Component<IPasswordProps, IPasswordState> {
   render() {
     
     // "type" is isolated to avoid ambiguity
-    const { showPassword, type, ...others } = this.props;
+    const { allowVisiblePassword, type, ...others } = this.props;
     
     var inputElement = <input type="text" {...others}/>;
     
-    if (showPassword) {
+    if (allowVisiblePassword) {
       if (this.state.isPasswordVisible) {
         inputElement = <input type="text" {...others}/>
       } else {
@@ -47,12 +53,18 @@ class Password extends React.Component<IPasswordProps, IPasswordState> {
     }
     
     var toggler = null;
-    if (showPassword) {
-      toggler = <button className="btn btn-dark">Show</button>
+    if (allowVisiblePassword) {
+      toggler = (
+        <div className="input-group-append">
+          <button 
+            className="btn btn-secondary"
+            onClick={this.togglePassword}>Show</button>
+        </div>
+      );
     }
     
     return (
-      <div>
+      <div className="input-group">
         {inputElement}
         {toggler}
       </div>
