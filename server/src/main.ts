@@ -53,24 +53,31 @@ server.listen(PORT, () => {
     });
     
     app.post("/create_game", (req, res) => {
-        var body = <TicTacToe.ICreateGameRequest>req.body;
         
-        playerA.name = body.name;
-        invitationCode = body.invitationCode;
-        
-        board = new Board<string>(3, "?");
-        
-        var response: TicTacToe.ICreateGameResponse = { success: true };
+        var response: TicTacToe.ICreateGameResponse = { success: false };
         
         if (!board) {
-            response.success = false;
-            response.message = "Unable to create board";
-            console.log("'/create_board': Unable to create board");
+            var body = <TicTacToe.ICreateGameRequest>req.body;
+        
+            playerA.name = body.name;
+            invitationCode = body.invitationCode;
+            
+            board = new Board<string>(3, "?");
+            
+            if (!board) {
+                response.message = "Unable to create board.";
+                console.log("'/create_board': Unable to create board;");
+            }
+            
+            response.success = true;
+            console.log("'/create_game': new game created;");
+            
+        } else {
+            response.message = "There is a board already created.";
         }
         
-        console.log("'/create_game': new game created");
-        
         res.send(response);
+
     });
     
     app.post("/join_game", (req, res) => {
@@ -79,33 +86,42 @@ server.listen(PORT, () => {
             success: false
         };
         
+        // Determine if the second player is already in the game
         if (playerB.name == "") {
             
+            // Determine if a game has been created
             if (board) {
             
+                // Determine if the invitation code is correct
                 if (body.invitationCode == invitationCode) {
                     
+                    // Determine if there is a naming conflict
                     if (body.name != playerA.name) {
                         playerB.name = body.name;
                         response.success = true;
-                        console.log(`'/join_game': new player joined = ${playerB.name}`);
+                        console.log(`'/join_game': new player joined = ${playerB.name};`);
+                        
                     } else {
-                        response.message = "Two players cannot have the same name";
-                        console.log("/join_game': name conflict caused by the new player");
+                        // Tell the client that there is naming conflict
+                        response.message = "Two players cannot have the same name.";
+                        console.log("/join_game': name conflict caused by the new player;");
                     }
                     
                 } else {
-                    response.message = "Incorrect invitation code";
-                    console.log("'/join_game': incorrect invitation code");
+                    // Tell the client that the invitation code is not right
+                    response.message = "Incorrect invitation code;";
+                    console.log("'/join_game': incorrect invitation code;");
                 }
                 
             } else {
-                console.log("'/join_game': a game has not been created");
-                response.message = "A game has not been created";
+                // Tell the client that a game has not been created
+                console.log("'/join_game': a game has not been created;");
+                response.message = "A game has not been created.";
             }
         } else {
-            console.log("'/join_game': already have two player, cannot take any more");
-            response.message = "Max of two player reached";
+            // Tell the client that max players has already been reached.
+            console.log("'/join_game': already have two player, cannot take any more;");
+            response.message = "Max of two player reached.";
         }
         
         res.send(response);

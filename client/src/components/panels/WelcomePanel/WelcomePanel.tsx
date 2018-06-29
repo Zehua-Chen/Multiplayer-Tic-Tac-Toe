@@ -18,6 +18,7 @@ export interface IWelcomePanelState {
   playerName: string;
   invitationCode: string;
   mode: WelcomePanelMode;
+  errorMessage? :string;
 }
 
 class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IWelcomePanelState> {
@@ -39,12 +40,12 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
   playerNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ playerName: e.target.value });
   }
-  
+
   switchToCreateGame = () => {
-    this.setState({ mode: "create" });
+    this.setState({ mode: "create", errorMessage: undefined });
   }
   switchToJoinGame = () => {
-    this.setState({ mode: "join" });
+    this.setState({ mode: "join", errorMessage: undefined });
   }
 
   joinGame = () => {
@@ -63,7 +64,7 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
           console.log("Create Successful");
           this.props.dispatch<ICreateGameAction>({ type: CREATE_SUCCESSFUL });
         } else {
-          alert(`Create Game Failed\nReason: ${data.message}`);
+          this.setState({ errorMessage: response.data.message })
         }
       });
   }
@@ -87,7 +88,7 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
           console.log("Create Successful");
           this.props.dispatch<ICreateGameAction>({ type: CREATE_SUCCESSFUL });
         } else {
-          alert(`Create Game Failed\nReason: ${data.message}`);
+          this.setState({ errorMessage: response.data.message });
         }
       });
   }
@@ -95,14 +96,14 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
   public render() {
 
     var actions = <div></div>;
-    
+
     if (this.state.mode == "create") {
       actions = (
         <div>
-          <button 
-            className="btn btn-outline-light btn-block" 
+          <button
+            className="btn btn-outline-light btn-block"
             onClick={this.createGame}>Create!</button>
-          <button 
+          <button
             className="btn btn-outline-secondary btn-block"
             onClick={this.switchToJoinGame}>Join Game?</button>
         </div>
@@ -110,16 +111,30 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
     } else if (this.state.mode == "join") {
       actions = (
         <div>
-          <button 
+          <button
             className="btn btn-outline-light btn-block"
             onClick={this.joinGame}>Join Game!</button>
-          <button 
+          <button
             className="btn btn-outline-secondary btn-block"
             onClick={this.switchToCreateGame}>Create?</button>
         </div>
       );
     }
     
+    // Display error message
+
+    var error = null;
+    if (this.state.errorMessage) {
+      error = (
+        <div className="row mt-2">
+          <div className="col">
+            <div className="alert alert-danger">
+              {this.state.errorMessage}
+            </div>
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div className="card bg-dark text-white">
@@ -128,6 +143,8 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
         </div>
         <div className="card-body">
           <div className="container">
+
+            {error}
 
             <div className="row mt-2">
               <div className="col">
@@ -145,10 +162,10 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
               <div className="col">
                 <div className="form-group">
                   <label>Invitation Code</label>
-                  <Password 
+                  <Password
                     className="form-control"
                     placeholder="Invitation Code"
-                    onChange={this.invitationCodeChanged} value={this.state.invitationCode}/>
+                    onChange={this.invitationCodeChanged} value={this.state.invitationCode} />
                 </div>
               </div>
             </div>
