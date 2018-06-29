@@ -3,22 +3,17 @@ import axios from 'axios';
 import { DispatchProp, connect } from 'react-redux';
 
 import Password from '../../ui-components/Password';
-
-import {
-  ICreateGameAction,
-  CREATE_SUCCESSFUL
-} from '../../../actions/ICreateGameAction';
-
-type WelcomePanelMode = "create" | "join";
+import { IWelcomeAction, UPDATE_WELCOME_MODE, UPDATE_ERROR_MESSAGE } from '../../../actions/IWelcomeAction';
+import { ITotalState } from '../../../states';
 
 interface IWelcomePanelProps {
+  mode: "create" | "join" | "hidden";
+  errorMessage?: string;
 }
 
 export interface IWelcomePanelState {
   playerName: string;
   invitationCode: string;
-  mode: WelcomePanelMode;
-  errorMessage? :string;
 }
 
 class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IWelcomePanelState> {
@@ -29,7 +24,6 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
     this.state = {
       playerName: "",
       invitationCode: "",
-      mode: "join"
     }
   }
 
@@ -42,10 +36,10 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
   }
 
   switchToCreateGame = () => {
-    this.setState({ mode: "create", errorMessage: undefined });
+    this.props.dispatch<IWelcomeAction>({ type: UPDATE_WELCOME_MODE, payload: "create" });
   }
   switchToJoinGame = () => {
-    this.setState({ mode: "join", errorMessage: undefined });
+    this.props.dispatch<IWelcomeAction>({ type: UPDATE_WELCOME_MODE, payload: "join" });
   }
 
   joinGame = () => {
@@ -61,10 +55,9 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
         var data = response.data;
         if (data.success) {
           //TODO: Dispatch success message
-          console.log("Create Successful");
-          this.props.dispatch<ICreateGameAction>({ type: CREATE_SUCCESSFUL });
-        } else {
-          this.setState({ errorMessage: response.data.message })
+          this.props.dispatch<IWelcomeAction>({ type: UPDATE_WELCOME_MODE, payload: "hidden" });
+        } else if (data.message) {
+          this.props.dispatch<IWelcomeAction>({ type: UPDATE_ERROR_MESSAGE, payload: data.message });
         }
       });
   }
@@ -85,19 +78,24 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
         var data = response.data;
         if (data.success) {
           //TODO: Dispatch success message
-          console.log("Create Successful");
-          this.props.dispatch<ICreateGameAction>({ type: CREATE_SUCCESSFUL });
-        } else {
-          this.setState({ errorMessage: response.data.message });
+          this.props.dispatch<IWelcomeAction>({ type: UPDATE_WELCOME_MODE, payload: "hidden" });
+        } else if (data.message) {
+          this.props.dispatch<IWelcomeAction>({ type: UPDATE_ERROR_MESSAGE, payload: data.message });
         }
       });
   }
 
   public render() {
 
+    const { mode, errorMessage } = this.props;
+    
+    if (mode == "hidden") {
+      return null;
+    }
+    
     var actions = <div></div>;
 
-    if (this.state.mode == "create") {
+    if (mode == "create") {
       actions = (
         <div>
           <button
@@ -108,7 +106,7 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
             onClick={this.switchToJoinGame}>Join Game?</button>
         </div>
       );
-    } else if (this.state.mode == "join") {
+    } else if (mode == "join") {
       actions = (
         <div>
           <button
@@ -124,12 +122,12 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
     // Display error message
 
     var error = null;
-    if (this.state.errorMessage) {
+    if (errorMessage) {
       error = (
         <div className="row mt-2">
           <div className="col">
             <div className="alert alert-danger">
-              {this.state.errorMessage}
+              {errorMessage}
             </div>
           </div>
         </div>
@@ -182,8 +180,9 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
   }
 }
 
-function mapStateToProps(state: {}, ownProps: IWelcomePanelProps): {} {
-  return {};
+function mapStateToProps(state: ITotalState, ownProps: {}): IWelcomePanelProps {
+  const { mode, errorMessage } = state.welcome;
+  return { mode: mode, errorMessage: errorMessage };
 }
 
 export default connect(mapStateToProps)(WelcomePanel);

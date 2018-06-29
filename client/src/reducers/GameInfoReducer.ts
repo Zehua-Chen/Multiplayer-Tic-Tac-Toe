@@ -7,7 +7,7 @@ import {
     UPDATE_PROGRESS, 
     UPDATE_VIEWERS,
     UPDATE_CONNECTION_STATUS,
-} from '../actions';
+} from '../actions/IGameInfoAction';
 
 function gameInfoReducer(state: IGameInfoState = DEFAULT_GAMEINFOSTATE, action: IGameInfoAction): IGameInfoState {
     switch(action.type) {

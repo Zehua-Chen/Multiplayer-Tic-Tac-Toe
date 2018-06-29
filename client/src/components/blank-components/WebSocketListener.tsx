@@ -6,7 +6,7 @@ import socket from '../../network';
 import { 
   IGameInfoAction,
   UPDATE_CONNECTION_STATUS, UPDATE_PROGRESS, UPDATE_VIEWERS  
-} from '../../actions';
+} from '../../actions/IGameInfoAction';
 
 class WebSocketListener extends React.Component<DispatchProp> {
 
