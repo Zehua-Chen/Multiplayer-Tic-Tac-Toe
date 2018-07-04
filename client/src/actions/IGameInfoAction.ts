@@ -1,15 +1,18 @@
 import { Action } from 'redux';
 
 /**
- * The action to send to edit gameInfo
+ * The action to send to edit IGameInfoState
  */
 export interface IGameInfoAction extends Action<string> {
     /**
-     * For actions:
+     * number:
      * - UPDATE_VIEWER: payload should be the number of viewers;
      * - UPDATE_PROGRESS: payload should be the progress out of 100;
-     * For actions:
+     * string:
      * - UPDATE_HOSTURL: this should be the new host url
+     * boolean:
+     * - UPDATE_CONNECTION_STATUS: payload should be whether the client is still 
+     * connected to the server.
      */
     payload: string | number | boolean;
 }
