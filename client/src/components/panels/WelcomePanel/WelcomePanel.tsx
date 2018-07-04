@@ -27,21 +27,37 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
     }
   }
 
+  /**
+   * Handler for onChange of invitation code's input field.
+   */
   invitationCodeChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ invitationCode: e.target.value });
   }
 
+  /**
+   * Handler for onChange of player name's input field.
+   */
   playerNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ playerName: e.target.value });
   }
 
+  /**
+   * Change from "join" mode to "create" mode. Called by the "Create?" button.
+   */
   switchToCreateGame = () => {
     this.props.dispatch<IWelcomeAction>({ type: UPDATE_WELCOME_MODE, payload: "create" });
   }
+  
+  /**
+   * Change from "create" mode to "join" mode. Called by the "Create?" button.
+   */
   switchToJoinGame = () => {
     this.props.dispatch<IWelcomeAction>({ type: UPDATE_WELCOME_MODE, payload: "join" });
   }
 
+  /**
+   * Join a game session. Called by the "Join!" button.
+   */
   joinGame = () => {
     const { playerName, invitationCode } = this.state;
 
@@ -62,6 +78,9 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
       });
   }
 
+  /**
+   * Create a new game session. Called by the "Create!" button.
+   */
   createGame = () => {
 
     const { playerName, invitationCode } = this.state;
@@ -78,9 +97,18 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
         var data = response.data;
         if (data.success) {
           //TODO: Dispatch success message
-          this.props.dispatch<IWelcomeAction>({ type: UPDATE_WELCOME_MODE, payload: "hidden" });
+          this.props.dispatch<IWelcomeAction>({ 
+            type: UPDATE_WELCOME_MODE, 
+            payload: "hidden" 
+          });
+          
         } else if (data.message) {
-          this.props.dispatch<IWelcomeAction>({ type: UPDATE_ERROR_MESSAGE, payload: data.message });
+          
+          this.props.dispatch<IWelcomeAction>({ 
+            type: UPDATE_ERROR_MESSAGE, 
+            payload: data.message 
+          });
+          
         }
       });
   }
@@ -89,9 +117,19 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
 
     const { mode, errorMessage } = this.props;
     
+    // Hidden mode, return null to get rid of the welcome panel.
+    
     if (mode == "hidden") {
       return null;
     }
+    
+    // Actions to perform on the Welcome Panel
+    // "join" mode: 
+    //  "Create!": create a new game;
+    //  "Join?": switch to "join" mode;
+    // "create" mode: 
+    //  "Join!": join game; 
+    //  "Create?": switch to "create" mode;
     
     var actions = <div></div>;
 
@@ -103,7 +141,7 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
             onClick={this.createGame}>Create!</button>
           <button
             className="btn btn-outline-secondary btn-block"
-            onClick={this.switchToJoinGame}>Join Game?</button>
+            onClick={this.switchToJoinGame}>Join?</button>
         </div>
       );
     } else if (mode == "join") {
@@ -119,7 +157,7 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
       );
     }
     
-    // Display error message
+    // Display the error message, if there is one.
 
     var error = null;
     if (errorMessage) {
@@ -141,9 +179,13 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
         </div>
         <div className="card-body">
           <div className="container">
-
+          
+            {/* Error message */}
+          
             {error}
-
+            
+            {/* User name*/}
+            
             <div className="row mt-2">
               <div className="col">
                 <div className="form-group">
@@ -151,10 +193,13 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
                   <input
                     className="form-control" type="text"
                     placeholder="Name"
-                    onChange={this.playerNameChanged} value={this.state.playerName} />
+                    onChange={this.playerNameChanged} 
+                    value={this.state.playerName} />
                 </div>
               </div>
             </div>
+            
+            {/* Password */}
 
             <div className="row">
               <div className="col">
@@ -167,6 +212,8 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
                 </div>
               </div>
             </div>
+            
+            {/* Actions */}
 
             <div className="row mb-2">
               <div className="col">
@@ -180,6 +227,11 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
   }
 }
 
+/**
+ * Map state managed by redux to props
+ * @param state the total state managed by redux
+ * @param ownProps the props exposed to other components.
+ */
 function mapStateToProps(state: ITotalState, ownProps: {}): IWelcomePanelProps {
   const { mode, errorMessage } = state.welcome;
   return { mode: mode, errorMessage: errorMessage };
