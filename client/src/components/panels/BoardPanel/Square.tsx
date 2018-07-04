@@ -12,7 +12,8 @@ const style = {
   unsetSquare: {
     height: "50px",
     width: "50px",
-    background: "lightgrey",
+    // Color copied from http://getbootstrap.com/docs/4.1/getting-started/theming/#color
+    background: "#e5e5e5",
     border: "transparent",
     borderRadius: "25px",
     transition: [
@@ -21,7 +22,8 @@ const style = {
     ],
     
     "&:hover": {
-      background: "darkgrey",
+      // Color copied from http://getbootstrap.com/docs/4.1/getting-started/theming/#color
+      background: "#343a40",
       borderRadius: "5px",
     },
     
@@ -69,7 +71,7 @@ class Square extends React.Component<ISquareProps & WithClasses<ClassKeys>> {
     } 
     
     return (
-      <button className={className} onMouseDown={this.mouseDown}>X</button>
+      <button className={className} onMouseDown={this.mouseDown}></button>
     );
     
   }

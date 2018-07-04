@@ -7,9 +7,17 @@ import {
     UPDATE_PROGRESS, 
     UPDATE_VIEWERS,
     UPDATE_CONNECTION_STATUS,
-} from '../actions';
+} from '../actions/IGameInfoAction';
 
-function gameInfoReducer(state: IGameInfoState = DEFAULT_GAMEINFOSTATE, action: IGameInfoAction): IGameInfoState {
+/**
+ * Reducer for IGameInfoState
+ * @param state current state
+ * @param action action (manipulation) to perform on the current state
+ */
+function gameInfoReducer(
+    state: IGameInfoState = DEFAULT_GAMEINFOSTATE, 
+    action: IGameInfoAction): IGameInfoState {
+    
     switch(action.type) {
         // Update url
         case UPDATE_HOSTURL: 

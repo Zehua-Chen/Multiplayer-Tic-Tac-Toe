@@ -12,12 +12,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 /**
  * Network dependencies
  */
-// import axios from 'axios';
+import axios from 'axios';
 
-// import { 
-//   IGameInfoAction, 
-//   UPDATE_HOSTURL, 
-// } from './actions';
+import { 
+  IGameInfoAction, 
+  UPDATE_HOSTURL, 
+} from './actions/IGameInfoAction';
 
 /**
  * Import redux dependencies
@@ -40,6 +40,6 @@ registerServiceWorker();
 
 /* Set up axios */
 
-// axios.get<TicTacToe.IHostAddress>("/host_address").then((response) => {
-//   store.dispatch<IGameInfoAction>({ type: UPDATE_HOSTURL, payload: response.data });
-// });
+axios.get<TicTacToe.IHostAddress>("/host_address").then((response) => {
+  store.dispatch<IGameInfoAction>({ type: UPDATE_HOSTURL, payload: response.data });
+});
