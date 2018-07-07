@@ -1,11 +1,11 @@
 import BoardPanel from './BoardPanel';
-import ScorePanel from './ScorePanel';
+import PlayersPanel from './PlayersPanel';
 import GameInfoPanel from './GameInfoPanel';
 import WelcomePanel from './WelcomePanel';
 
 export {
     BoardPanel,
-    ScorePanel,
+    PlayersPanel,
     GameInfoPanel,
     WelcomePanel
 }

@@ -1,5 +1,8 @@
 import React from 'react';
 
+import PlayerList from './PlayersList';
+import PlayerListItem from './PlayersListItem';
+
 class ScorePanel extends React.Component {
   render() {
     return (
@@ -7,13 +10,13 @@ class ScorePanel extends React.Component {
       <div className="card">
 
         <div className="card-header">
-          <h5>Scores</h5>
+          <h5>Players</h5>
         </div>
 
-        <ul className="list-group list-group-flush">
-          <div className="list-group-item">Player 1</div>
-          <div className="list-group-item">Player 2</div>
-        </ul>
+        <PlayerList>
+          <PlayerListItem hostile/>
+          <PlayerListItem />
+        </PlayerList>
 
       </div>
     );

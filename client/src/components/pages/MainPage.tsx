@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import injectSheet, { WithClasses } from 'react-jss';
 
-import { GameInfoPanel, BoardPanel, ScorePanel, WelcomePanel } from '../panels';
+import { GameInfoPanel, BoardPanel, PlayersPanel, WelcomePanel } from '../panels';
 import { ITotalState } from '../../states';
 // import { WebSocketListener } from '../blank-components';
 
@@ -51,7 +51,7 @@ class MainPage extends React.Component<IMainPageProps & WithClasses<ClassKeys>> 
           <GameInfoPanel />
         </div>
         <div className="mt-2 mb-3">
-          <ScorePanel />
+          <PlayersPanel />
         </div>
       </div>
     );
