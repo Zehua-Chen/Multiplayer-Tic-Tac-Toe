@@ -14,8 +14,8 @@ class ScorePanel extends React.Component {
         </div>
 
         <PlayerList>
-          <PlayerListItem hostile/>
-          <PlayerListItem />
+          <PlayerListItem playerName="Jackson" hostile moving/>
+          <PlayerListItem playerName="Peter"/>
         </PlayerList>
 
       </div>
