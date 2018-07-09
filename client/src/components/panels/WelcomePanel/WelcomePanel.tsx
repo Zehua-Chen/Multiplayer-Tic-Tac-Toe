@@ -36,14 +36,6 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
   }
   
   /**
-   * 
-   * @param playerName 
-   */
-  private recordPlayerName(playerName: string) {
-    window.sessionStorage.setItem("this-player-name", playerName);
-  }
-  
-  /**
    * Close Welcome Panel
    * - Tell "Players" Panel to update its "this player";
    * - Hide Welcome Panel.
@@ -142,7 +134,7 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
       invitationCode: invitationCode
     };
     
-    this.recordPlayerName(playerName);
+    // this.recordPlayerName(playerName);
 
     axios.post<TicTacToe.ICreateGameResponse>("/join_game", joinGameQuest)
       .then((response) => {
@@ -172,8 +164,6 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
       name: playerName,
       invitationCode: invitationCode
     };
-
-    this.recordPlayerName(playerName);
 
     axios.post<TicTacToe.ICreateGameResponse>("/create_game", createGameRequest)
       .then((response) => {

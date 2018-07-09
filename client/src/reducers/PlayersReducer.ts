@@ -13,14 +13,7 @@ import {
 function playersReducer(state: IPlayersState = DEFAULT_PLAYERSTATE, action: IPlayersAction): IPlayersState {
     switch(action.type) {
         case ADD_OTHER_PLAYER:
-        {
-            const thisPlayerName = window.sessionStorage.getItem("this-player-name");
-            console.log(`this player = ${thisPlayerName}, other player = ${action.payload}`);
-            
-            if (thisPlayerName && thisPlayerName == action.payload) {
-                return state;
-            }
-            
+        {   
             const { otherPlayerName, ...others } = state;
             return { otherPlayerName: <string>action.payload, ...others };
         }
