@@ -5,7 +5,7 @@ import injectSheet, { WithClasses } from 'react-jss';
 
 import { GameInfoPanel, BoardPanel, PlayersPanel, WelcomePanel } from '../panels';
 import { ITotalState } from '../../states';
-// import { WebSocketListener } from '../blank-components';
+import { WebSocketListener } from '../blank-components';
 
 const style = {
   
@@ -69,7 +69,7 @@ class MainPage extends React.Component<IMainPageProps & WithClasses<ClassKeys>> 
       <div>
 
         <div>
-          {/* <WebSocketListener /> */}
+          <WebSocketListener />
         </div>
 
         <div className={`container-fluid ${classes.fullheight}`}>

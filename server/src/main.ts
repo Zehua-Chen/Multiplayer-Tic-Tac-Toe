@@ -52,6 +52,25 @@ server.listen(PORT, () => {
         res.send(PUBLIC_URL);
     });
     
+    app.get("/player_names", (req, res) => {
+        var playerAName = undefined;
+        var playerBName = undefined;
+        
+        if (playerA.name && playerA.name != "") {
+            playerAName = playerA.name;
+        }
+        
+        if (playerB.name && playerB.name != "") {
+            playerBName = playerB.name;
+        }
+        
+        var response: TicTacToe.IPlayerNamesResponse = {
+            playerNames: [playerAName, playerBName]
+        }
+        
+        res.send(response);
+    })
+    
     app.post("/create_game", (req, res) => {
         
         var response: TicTacToe.ICreateGameResponse = { success: false };
@@ -69,8 +88,12 @@ server.listen(PORT, () => {
                 console.log("'/create_board': Unable to create board;");
             }
             
+            
             response.success = true;
-            console.log("'/create_game': new game created;");
+            console.log(`'/create_game': new game created, creator = ${body.name}`);
+            
+            // Notify clients that a new player has joined the game
+            socketIO.emit("new_player", playerA);
             
         } else {
             response.message = "There is a board already created.";
@@ -100,6 +123,9 @@ server.listen(PORT, () => {
                         playerB.name = body.name;
                         response.success = true;
                         console.log(`'/join_game': new player joined = ${playerB.name};`);
+                        
+                        // TODO: Action to perform after a new player has joined the game;
+                        socketIO.emit("new_player", playerB);
                         
                     } else {
                         // Tell the client that there is naming conflict

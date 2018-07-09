@@ -19,6 +19,11 @@ import {
   UPDATE_HOSTURL, 
 } from './actions/IGameInfoAction';
 
+import {
+  IPlayersAction,
+  ADD_PLAYERS
+} from './actions/IPlayersAction';
+
 /**
  * Import redux dependencies
  */
@@ -42,4 +47,12 @@ registerServiceWorker();
 
 axios.get<TicTacToe.IHostAddress>("/host_address").then((response) => {
   store.dispatch<IGameInfoAction>({ type: UPDATE_HOSTURL, payload: response.data });
+});
+
+// Get existing players 
+axios.get<TicTacToe.IPlayerNamesResponse>("/player_names").then((response) => {
+  console.log(response.data.playerNames);
+  store.dispatch<IPlayersAction>({ 
+    type: ADD_PLAYERS, 
+    payload: response.data.playerNames });
 });

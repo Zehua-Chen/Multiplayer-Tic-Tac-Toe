@@ -60,6 +60,8 @@ class PlayersListItem extends React.Component<IPlayersListItemProps & WithClasse
       );
       
       if (moving) {
+        // Container with one row, which has one column used for 
+        // player names, and another used for player's moving status.
         content = (
           <div className="row">
             <div className="col">

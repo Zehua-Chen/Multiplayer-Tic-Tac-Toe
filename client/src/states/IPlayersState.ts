@@ -1,6 +1,6 @@
 export interface IPlayersState {
     thisPlayerName?: string;
-    hostilePlayerName?: string;
+    otherPlayerName?: string;
     movingPlayerName?: string;
 }
 

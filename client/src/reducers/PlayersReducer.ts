@@ -6,6 +6,8 @@ import {
     ADD_OTHER_PLAYER,
     ADD_THIS_PLAYER,
     UPDATE_MOVING_PLAYER_NAME,
+    ADD_PLAYERS,
+    ADD_PLAYER,
 } from '../actions/IPlayersAction';
 
 function playersReducer(state: IPlayersState = DEFAULT_PLAYERSTATE, action: IPlayersAction): IPlayersState {
@@ -13,20 +15,59 @@ function playersReducer(state: IPlayersState = DEFAULT_PLAYERSTATE, action: IPla
         case ADD_OTHER_PLAYER:
         {
             const thisPlayerName = window.sessionStorage.getItem("this-player-name");
-            console.log(`thisPlayerName = ${thisPlayerName}`);
+            console.log(`this player = ${thisPlayerName}, other player = ${action.payload}`);
             
             if (thisPlayerName && thisPlayerName == action.payload) {
                 return state;
             }
             
-            const { hostilePlayerName, ...others } = state;
-            return { hostilePlayerName: action.payload, ...others };
+            const { otherPlayerName, ...others } = state;
+            return { otherPlayerName: <string>action.payload, ...others };
         }
         case ADD_THIS_PLAYER:
         {
             const { thisPlayerName, ...others } = state; 
-            return { thisPlayerName: action.payload, ...others };
+            return { thisPlayerName: <string>action.payload, ...others };
             
+        }
+        case ADD_PLAYERS:
+        {
+            var newState = state;
+            
+            var names = <TicTacToe.IPlayerName[]>action.payload;
+            if (names.length >= 2) {
+                var nameA = names[0];
+                var nameB = names[1];
+                
+                if (nameA) {
+                    newState.thisPlayerName = nameA;
+                } 
+                
+                if (nameB) {
+                    newState.otherPlayerName = nameB;
+                }
+            }
+            
+            return newState;
+        }
+        case ADD_PLAYER: 
+        {
+            var nameA = state.thisPlayerName;
+            var nameB = state.otherPlayerName;
+            
+            var addedName = <string>action.payload;
+            
+            if (!nameA) {
+                nameA = addedName;
+            } else if (!nameB) {
+                nameB = addedName;
+            }
+            
+            return {
+                thisPlayerName: nameA,
+                otherPlayerName: nameB,
+                movingPlayerName: state.movingPlayerName
+            };
         }
         case UPDATE_MOVING_PLAYER_NAME:
         {

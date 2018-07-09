@@ -3,7 +3,15 @@ import axios from 'axios';
 import { DispatchProp, connect } from 'react-redux';
 
 import Password from '../../ui-components/Password';
-import { IWelcomeAction, UPDATE_WELCOME_MODE, UPDATE_ERROR_MESSAGE } from '../../../actions/IWelcomeAction';
+import { 
+  IWelcomeAction, 
+  UPDATE_WELCOME_MODE, UPDATE_ERROR_MESSAGE 
+} from '../../../actions/IWelcomeAction';
+import {
+  IPlayersAction,
+  ADD_THIS_PLAYER,
+  ADD_OTHER_PLAYER
+} from '../../../actions/IPlayersAction';
 import { ITotalState } from '../../../states';
 
 interface IWelcomePanelProps {
@@ -25,6 +33,74 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
       playerName: "",
       invitationCode: "",
     }
+  }
+  
+  /**
+   * 
+   * @param playerName 
+   */
+  private recordPlayerName(playerName: string) {
+    window.sessionStorage.setItem("this-player-name", playerName);
+  }
+  
+  /**
+   * Close Welcome Panel
+   * - Tell "Players" Panel to update its "this player";
+   * - Hide Welcome Panel.
+   * @argument thisPlayerName the name of the player who has this instance
+   * of the web app. The string is used to udpate "this player"
+   */
+  private closeWelcomePanel(thisPlayerName: string) {
+    
+    // Display "this player"
+    
+    this.props.dispatch<IPlayersAction>({ 
+      type: ADD_THIS_PLAYER, 
+      payload: thisPlayerName 
+    });
+    
+    // Determine the other player, if there is one
+    
+    axios.get<TicTacToe.IPlayerNamesResponse>("/player_names").then((response) => {
+      var names = response.data.playerNames;
+      
+      if (names) {
+        if (names.length >= 2) {
+          
+          var nameA = names[0];
+          var nameB = names[1];
+          
+          // If nameA is not undefined and is different from "this player",
+          // then it must be another player
+          
+          if (nameA && nameA != thisPlayerName) {
+            
+            this.props.dispatch<IPlayersAction>({
+              type: ADD_OTHER_PLAYER,
+              payload: nameA
+            });
+            
+          // if name B is not undefined and is different from "this player",
+          // then it must be another player
+          } else if (nameB && nameB != thisPlayerName) {
+            
+            this.props.dispatch<IPlayersAction>({
+              type: ADD_OTHER_PLAYER,
+              payload: nameB
+            });
+            
+          }
+          
+        }
+      }
+      
+    });
+    
+    // Hide the welcome panel
+    this.props.dispatch<IWelcomeAction>({ 
+      type: UPDATE_WELCOME_MODE, 
+      payload: "hidden" 
+    });
   }
 
   /**
@@ -65,15 +141,22 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
       name: playerName,
       invitationCode: invitationCode
     };
+    
+    this.recordPlayerName(playerName);
 
     axios.post<TicTacToe.ICreateGameResponse>("/join_game", joinGameQuest)
       .then((response) => {
         var data = response.data;
         if (data.success) {
-          //TODO: Dispatch success message
-          this.props.dispatch<IWelcomeAction>({ type: UPDATE_WELCOME_MODE, payload: "hidden" });
+          
+          this.closeWelcomePanel(playerName);
+          
         } else if (data.message) {
-          this.props.dispatch<IWelcomeAction>({ type: UPDATE_ERROR_MESSAGE, payload: data.message });
+          
+          this.props.dispatch<IWelcomeAction>({ 
+            type: UPDATE_ERROR_MESSAGE, 
+            payload: data.message 
+          });
         }
       });
   }
@@ -90,17 +173,14 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
       invitationCode: invitationCode
     };
 
-    console.log(`Game = ${createGameRequest}`);
+    this.recordPlayerName(playerName);
 
     axios.post<TicTacToe.ICreateGameResponse>("/create_game", createGameRequest)
       .then((response) => {
         var data = response.data;
         if (data.success) {
-          //TODO: Dispatch success message
-          this.props.dispatch<IWelcomeAction>({ 
-            type: UPDATE_WELCOME_MODE, 
-            payload: "hidden" 
-          });
+          
+          this.closeWelcomePanel(playerName);
           
         } else if (data.message) {
           
