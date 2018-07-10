@@ -65,7 +65,7 @@ server.listen(PORT, () => {
         }
         
         var response: TicTacToe.IPlayersResponse<string> = {
-            players:players
+            players: players
         }
         
         res.send(response);

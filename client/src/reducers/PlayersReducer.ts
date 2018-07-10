@@ -61,6 +61,13 @@ function playersReducer(state: IPlayersState = DEFAULT_PLAYERSTATE, action: IPla
             
             var addedName = <string>action.payload;
             
+            // If the added name is already there, then there is no need to 
+            // add the name
+            if (addedName == nameA || addedName == nameB) {
+                return state;
+            }
+            
+            // Fill empty names
             if (!nameA) {
                 nameA = addedName;
             } else if (!nameB) {

@@ -47,7 +47,7 @@ class WebSocketListener extends React.Component<DispatchProp> {
     });
     
     socket.on("new_player", (data: TicTacToe.IPlayer<string>) => {
-      console.log("Adding new player");
+      // console.log("Websocket: 'new_player`");
       this.props.dispatch<IPlayersAction>({ type: ADD_PLAYER, payload: data.name });
     })
 
