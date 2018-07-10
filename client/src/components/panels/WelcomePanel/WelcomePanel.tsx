@@ -53,14 +53,25 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
     
     // Determine the other player, if there is one
     
-    axios.get<TicTacToe.IPlayerNamesResponse>("/player_names").then((response) => {
-      var names = response.data.playerNames;
+    axios.get<TicTacToe.IPlayersResponse<string>>("/players").then((response) => {
+      var players = response.data.players;
       
-      if (names) {
-        if (names.length >= 2) {
+      console.log(players);
+      
+      if (players) {
+        
+        if (players.length >= 2) {
           
-          var nameA = names[0];
-          var nameB = names[1];
+          let nameA = undefined;
+          let nameB = undefined;
+          
+          if (players[0] && players[0].name) {
+            nameA = players[0].name;
+          }
+          
+          if (players[1] && players[1].name) {
+            nameB = players[1].name;
+          }
           
           // If nameA is not undefined and is different from "this player",
           // then it must be another player
@@ -72,6 +83,8 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
               payload: nameA
             });
             
+            console.log(`Other player = ${nameA}`);
+            
           // if name B is not undefined and is different from "this player",
           // then it must be another player
           } else if (nameB && nameB != thisPlayerName) {
@@ -81,6 +94,7 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
               payload: nameB
             });
             
+            console.log(`Other player = ${nameA}`);
           }
           
         }

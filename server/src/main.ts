@@ -52,23 +52,24 @@ server.listen(PORT, () => {
         res.send(PUBLIC_URL);
     });
     
-    app.get("/player_names", (req, res) => {
-        var playerAName = undefined;
-        var playerBName = undefined;
+    app.get("/players", (req, res) => {
         
-        if (playerA.name && playerA.name != "") {
-            playerAName = playerA.name;
+        var players = new Array<TicTacToe.IPlayer<string>>(2);
+        
+        if (playerA.name != "") {
+            players[0] = playerA;
         }
         
-        if (playerB.name && playerB.name != "") {
-            playerBName = playerB.name;
+        if (playerB.name != "") {
+            players[1] = playerB;
         }
         
-        var response: TicTacToe.IPlayerNamesResponse = {
-            playerNames: [playerAName, playerBName]
+        var response: TicTacToe.IPlayersResponse<string> = {
+            players:players
         }
         
         res.send(response);
+        
     })
     
     app.post("/create_game", (req, res) => {
@@ -157,14 +158,6 @@ server.listen(PORT, () => {
     
         userCount++;
         socketIO.emit(msg.UPDATED_USER_AMOUNT, userCount);
-        
-    
-        if (userCount >= 2) {
-            socket.emit(msg.HAD_ENOUGH_PLAYER);
-            console.log("Player Capacity Reached (max = 2)");
-        } else {
-            console.log(`New player, ${2 - userCount} remains`);
-        }
         
         /* Listeners */
     

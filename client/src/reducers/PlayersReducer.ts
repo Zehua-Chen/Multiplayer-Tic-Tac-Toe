@@ -27,10 +27,21 @@ function playersReducer(state: IPlayersState = DEFAULT_PLAYERSTATE, action: IPla
         {
             var newState = state;
             
-            var names = <TicTacToe.IPlayerName[]>action.payload;
-            if (names.length >= 2) {
-                var nameA = names[0];
-                var nameB = names[1];
+            var players = <TicTacToe.IPlayer<string>[]>action.payload;
+            
+            if (players.length >= 2) {
+                
+                let nameA = undefined;
+                
+                if (players[0] && players[0].name) {
+                    nameA = players[0].name;    
+                }
+                
+                let nameB = undefined;
+                
+                if (players[1] && players[1].name) {
+                    nameB = players[1].name;
+                }
                 
                 if (nameA) {
                     newState.thisPlayerName = nameA;

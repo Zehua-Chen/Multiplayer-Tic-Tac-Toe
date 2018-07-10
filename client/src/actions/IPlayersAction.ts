@@ -1,7 +1,7 @@
 import { Action } from 'redux';
 
 export interface IPlayersAction extends Action<string> {
-    payload?: string | TicTacToe.IPlayerName[];
+    payload?: string | TicTacToe.IPlayer<string>[];
 }
 
 export const ADD_OTHER_PLAYER = "ADD_OTHER_PLAYER";

@@ -34,4 +34,8 @@ declare namespace TicTacToe {
     interface IPlayerNamesResponse {
         playerNames?: IPlayerName[];
     }
+    
+    interface IPlayersResponse<T> {
+        players: IPlayer<T>[];
+    }
 }

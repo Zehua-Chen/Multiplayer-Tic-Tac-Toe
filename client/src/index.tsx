@@ -50,9 +50,8 @@ axios.get<TicTacToe.IHostAddress>("/host_address").then((response) => {
 });
 
 // Get existing players 
-axios.get<TicTacToe.IPlayerNamesResponse>("/player_names").then((response) => {
-  console.log(response.data.playerNames);
+axios.get<TicTacToe.IPlayersResponse<string>>("/players").then((response) => {
   store.dispatch<IPlayersAction>({ 
     type: ADD_PLAYERS, 
-    payload: response.data.playerNames });
+    payload: response.data.players });
 });
