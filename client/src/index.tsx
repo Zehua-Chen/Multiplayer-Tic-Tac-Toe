@@ -21,7 +21,7 @@ import {
 
 import {
   IPlayersAction,
-  ADD_PLAYERS
+  UPDATE_PLAYER_NAMES
 } from './actions/IPlayersAction';
 
 /**
@@ -51,7 +51,30 @@ axios.get<TicTacToe.IHostAddress>("/host_address").then((response) => {
 
 // Get existing players 
 axios.get<TicTacToe.IPlayersResponse<string>>("/players").then((response) => {
+  
+  var nameA;
+  var nameB;
+  
+  var players = response.data.players;
+  
+  if (players.length >= 2) {
+    
+    var playerA = players[0];
+    var playerB = players[1];
+    
+    if (playerA) {
+      nameA = playerA.name;
+    }
+    
+    if (playerB) {
+      nameB = playerB.name;
+    }
+  }
   store.dispatch<IPlayersAction>({ 
-    type: ADD_PLAYERS, 
-    payload: response.data.players });
+    type: UPDATE_PLAYER_NAMES, 
+    payload: {
+      thisPlayerName: nameA,
+      otherPlayerName: nameB
+    } 
+  });
 });

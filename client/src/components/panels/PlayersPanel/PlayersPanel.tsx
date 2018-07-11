@@ -60,6 +60,8 @@ class PlayersPanel extends React.Component<IPlayersPanelProps> {
 function mapStateToProps(state: ITotalState, ownProps: {}): IPlayersPanelProps {
   const { thisPlayerName, otherPlayerName, movingPlayerName } = state.players;
   
+  console.log(state.players);
+  
   return {
     firstPlayerName: thisPlayerName,
     secondPlayerName: otherPlayerName,

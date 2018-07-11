@@ -9,8 +9,7 @@ import {
 } from '../../../actions/IWelcomeAction';
 import {
   IPlayersAction,
-  ADD_THIS_PLAYER,
-  ADD_OTHER_PLAYER
+  UPDATE_PLAYER_NAMES
 } from '../../../actions/IPlayersAction';
 import { ITotalState } from '../../../states';
 
@@ -44,60 +43,34 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
    */
   private closeWelcomePanel(thisPlayerName: string) {
     
-    // Display "this player"
-    
-    this.props.dispatch<IPlayersAction>({ 
-      type: ADD_THIS_PLAYER, 
-      payload: thisPlayerName 
-    });
-    
-    // Determine the other player, if there is one
-    
     axios.get<TicTacToe.IPlayersResponse<string>>("/players").then((response) => {
+      
       var players = response.data.players;
+      var otherPlayerName;
       
-      console.log(players);
-      
-      if (players) {
+      if (players.length >= 2) {
+        var playerA = players[0];
+        var playerB = players[1];
         
-        if (players.length >= 2) {
-          
-          let nameA = undefined;
-          let nameB = undefined;
-          
-          if (players[0] && players[0].name) {
-            nameA = players[0].name;
+        if (playerA) {
+          if (playerA.name != thisPlayerName) {
+            otherPlayerName = playerA.name;
           }
-          
-          if (players[1] && players[1].name) {
-            nameB = players[1].name;
-          }
-          
-          // If nameA is not undefined and is different from "this player",
-          // then it must be another player
-          
-          if (nameA && nameA != thisPlayerName) {
-            
-            this.props.dispatch<IPlayersAction>({
-              type: ADD_OTHER_PLAYER,
-              payload: nameA
-            });
-            
-            console.log(`Other player = ${nameA}`);
-            
-          // if name B is not undefined and is different from "this player",
-          // then it must be another player
-          } else if (nameB && nameB != thisPlayerName) {
-            
-            this.props.dispatch<IPlayersAction>({
-              type: ADD_OTHER_PLAYER,
-              payload: nameB
-            });
-            
-            console.log(`Other player = ${nameA}`);
-          }
-          
         }
+        
+        if (playerB) {
+          if (playerB.name != thisPlayerName) {
+            otherPlayerName = playerB.name;
+          }
+        }
+        
+        this.props.dispatch<IPlayersAction>({
+          type: UPDATE_PLAYER_NAMES,
+          payload: {
+            thisPlayerName: thisPlayerName,
+            otherPlayerName: otherPlayerName
+          }
+        });
       }
       
     });

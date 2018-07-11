@@ -3,56 +3,46 @@ import { Reducer } from 'redux';
 import { IPlayersState, DEFAULT_PLAYERSTATE } from '../states';
 import {
     IPlayersAction,
-    ADD_OTHER_PLAYER,
-    ADD_THIS_PLAYER,
+    UPDATE_OTHER_PLAYER_NAME,
+    UPDATE_THIS_PLAYER_NAME,
     UPDATE_MOVING_PLAYER_NAME,
-    ADD_PLAYERS,
+    UPDATE_PLAYER_NAMES,
     ADD_PLAYER,
+    IPlayerNames,
 } from '../actions/IPlayersAction';
 
 function playersReducer(state: IPlayersState = DEFAULT_PLAYERSTATE, action: IPlayersAction): IPlayersState {
     switch(action.type) {
-        case ADD_OTHER_PLAYER:
+        case UPDATE_OTHER_PLAYER_NAME:
         {   
             const { otherPlayerName, ...others } = state;
             return { otherPlayerName: <string>action.payload, ...others };
         }
-        case ADD_THIS_PLAYER:
+        case UPDATE_THIS_PLAYER_NAME:
         {
             const { thisPlayerName, ...others } = state; 
             return { thisPlayerName: <string>action.payload, ...others };
             
         }
-        case ADD_PLAYERS:
-        {
-            var newState = state;
+        case UPDATE_PLAYER_NAMES:
+        {   
+            let { otherPlayerName, thisPlayerName, ...others } = state;
             
-            var players = <TicTacToe.IPlayer<string>[]>action.payload;
+            let playerNames = <IPlayerNames>action.payload;
             
-            if (players.length >= 2) {
-                
-                let nameA = undefined;
-                
-                if (players[0] && players[0].name) {
-                    nameA = players[0].name;    
-                }
-                
-                let nameB = undefined;
-                
-                if (players[1] && players[1].name) {
-                    nameB = players[1].name;
-                }
-                
-                if (nameA) {
-                    newState.thisPlayerName = nameA;
-                } 
-                
-                if (nameB) {
-                    newState.otherPlayerName = nameB;
-                }
+            if (playerNames.otherPlayerName) {
+                otherPlayerName = playerNames.otherPlayerName;
             }
             
-            return newState;
+            if (playerNames.thisPlayerName) {
+                thisPlayerName = playerNames.thisPlayerName;
+            }
+            
+            return {
+                thisPlayerName: thisPlayerName,
+                otherPlayerName: otherPlayerName,
+                ...others
+            };
         }
         case ADD_PLAYER: 
         {
