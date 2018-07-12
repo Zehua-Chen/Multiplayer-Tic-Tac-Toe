@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * A list that displayer PlayerListItems
+ */
 class PlayersList extends React.Component {
   
   render() {

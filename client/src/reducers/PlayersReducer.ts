@@ -7,11 +7,20 @@ import {
     UPDATE_THIS_PLAYER_NAME,
     UPDATE_MOVING_PLAYER_NAME,
     UPDATE_PLAYER_NAMES,
-    ADD_PLAYER,
+    ADD_PLAYER_NAME,
     IPlayerNames,
 } from '../actions/IPlayersAction';
 
-function playersReducer(state: IPlayersState = DEFAULT_PLAYERSTATE, action: IPlayersAction): IPlayersState {
+/**
+ * Reducer for the player.
+ * @param state current state
+ * @param action actions to perform on the current state
+ * @return new state after the action is performed
+ */
+function playersReducer(
+    state: IPlayersState = DEFAULT_PLAYERSTATE, 
+    action: IPlayersAction): IPlayersState {
+    
     switch(action.type) {
         case UPDATE_OTHER_PLAYER_NAME:
         {   
@@ -44,7 +53,7 @@ function playersReducer(state: IPlayersState = DEFAULT_PLAYERSTATE, action: IPla
                 ...others
             };
         }
-        case ADD_PLAYER: 
+        case ADD_PLAYER_NAME: 
         {
             var nameA = state.thisPlayerName;
             var nameB = state.otherPlayerName;

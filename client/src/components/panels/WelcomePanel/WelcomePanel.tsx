@@ -3,6 +3,7 @@ import axios from 'axios';
 import { DispatchProp, connect } from 'react-redux';
 
 import Password from '../../ui-components/Password';
+
 import { 
   IWelcomeAction, 
   UPDATE_WELCOME_MODE, UPDATE_ERROR_MESSAGE 
@@ -13,16 +14,30 @@ import {
 } from '../../../actions/IPlayersAction';
 import { ITotalState } from '../../../states';
 
+/**
+ * Props used with connect(mapStateToProps)(Component)
+ * to pass information from redux-managed state to the component.
+ * 
+ * THIS PROP IS NOT AVAILABLE IN OTHER COMPONENTS
+ */
 interface IWelcomePanelProps {
   mode: "create" | "join" | "hidden";
   errorMessage?: string;
 }
 
+/**
+ * The state holding the current name of the player and the current invitation code.
+ * These two variables are not available to other components at the momemnet.
+ */
 export interface IWelcomePanelState {
   playerName: string;
   invitationCode: string;
 }
 
+/**
+ * Welcome panel offers the user the option to either create a new game
+ * or joing an existing game.
+ */
 class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IWelcomePanelState> {
 
   constructor(props: IWelcomePanelProps & DispatchProp) {

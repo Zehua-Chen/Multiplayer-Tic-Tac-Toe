@@ -5,12 +5,24 @@ import PlayerList from './PlayersList';
 import PlayerListItem from './PlayersListItem';
 import { ITotalState } from '../../../states';
 
+/**
+ * Props used with connect(mapStateToProps)(Component)
+ * to pass information from redux-managed state to the component.
+ * 
+ * THIS PROP IS NOT AVAILABLE IN OTHER COMPONENTS
+ */
 interface IPlayersPanelProps {
   firstPlayerName?: string;
   secondPlayerName?: string;
   movingPlayerName?: string;
 }
 
+/**
+ * Panel that display the following information about the two players
+ * - name
+ * - faction
+ * - if the player is moving.
+ */
 class PlayersPanel extends React.Component<IPlayersPanelProps> {
   render() {
     
@@ -57,6 +69,13 @@ class PlayersPanel extends React.Component<IPlayersPanelProps> {
   }
 }
 
+/**
+ * Function that transfer information from the state managed by redux to 
+ * PlayersPanel component
+ * @param state the total state managed by redux
+ * @param ownProps props available to other components
+ * @return information that PlayersPanel need.
+ */
 function mapStateToProps(state: ITotalState, ownProps: {}): IPlayersPanelProps {
   const { thisPlayerName, otherPlayerName, movingPlayerName } = state.players;
   

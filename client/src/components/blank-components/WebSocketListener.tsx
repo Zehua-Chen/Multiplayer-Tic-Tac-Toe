@@ -9,7 +9,7 @@ import {
 } from '../../actions/IGameInfoAction';
 import {
   IPlayersAction,
-  ADD_PLAYER
+  ADD_PLAYER_NAME
 } from '../../actions/IPlayersAction';
 
 class WebSocketListener extends React.Component<DispatchProp> {
@@ -47,8 +47,7 @@ class WebSocketListener extends React.Component<DispatchProp> {
     });
     
     socket.on("new_player", (data: TicTacToe.IPlayer<string>) => {
-      // console.log("Websocket: 'new_player`");
-      this.props.dispatch<IPlayersAction>({ type: ADD_PLAYER, payload: data.name });
+      this.props.dispatch<IPlayersAction>({ type: ADD_PLAYER_NAME, payload: data.name });
     })
 
     socket.on("connect", () => {

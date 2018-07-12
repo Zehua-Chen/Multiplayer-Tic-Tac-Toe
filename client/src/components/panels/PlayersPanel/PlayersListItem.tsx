@@ -37,6 +37,11 @@ interface IPlayersListItemProps {
   moving?: boolean;
 }
 
+/**
+ * Used with PlayersList
+ * 
+ * Display information regarding a player.
+ */
 class PlayersListItem extends React.Component<IPlayersListItemProps & WithClasses<ClassKeys>> {
   
   public static defaultProps: IPlayersListItemProps = {
