@@ -29,4 +29,8 @@ declare namespace TicTacToe {
 
     type IHostAddress = string;
     type IViewersAmount = number;
+    
+    interface IPlayersResponse<T> {
+        players: IPlayer<T>[];
+    }
 }

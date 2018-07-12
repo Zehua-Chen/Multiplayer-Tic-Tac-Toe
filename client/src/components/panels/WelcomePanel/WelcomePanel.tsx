@@ -3,19 +3,41 @@ import axios from 'axios';
 import { DispatchProp, connect } from 'react-redux';
 
 import Password from '../../ui-components/Password';
-import { IWelcomeAction, UPDATE_WELCOME_MODE, UPDATE_ERROR_MESSAGE } from '../../../actions/IWelcomeAction';
+
+import { 
+  IWelcomeAction, 
+  UPDATE_WELCOME_MODE, UPDATE_ERROR_MESSAGE 
+} from '../../../actions/IWelcomeAction';
+import {
+  IPlayersAction,
+  UPDATE_PLAYER_NAMES
+} from '../../../actions/IPlayersAction';
 import { ITotalState } from '../../../states';
 
+/**
+ * Props used with connect(mapStateToProps)(Component)
+ * to pass information from redux-managed state to the component.
+ * 
+ * THIS PROP IS NOT AVAILABLE IN OTHER COMPONENTS
+ */
 interface IWelcomePanelProps {
   mode: "create" | "join" | "hidden";
   errorMessage?: string;
 }
 
+/**
+ * The state holding the current name of the player and the current invitation code.
+ * These two variables are not available to other components at the momemnet.
+ */
 export interface IWelcomePanelState {
   playerName: string;
   invitationCode: string;
 }
 
+/**
+ * Welcome panel offers the user the option to either create a new game
+ * or joing an existing game.
+ */
 class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IWelcomePanelState> {
 
   constructor(props: IWelcomePanelProps & DispatchProp) {
@@ -25,6 +47,54 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
       playerName: "",
       invitationCode: "",
     }
+  }
+  
+  /**
+   * Close Welcome Panel
+   * - Tell "Players" Panel to update its "this player";
+   * - Hide Welcome Panel.
+   * @argument thisPlayerName the name of the player who has this instance
+   * of the web app. The string is used to udpate "this player"
+   */
+  private closeWelcomePanel(thisPlayerName: string) {
+    
+    axios.get<TicTacToe.IPlayersResponse<string>>("/players").then((response) => {
+      
+      var players = response.data.players;
+      var otherPlayerName;
+      
+      if (players.length >= 2) {
+        var playerA = players[0];
+        var playerB = players[1];
+        
+        if (playerA) {
+          if (playerA.name != thisPlayerName) {
+            otherPlayerName = playerA.name;
+          }
+        }
+        
+        if (playerB) {
+          if (playerB.name != thisPlayerName) {
+            otherPlayerName = playerB.name;
+          }
+        }
+        
+        this.props.dispatch<IPlayersAction>({
+          type: UPDATE_PLAYER_NAMES,
+          payload: {
+            thisPlayerName: thisPlayerName,
+            otherPlayerName: otherPlayerName
+          }
+        });
+      }
+      
+    });
+    
+    // Hide the welcome panel
+    this.props.dispatch<IWelcomeAction>({ 
+      type: UPDATE_WELCOME_MODE, 
+      payload: "hidden" 
+    });
   }
 
   /**
@@ -65,15 +135,22 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
       name: playerName,
       invitationCode: invitationCode
     };
+    
+    // this.recordPlayerName(playerName);
 
     axios.post<TicTacToe.ICreateGameResponse>("/join_game", joinGameQuest)
       .then((response) => {
         var data = response.data;
         if (data.success) {
-          //TODO: Dispatch success message
-          this.props.dispatch<IWelcomeAction>({ type: UPDATE_WELCOME_MODE, payload: "hidden" });
+          
+          this.closeWelcomePanel(playerName);
+          
         } else if (data.message) {
-          this.props.dispatch<IWelcomeAction>({ type: UPDATE_ERROR_MESSAGE, payload: data.message });
+          
+          this.props.dispatch<IWelcomeAction>({ 
+            type: UPDATE_ERROR_MESSAGE, 
+            payload: data.message 
+          });
         }
       });
   }
@@ -90,17 +167,12 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
       invitationCode: invitationCode
     };
 
-    console.log(`Game = ${createGameRequest}`);
-
     axios.post<TicTacToe.ICreateGameResponse>("/create_game", createGameRequest)
       .then((response) => {
         var data = response.data;
         if (data.success) {
-          //TODO: Dispatch success message
-          this.props.dispatch<IWelcomeAction>({ 
-            type: UPDATE_WELCOME_MODE, 
-            payload: "hidden" 
-          });
+          
+          this.closeWelcomePanel(playerName);
           
         } else if (data.message) {
           

@@ -7,6 +7,10 @@ import {
   IGameInfoAction,
   UPDATE_CONNECTION_STATUS, UPDATE_PROGRESS, UPDATE_VIEWERS  
 } from '../../actions/IGameInfoAction';
+import {
+  IPlayersAction,
+  ADD_PLAYER_NAME
+} from '../../actions/IPlayersAction';
 
 class WebSocketListener extends React.Component<DispatchProp> {
 
@@ -41,6 +45,10 @@ class WebSocketListener extends React.Component<DispatchProp> {
       var { remaining, total } = data;
       this.props.dispatch<IGameInfoAction>({ type: UPDATE_PROGRESS, payload: (total - remaining) / total });
     });
+    
+    socket.on("new_player", (data: TicTacToe.IPlayer<string>) => {
+      this.props.dispatch<IPlayersAction>({ type: ADD_PLAYER_NAME, payload: data.name });
+    })
 
     socket.on("connect", () => {
       this.props.dispatch<IGameInfoAction>({ type: UPDATE_CONNECTION_STATUS, payload: true });
