@@ -8,6 +8,18 @@
 
 Get the address of the server in local network;
 
+##### Returns
+
+* a `string` represents the address
+
+#### `/players`
+
+Get an array of players that have been registered in the server.
+
+##### Returns
+
+* A `TicTacToe.IPlayer<T>[]` representing the players
+
 ### Post
 
 #### `/create_game` 

@@ -54,6 +54,8 @@ server.listen(PORT, () => {
     
     app.get("/players", (req, res) => {
         
+        // Only return players whose names are not the default string: ""
+        
         var players = new Array<TicTacToe.IPlayer<string>>(2);
         
         if (playerA.name != "") {
@@ -96,6 +98,7 @@ server.listen(PORT, () => {
             // Notify clients that a new player has joined the game
             socketIO.emit("new_player", playerA);
             
+        // If the board is already created.
         } else {
             response.message = "There is a board already created.";
         }
