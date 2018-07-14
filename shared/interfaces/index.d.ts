@@ -32,14 +32,19 @@ declare namespace TicTacToe {
     
     type IBoardResponse<T> = string[][] | undefined;
     
+    interface ILocation {
+        y: number;
+        x: number;
+    }
+    
     interface IMoveRequest {
         name: string;
         invitationCode: string;
-        location: { y: number, x: number };
+        location: ILocation;
     }
     
     interface INewMoveBroadcast {
         name: string;
-        location: { y: number, x: number };
+        location: ILocation;
     }
 }

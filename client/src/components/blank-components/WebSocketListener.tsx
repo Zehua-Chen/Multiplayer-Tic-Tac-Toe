@@ -11,6 +11,8 @@ import {
   IPlayersAction,
   ADD_PLAYER_NAME
 } from '../../actions/IPlayersAction';
+import { IBoardAction, UPDATE_BOARD_AT } from '../../actions/IBoardAction';
+
 
 class WebSocketListener extends React.Component<DispatchProp> {
 
@@ -49,6 +51,21 @@ class WebSocketListener extends React.Component<DispatchProp> {
     socket.on("new_player", (data: TicTacToe.IPlayer<string>) => {
       this.props.dispatch<IPlayersAction>({ type: ADD_PLAYER_NAME, payload: data.name });
     })
+    
+    socket.on("new_move", (data: TicTacToe.INewMoveBroadcast) => {
+      
+      console.log("New move has been made");
+      console.log(data);
+      
+      this.props.dispatch<IBoardAction>({
+        type: UPDATE_BOARD_AT,
+        payload: {
+          location: data.location,
+          name: data.name
+        }
+      });
+      
+    });
 
     socket.on("connect", () => {
       this.props.dispatch<IGameInfoAction>({ type: UPDATE_CONNECTION_STATUS, payload: true });

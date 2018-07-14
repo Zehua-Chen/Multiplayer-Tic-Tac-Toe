@@ -21,7 +21,7 @@ import {
 
 import {
   IPlayersAction,
-  UPDATE_PLAYER_NAMES
+  UPDATE_PLAYER_NAMES_LIST
 } from './actions/IPlayersAction';
 
 /**
@@ -30,6 +30,7 @@ import {
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import reducers from './reducers';
+import { IBoardAction, UPDATE_BOARD } from './actions/IBoardAction';
 
 
 
@@ -71,10 +72,24 @@ axios.get<TicTacToe.IPlayersResponse<string>>("/players").then((response) => {
     }
   }
   store.dispatch<IPlayersAction>({ 
-    type: UPDATE_PLAYER_NAMES, 
+    type: UPDATE_PLAYER_NAMES_LIST, 
     payload: {
       thisPlayerName: nameA,
       otherPlayerName: nameB
     } 
   });
+});
+
+axios.get<TicTacToe.IBoardResponse<string>>("/board").then((response) => {
+  
+  var board = response.data;
+  
+  if (board) {
+    store.dispatch<IBoardAction>({
+      type: UPDATE_BOARD,
+      payload: board
+    });
+    
+    console.log(board);
+  }
 });

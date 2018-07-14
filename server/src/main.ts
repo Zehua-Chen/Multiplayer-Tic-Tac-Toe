@@ -1,5 +1,5 @@
 import express from 'express';
-import io from 'socket.io';
+import socketIO from 'socket.io';
 import bodyParser from 'body-parser';
 
 import * as http from 'http';
@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 /* Configure server and web sockiet */
 
 const server = http.createServer(app);
-const socketIO = io(server, { serveClient: false });
+const io = socketIO(server, { serveClient: false });
 
 var userCount = 0;
 
@@ -106,7 +106,7 @@ server.listen(PORT, () => {
             console.log(`'/create_game': new game created, creator = ${body.name}`);
             
             // Notify clients that a new player has joined the game
-            socketIO.emit("new_player", playerA);
+            io.emit("new_player", playerA);
             
         // If the board is already created.
         } else {
@@ -139,7 +139,7 @@ server.listen(PORT, () => {
                         console.log(`'/join_game': new player joined = ${playerB.name};`);
                         
                         // TODO: Action to perform after a new player has joined the game;
-                        socketIO.emit("new_player", playerB);
+                        io.emit("new_player", playerB);
                         
                     } else {
                         // Tell the client that there is naming conflict
@@ -167,10 +167,10 @@ server.listen(PORT, () => {
         res.send(response);
     })
     
-    socketIO.on("connection", (socket) => {
+    io.on("connection", (socket) => {
     
         userCount++;
-        socketIO.emit(msg.UPDATED_USER_AMOUNT, userCount);
+        io.emit(msg.UPDATED_USER_AMOUNT, userCount);
         
         /* Listeners */
         
@@ -200,14 +200,14 @@ server.listen(PORT, () => {
                     location: moveData.location
                 };
                 
-                socket.broadcast.emit("new_move", broadCastData);
+                io.emit("new_move", broadCastData);
             }
         }); 
     
         socket.on("disconnect", () => {
             console.log("User disconnected");
             userCount--;
-            socketIO.emit(msg.UPDATED_USER_AMOUNT, userCount);
+            io.emit(msg.UPDATED_USER_AMOUNT, userCount);
         });
     
     });

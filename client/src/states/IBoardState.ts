@@ -8,7 +8,7 @@ for (var y = 0; y < defaultBoard.length; y++) {
     defaultBoard[y] = new Array<string>(3);
     
     for (var x = 0; x < defaultBoard[y].length; x++) {
-        defaultBoard[y][x] = "";
+        defaultBoard[y][x] = "?";
     }
 }
 

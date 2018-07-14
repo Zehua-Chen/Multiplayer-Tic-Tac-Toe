@@ -4,7 +4,7 @@
  * 
  * 2D array convention: board[y][x]
  */
-export class Board<T> implements TicTacToe.IBoard<T> {
+export class Board<T> {
 
     /**
      * board holding the current state of the board
@@ -14,6 +14,33 @@ export class Board<T> implements TicTacToe.IBoard<T> {
 
     public get board(): T[][] {
         return this._board;
+    }
+    
+    public get boardInNames(): string[][] {
+        
+        var newBoard = new Array<Array<string>>(this._board.length);
+        
+        for (let y = 0; y < newBoard.length; y++) {
+            newBoard[y] = new Array<string>(this._board.length);
+        }
+        
+        for (let y = 0; y < newBoard.length; y++) {
+            for (let x = 0; x < newBoard[y].length; x++) {
+                
+                var character = this._board[y][x];
+                
+                if (this.playerA && this.playerA.character == character) {
+                    newBoard[y][x] = this.playerA.name;
+                } else if (this.playerB && this.playerB.character == character) {
+                    newBoard[y][x] = this.playerB.name;
+                } else {
+                    newBoard[y][x] = "?";
+                }
+                
+            }
+        }
+        
+        return newBoard;
     }
 
 
