@@ -4,7 +4,9 @@ import { IWelcomeState, DEFAULT_WELCOMESTATE } from '../states';
 import { 
     IWelcomeAction, 
     UPDATE_ERROR_MESSAGE, 
-    UPDATE_WELCOME_MODE 
+    UPDATE_WELCOME_MODE, 
+    UPDATE_PLAYER_NAME,
+    UPDATE_INVITATION_CODE
 } from '../actions/IWelcomeAction';
 
 /**
@@ -20,13 +22,25 @@ function welcomeReducer(
         // Update error message
         case UPDATE_ERROR_MESSAGE:
         {
-            return { mode: state.mode, errorMessage: action.payload };
+            let { errorMessage, ...others } = state;
+            return { errorMessage: action.payload, ...others };
         }
         // Update the mode of the welcome panel
         case UPDATE_WELCOME_MODE:
         {
-            var mode = <"create" | "join" | "hidden">action.payload;
-            return { mode: mode, errorMessage: undefined};
+            var newMode = <"create" | "join" | "hidden">action.payload;
+            let { mode, ...others } = state;
+            return { mode: newMode, ...others};
+        }
+        case UPDATE_PLAYER_NAME:
+        {
+            let { playerName, ...others } = state;
+            return { playerName: action.payload, ...others };
+        }
+        case UPDATE_INVITATION_CODE:
+        {
+            let { invitationCode, ...others } = state;
+            return { invitationCode: action.payload, ...others };
         }
         // IMPORTANT! return the state if no action performed
         default:

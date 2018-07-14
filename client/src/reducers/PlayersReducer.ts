@@ -6,7 +6,7 @@ import {
     UPDATE_OTHER_PLAYER_NAME,
     UPDATE_THIS_PLAYER_NAME,
     UPDATE_MOVING_PLAYER_NAME,
-    UPDATE_PLAYER_NAMES,
+    UPDATE_PLAYER_NAMES_LIST,
     ADD_PLAYER_NAME,
     IPlayerNames,
 } from '../actions/IPlayersAction';
@@ -33,7 +33,7 @@ function playersReducer(
             return { thisPlayerName: <string>action.payload, ...others };
             
         }
-        case UPDATE_PLAYER_NAMES:
+        case UPDATE_PLAYER_NAMES_LIST:
         {   
             let { otherPlayerName, thisPlayerName, ...others } = state;
             

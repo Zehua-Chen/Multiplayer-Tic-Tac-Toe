@@ -42,7 +42,7 @@ export const UPDATE_THIS_PLAYER_NAME = "UPDATE_THIS_PLAYER_NAME";
 /**
  * Update the players' names (using a dictionary)
  */
-export const UPDATE_PLAYER_NAMES = "UPDATE_PLAYER_NAMES";
+export const UPDATE_PLAYER_NAMES_LIST = "UPDATE_PLAYER_NAMES_LIST";
 /**
  * Update the name of the player that is moving.
  */

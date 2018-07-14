@@ -17,3 +17,6 @@ export interface IWelcomeAction extends Action<string> {
 
 export const UPDATE_WELCOME_MODE = "UPDATE_WELCOME_MODE";
 export const UPDATE_ERROR_MESSAGE = "UPDATE_ERROR_MESSAGE";
+
+export const UPDATE_PLAYER_NAME = "UPDATE_PLAYER_NAME";
+export const UPDATE_INVITATION_CODE = "UPDATE_INVITATION_CODE";
