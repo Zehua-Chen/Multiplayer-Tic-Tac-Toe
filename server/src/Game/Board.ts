@@ -4,48 +4,21 @@
  * 
  * 2D array convention: board[y][x]
  */
-export class Board<T> {
+export class Board {
 
     /**
      * board holding the current state of the board
      */
-    protected _board: T[][];
+    protected _board: string[][];
 
 
-    public get board(): T[][] {
+    public get board(): string[][] {
         return this._board;
     }
-    
-    public get boardInNames(): string[][] {
-        
-        var newBoard = new Array<Array<string>>(this._board.length);
-        
-        for (let y = 0; y < newBoard.length; y++) {
-            newBoard[y] = new Array<string>(this._board.length);
-        }
-        
-        for (let y = 0; y < newBoard.length; y++) {
-            for (let x = 0; x < newBoard[y].length; x++) {
-                
-                var character = this._board[y][x];
-                
-                if (this.playerA && this.playerA.character == character) {
-                    newBoard[y][x] = this.playerA.name;
-                } else if (this.playerB && this.playerB.character == character) {
-                    newBoard[y][x] = this.playerB.name;
-                } else {
-                    newBoard[y][x] = "?";
-                }
-                
-            }
-        }
-        
-        return newBoard;
-    }
 
 
-    private playerA?: TicTacToe.IPlayer<T>;
-    private playerB?: TicTacToe.IPlayer<T>;
+    private playerA?: TicTacToe.IPlayer;
+    private playerB?: TicTacToe.IPlayer;
 
     /**
      * Create a new gameboard
@@ -54,18 +27,18 @@ export class Board<T> {
      */
     constructor(
         protected dimension: number = 3,
-        private defaultValue?: T
+        private defaultValue?: string
     ) {
 
         if (this.dimension == 0) {
             throw new Error("Dimension needs to be bigger than 0!");
         }
 
-        this._board = new Array<T[]>(this.dimension);
+        this._board = new Array<Array<string>>(this.dimension);
         if (this._board) {
 
             for (var y = 0; y < this._board.length; y++) {
-                this._board[y] = new Array<T>(this.dimension);
+                this._board[y] = new Array<string>(this.dimension);
 
                 for (var x = 0; x < this._board[y].length; x++) {
                     if (this.defaultValue) {
@@ -102,9 +75,9 @@ export class Board<T> {
      * @param x x position
      * @param value player to set
      */
-    setAt(y: number, x: number, value: TicTacToe.IPlayer<T>): void {
+    setAt(y: number, x: number, value: TicTacToe.IPlayer): void {
 
-        this._board[y][x] = value.character;
+        this._board[y][x] = value.name;
 
         if (!this.playerA) {
             this.playerA = value;
@@ -115,11 +88,11 @@ export class Board<T> {
     }
 
     /**
-     * Given a character, find the matching player
-     * @param character the character
+     * Given a name, find the matching player objects
+     * @param name the name of the player
      */
-    protected findMatchingPlayer(character: T): TicTacToe.IPlayer<T> | null {
-        if (this.playerA && character == this.playerA.character) {
+    protected findMatchingPlayer(name: string): TicTacToe.IPlayer | null {
+        if (this.playerA && name == this.playerA.name) {
             return this.playerA;
         } else if (this.playerB) {
             return this.playerB;
@@ -131,12 +104,12 @@ export class Board<T> {
     /**
      * Find winner in columns (x)
      */
-    protected findVerticalWinner(): TicTacToe.IPlayer<T> | null {
+    protected findVerticalWinner(): TicTacToe.IPlayer | null {
 
         for (var x = 0; x < this.dimension; x++) {
 
-            var playerAChar: T | undefined;
-            var playerBChar: T | undefined;
+            var playerAChar: string | undefined;
+            var playerBChar: string | undefined;
 
             var playerACount = 0;
             var playerBCount = 0;
@@ -177,12 +150,12 @@ export class Board<T> {
     /**
      * Find winner in rows (y)
      */
-    protected findHorizontalWinner(): TicTacToe.IPlayer<T> | null {
+    protected findHorizontalWinner(): TicTacToe.IPlayer | null {
 
         for (var y = 0; y < this.dimension; y++) {
 
-            var playerAChar: T | undefined;
-            var playerBChar: T | undefined;
+            var playerAChar: string | undefined;
+            var playerBChar: string | undefined;
 
             var playerACount = 0;
             var playerBCount = 0;
@@ -225,9 +198,9 @@ export class Board<T> {
     /**
      * Find winner in diagnols
      */
-    protected findDiagnolWinner(): TicTacToe.IPlayer<T> | null {
+    protected findDiagnolWinner(): TicTacToe.IPlayer | null {
 
-        var winner: T | null;
+        var winner: string | null;
 
         // Top left to bottom right
         winner = this.findDiagnolWinnerTopLeftToBottomRight();
@@ -247,10 +220,10 @@ export class Board<T> {
         return null;
     }
 
-    private findDiagnolWinnerTopLeftToBottomRight(): T | null {
+    private findDiagnolWinnerTopLeftToBottomRight(): string | null {
 
-        var playerAChar: T | undefined;
-        var playerBChar: T | undefined;
+        var playerAChar: string | undefined;
+        var playerBChar: string | undefined;
 
         var playerACount = 0;
         var playerBCount = 0;
@@ -294,10 +267,10 @@ export class Board<T> {
         return null;
     }
 
-    private findDiagnolWinnerTopRightToBottomLeft(): T | null {
+    private findDiagnolWinnerTopRightToBottomLeft(): string | null {
 
-        var playerAChar: T | undefined;
-        var playerBChar: T | undefined;
+        var playerAChar: string | undefined;
+        var playerBChar: string | undefined;
 
         var playerACount = 0;
         var playerBCount = 0;
@@ -345,7 +318,7 @@ export class Board<T> {
      * Find a winner
      * @returns the winner if there is a winner, null otherwise
      */
-    findWinner(): TicTacToe.IPlayer<T> | null {
+    findWinner(): TicTacToe.IPlayer | null {
 
         var player = this.findHorizontalWinner();
         if (player) {

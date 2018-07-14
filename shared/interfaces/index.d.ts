@@ -1,7 +1,6 @@
 declare namespace TicTacToe {
     
-    export interface IPlayer<T> {
-        character: T;
+    export interface IPlayer {
         name: string;
     }
 
@@ -27,7 +26,7 @@ declare namespace TicTacToe {
     type IViewersAmount = number;
     
     interface IPlayersResponse<T> {
-        players: IPlayer<T>[];
+        players: IPlayer[];
     }
     
     type IBoardResponse<T> = string[][] | undefined;

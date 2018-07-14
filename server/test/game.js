@@ -6,8 +6,8 @@
 var assert = require('assert');
 var game = require('../bin/Game');
 
-var player = { character: "X" };
-var otherPlayer = { character: "Y" };
+var player = { name: "X" };
+var otherPlayer = { name: "Y" };
 
 
 describe("Setting and Set Position", function () {
@@ -24,10 +24,10 @@ describe("Setting and Set Position", function () {
 
     describe("#setAt()", function () {
 
-        it("setAt(0,0, { character: 'X' })", function () {
+        it("setAt(0,0, { name: 'X' })", function () {
 
             var temp = new game.Board(3);
-            temp.setAt(0, 0, { character: "X" });
+            temp.setAt(0, 0, { name: "X" });
 
             assert.equal(temp.board[0][0], "X")
         });

@@ -31,9 +31,9 @@ const io = socketIO(server, { serveClient: false });
 var userCount = 0;
 
 /* Server */
-var playerA: TicTacToe.IPlayer<string> = { name: "", character: "X" };
-var playerB: TicTacToe.IPlayer<string> = {  name: "", character: "Y"  };
-var board: Board<string>;
+var playerA: TicTacToe.IPlayer = { name: "" };
+var playerB: TicTacToe.IPlayer = {  name: "" };
+var board: Board;
 
 var gInvitationCode: string;
 
@@ -56,7 +56,7 @@ server.listen(PORT, () => {
         
         // Only return players whose names are not the default string: ""
         
-        var players = new Array<TicTacToe.IPlayer<string>>(2);
+        var players = new Array<TicTacToe.IPlayer>(2);
         
         if (playerA.name != "") {
             players[0] = playerA;
@@ -78,7 +78,7 @@ server.listen(PORT, () => {
         
         var boardContent = undefined;
         if (board) {
-            boardContent = board.boardInNames;
+            boardContent = board.board;
         }
         
         res.send(boardContent);
@@ -94,7 +94,7 @@ server.listen(PORT, () => {
             playerA.name = body.name;
             gInvitationCode = body.invitationCode;
             
-            board = new Board<string>(3, "?");
+            board = new Board(3, "?");
             
             if (!board) {
                 response.message = "Unable to create board.";
@@ -193,7 +193,7 @@ server.listen(PORT, () => {
                 }
                 
                 console.log(`websocket: move: ${moveData.name} at (y: ${y}, x: ${x};`);
-                console.log(board.boardInNames);
+                console.log(board.board);
                 
                 var broadCastData: TicTacToe.INewMoveBroadcast = {
                     name: name,
