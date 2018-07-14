@@ -3,7 +3,7 @@ import injectSheet, { WithClasses } from 'react-jss';
 
 type Player = "me" | "enemy";
 
-interface ISquareProps {
+interface ISquareProps extends React.HTMLProps<HTMLButtonElement> {
   player?: Player;
 }
 
@@ -49,17 +49,9 @@ type ClassKeys = "unsetSquare" | "setSquare";
 
 class Square extends React.Component<ISquareProps & WithClasses<ClassKeys>> {
   
-  mouseDown = () => {
-    console.log("Mouse down");
-  }
-  
-  mouseUp = () => {
-    console.log("Mouse up!");
-  }
-  
   render() {
     
-    const { player, classes } = this.props;
+    const { player, classes, ...others } = this.props;
     var className = classes.unsetSquare;
     
     if (player) {
@@ -71,7 +63,9 @@ class Square extends React.Component<ISquareProps & WithClasses<ClassKeys>> {
     } 
     
     return (
-      <button className={className} onMouseDown={this.mouseDown}></button>
+      <button 
+        className={className} 
+        {...others}></button>
     );
     
   }
