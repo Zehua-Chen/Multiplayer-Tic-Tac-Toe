@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import Square from './Square';
 import { ITotalState } from '../../../states';
 
+import socket from '../../../network';
+
 const style = {
   board: {
     margin: "auto",
@@ -15,19 +17,34 @@ type ClassKeys = "board";
 
 interface IBoardProps {
   board: string[][];
+  invitationCode: string;
+  thisPlayerName?: string;
+  otherPlayerName?: string;
 }
 
 class Board extends React.Component<WithClasses<ClassKeys> & IBoardProps> {
   
   clicked(y: number, x: number) {
-    console.log(`Square clicked at (${y}, ${x})`);
+    
+    if (this.props.thisPlayerName) {
+      var moveRequest: TicTacToe.IMoveRequest = {
+        name: this.props.thisPlayerName,
+        invitationCode: this.props.invitationCode,
+        location: { y: y, x: x }
+      };
+      
+      socket.emit("move", moveRequest);
+    }
   }
   
   public render() {
     
-    const { classes, board } = this.props;
+    const { 
+      classes, board, thisPlayerName, otherPlayerName
+    } = this.props;
     
-    console.log(board);
+    console.log(`This player = ${thisPlayerName}`);
+    console.log(`Other player = ${otherPlayerName}`);
     
     // Generate rows / board contents
     var boardContent = board.map((row, y, array) => {
@@ -40,8 +57,12 @@ class Board extends React.Component<WithClasses<ClassKeys> & IBoardProps> {
         
         // Find the right configuration of Square to be wrapped
         // inside "td" element
-        if (cell == "") {
-          square = <Square onClick={onClickHandler}/>
+        if (cell == "?") {
+          square = <Square onClick={onClickHandler}/>;
+        } else if (thisPlayerName && cell == thisPlayerName) {
+          square = <Square player="this"/>;
+        } else if (otherPlayerName && cell == otherPlayerName) {
+          square = <Square player="other"/>;
         }
         
         return (
@@ -69,7 +90,12 @@ class Board extends React.Component<WithClasses<ClassKeys> & IBoardProps> {
 }
 
 function mapStateToProps(state: ITotalState, ownProps: {}): IBoardProps {
-  return { board: state.board.board }
+  return { 
+    board: state.board.board,
+    thisPlayerName: state.players.thisPlayerName,
+    otherPlayerName: state.players.otherPlayerName,
+    invitationCode: state.welcome.invitationCode
+  }
 }
 
 var injected = injectSheet(style)<{}, ClassKeys>(Board);

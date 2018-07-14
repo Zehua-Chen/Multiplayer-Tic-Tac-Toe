@@ -1,7 +1,7 @@
 import * as React from 'react';
 import injectSheet, { WithClasses } from 'react-jss';
 
-type Player = "me" | "enemy";
+type Player = "this" | "other";
 
 interface ISquareProps extends React.HTMLProps<HTMLButtonElement> {
   player?: Player;
@@ -55,9 +55,9 @@ class Square extends React.Component<ISquareProps & WithClasses<ClassKeys>> {
     var className = classes.unsetSquare;
     
     if (player) {
-      if (player == "me") {
+      if (player == "this") {
         className = `${classes.setSquare} bg-primary`;
-      } else if (player == "enemy") {
+      } else if (player == "other") {
         className = `${classes.setSquare} bg-danger`;
       } 
     } 

@@ -35,7 +35,7 @@ var playerA: TicTacToe.IPlayer<string> = { name: "", character: "X" };
 var playerB: TicTacToe.IPlayer<string> = {  name: "", character: "Y"  };
 var board: Board<string>;
 
-var invitationCode: string;
+var gInvitationCode: string;
 
 server.listen(PORT, () => {
     console.log(` Game hosted at http://localhost:${PORT}/`);
@@ -74,6 +74,16 @@ server.listen(PORT, () => {
         
     })
     
+    app.get("/board", (req, res) => {
+        
+        var boardContent = undefined;
+        if (board) {
+            boardContent = board.boardInNames;
+        }
+        
+        res.send(boardContent);
+    });
+    
     app.post("/create_game", (req, res) => {
         
         var response: TicTacToe.ICreateGameResponse = { success: false };
@@ -82,7 +92,7 @@ server.listen(PORT, () => {
             var body = <TicTacToe.ICreateGameRequest>req.body;
         
             playerA.name = body.name;
-            invitationCode = body.invitationCode;
+            gInvitationCode = body.invitationCode;
             
             board = new Board<string>(3, "?");
             
@@ -120,7 +130,7 @@ server.listen(PORT, () => {
             if (board) {
             
                 // Determine if the invitation code is correct
-                if (body.invitationCode == invitationCode) {
+                if (body.invitationCode == gInvitationCode) {
                     
                     // Determine if there is a naming conflict
                     if (body.name != playerA.name) {
@@ -163,6 +173,36 @@ server.listen(PORT, () => {
         socketIO.emit(msg.UPDATED_USER_AMOUNT, userCount);
         
         /* Listeners */
+        
+        socket.on("move", (data) => {
+            var moveData = <TicTacToe.IMoveRequest>data;
+            
+            var y = moveData.location.y;
+            var x = moveData.location.x;
+            
+            const { 
+                name, invitationCode
+            } = moveData;
+            
+            if (invitationCode == gInvitationCode) {
+                
+                if (name == playerA.name) {
+                    board.setAt(y, x, playerA);
+                } else if (name == playerB.name) {
+                    board.setAt(y, x, playerB);
+                }
+                
+                console.log(`websocket: move: ${moveData.name} at (y: ${y}, x: ${x};`);
+                console.log(board.boardInNames);
+                
+                var broadCastData: TicTacToe.INewMoveBroadcast = {
+                    name: name,
+                    location: moveData.location
+                };
+                
+                socket.broadcast.emit("new_move", broadCastData);
+            }
+        }); 
     
         socket.on("disconnect", () => {
             console.log("User disconnected");

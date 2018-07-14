@@ -1,9 +1,5 @@
 declare namespace TicTacToe {
     
-    export interface IBoard<T> {
-        readonly board: T[][];
-    }
-    
     export interface IPlayer<T> {
         character: T;
         name: string;
@@ -32,5 +28,18 @@ declare namespace TicTacToe {
     
     interface IPlayersResponse<T> {
         players: IPlayer<T>[];
+    }
+    
+    type IBoardResponse<T> = string[][] | undefined;
+    
+    interface IMoveRequest {
+        name: string;
+        invitationCode: string;
+        location: { y: number, x: number };
+    }
+    
+    interface INewMoveBroadcast {
+        name: string;
+        location: { y: number, x: number };
     }
 }
