@@ -48,7 +48,7 @@ class WebSocketListener extends React.Component<DispatchProp> {
       this.props.dispatch<IGameInfoAction>({ type: UPDATE_PROGRESS, payload: (total - remaining) / total });
     });
     
-    socket.on("new_player", (data: TicTacToe.IPlayer<string>) => {
+    socket.on("new_player", (data: TicTacToe.IPlayer) => {
       this.props.dispatch<IPlayersAction>({ type: ADD_PLAYER_NAME, payload: data.name });
     })
     
