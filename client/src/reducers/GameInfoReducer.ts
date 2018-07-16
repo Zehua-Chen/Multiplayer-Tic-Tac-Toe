@@ -7,6 +7,7 @@ import {
     UPDATE_PROGRESS, 
     UPDATE_VIEWERS,
     UPDATE_CONNECTION_STATUS,
+    UPDATE_WINNER,
 } from '../actions/IGameInfoAction';
 
 /**
@@ -41,6 +42,20 @@ function gameInfoReducer(
         {
             const { connected, ...others  } = state;
             return { connected: <boolean>action.payload, ...others };
+        }
+        case UPDATE_WINNER:
+        {
+            
+            let winnerData = <string | undefined>action.payload;
+            
+            if (!winnerData) {
+                return state;
+            }
+            
+            const { winner, ...others } = state;
+            
+            return { winner: <string>action.payload, ...others };
+            
         }
         // IMPORTANT! return the state if no action performed
         default:

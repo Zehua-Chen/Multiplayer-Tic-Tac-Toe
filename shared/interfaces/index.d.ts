@@ -37,6 +37,9 @@ declare namespace TicTacToe {
         location: ILocation;
     }
     
+    type IProgressResponse = IUpdateProgressBroadcast;
+    type IWinnerResponse = IFoundWinnerBroadcast | undefined;
+    
     interface INewMoveBroadcast {
         name: string;
         location: ILocation;
@@ -48,4 +51,6 @@ declare namespace TicTacToe {
         readonly remaining: number;
         readonly total: number;
     }
+    
+    type IFoundWinnerBroadcast = IPlayer;
 }

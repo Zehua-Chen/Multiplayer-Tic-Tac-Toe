@@ -16,7 +16,9 @@ import axios from 'axios';
 
 import { 
   IGameInfoAction, 
-  UPDATE_HOSTURL, 
+  UPDATE_HOSTURL,
+  UPDATE_WINNER,
+  UPDATE_PROGRESS, 
 } from './actions/IGameInfoAction';
 
 import {
@@ -92,4 +94,21 @@ axios.get<TicTacToe.IBoardResponse<string>>("/board").then((response) => {
     
     console.log(board);
   }
+});
+
+axios.get<TicTacToe.IWinnerResponse>("/winner").then((response) => {
+  var data = response.data;
+  if (data) {
+    store.dispatch<IGameInfoAction>({
+      type: UPDATE_WINNER,
+      payload: data.name
+    });
+  }
+});
+axios.get<TicTacToe.IProgressResponse>("/progress").then((response) => {
+  var data = response.data;
+  store.dispatch<IGameInfoAction>({
+    type: UPDATE_PROGRESS,
+    payload: (1 - data.remaining / data.total) * 100
+  });
 });

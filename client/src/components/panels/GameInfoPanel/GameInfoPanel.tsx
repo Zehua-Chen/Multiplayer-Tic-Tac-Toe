@@ -18,6 +18,8 @@ export interface IGameInfoProps {
    * Progress of the game, out of 100.
    */
   progress: number;
+  
+  winner?: string;
 }
 
 /**
@@ -28,7 +30,17 @@ class GameInfoPanel extends React.Component<IGameInfoProps> {
 
   render() {
 
-    const { hostUrl, viewers, progress } = this.props;
+    const { hostUrl, viewers, progress, winner } = this.props;
+    
+    var winnerItem = null;
+    
+    if (winner) {
+      winnerItem = (
+        <li className="list-group-item">
+          { winner } wins!
+        </li>
+      );
+    }
 
     return (
       <div className="card">
@@ -51,6 +63,8 @@ class GameInfoPanel extends React.Component<IGameInfoProps> {
             <label>Progress</label>
             <ProgressBar value={progress} />
           </li>
+          
+          {winnerItem}
         </ul>
       </div>
     );
@@ -58,8 +72,14 @@ class GameInfoPanel extends React.Component<IGameInfoProps> {
 }
 
 function mapStateToProps(state: ITotalState, ownProps: {}): IGameInfoProps {
-  const { progress, hostUrl, viewers } = state.gameInfo;
-  return { progress: progress, hostUrl: hostUrl, viewers: viewers }
+  const { progress, hostUrl, viewers, winner } = state.gameInfo;
+  
+  return { 
+    progress: progress, 
+    hostUrl: hostUrl, 
+    viewers: viewers,
+    winner: winner
+  };
 }
 
 export default connect(mapStateToProps)(GameInfoPanel);

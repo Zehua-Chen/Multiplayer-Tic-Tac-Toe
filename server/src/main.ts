@@ -33,7 +33,7 @@ var gUserCount = 0;
 var gEmptyCells = 9;
 var gTotalCells = 9;
 
-var gFoundWinner = false;
+var gWinner: TicTacToe.IPlayer | undefined;
 
 var gPlayerA: TicTacToe.IPlayer = { name: "" };
 var gPlayerB: TicTacToe.IPlayer = {  name: "" };
@@ -81,6 +81,25 @@ server.listen(PORT, () => {
         res.send(response);
         
     })
+    
+    app.get("/progress", (req, res) => {
+        var response: TicTacToe.IProgressResponse = {
+            remaining: gEmptyCells,
+            total: gTotalCells,
+        };
+        res.send(response);
+    });
+    
+    app.get("/winner", (req, res) => {
+        
+        var response: TicTacToe.IWinnerResponse = undefined;
+        
+        if (gMovingPlayer && gMovingPlayer.name != "") {
+            response = gWinner;    
+        }
+        
+        res.send(response);
+    });
     
     app.get("/board", (req, res) => {
         
@@ -203,7 +222,7 @@ server.listen(PORT, () => {
         
         socket.on("move", (data) => {
             
-            if (gFoundWinner) {
+            if (gWinner) {
                 return;
             }
             
@@ -239,11 +258,17 @@ server.listen(PORT, () => {
                         location: moveData.location
                     };
                     
+                    // Broadcast move message
+                    
                     io.emit("new_move", broadCastData);
+                    
+                    // Update moving
                     
                     if (gMovingPlayer && gMovingPlayer.name != "") {
                         io.emit("update_moving", gMovingPlayer);
                     }
+                    
+                    // Update progress
                     
                     gEmptyCells--;
                     
@@ -253,6 +278,13 @@ server.listen(PORT, () => {
                     };
                     
                     io.emit("update_progress", updateProgressData);
+                    
+                    // Update winner, if there is one.
+                    var winner = gBoard.findWinner();
+                    if (winner) {
+                        gWinner = winner;
+                        io.emit("found_winner", <TicTacToe.IFoundWinnerBroadcast>winner);
+                    }
                 }
             }
         }); 

@@ -43,8 +43,8 @@ class Board extends React.Component<WithClasses<ClassKeys> & IBoardProps> {
       classes, board, thisPlayerName, otherPlayerName
     } = this.props;
     
-    console.log(`This player = ${thisPlayerName}`);
-    console.log(`Other player = ${otherPlayerName}`);
+    // console.log(`This player = ${thisPlayerName}`);
+    // console.log(`Other player = ${otherPlayerName}`);
     
     // Generate rows / board contents
     var boardContent = board.map((row, y, array) => {

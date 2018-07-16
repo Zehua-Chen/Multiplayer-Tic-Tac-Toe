@@ -15,7 +15,7 @@ export interface IGameInfoAction extends Action<string> {
      * - UPDATE_CONNECTION_STATUS: payload should be whether the client is still 
      * connected to the server.
      */
-    payload: string | number | boolean;
+    payload: string | number | boolean | undefined;
 }
 
 /**
@@ -35,3 +35,5 @@ export const UPDATE_HOSTURL = "UPDATE_HOSTURL";
  * Update connection status
  */
 export const UPDATE_CONNECTION_STATUS = "UPDATE_CONNECTION_STATUS";
+
+export const UPDATE_WINNER = "UPDATE_WINNER";

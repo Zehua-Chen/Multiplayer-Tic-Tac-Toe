@@ -5,7 +5,7 @@ import socket from '../../network';
 
 import { 
   IGameInfoAction,
-  UPDATE_CONNECTION_STATUS, UPDATE_PROGRESS, UPDATE_VIEWERS  
+  UPDATE_CONNECTION_STATUS, UPDATE_PROGRESS, UPDATE_VIEWERS, UPDATE_WINNER  
 } from '../../actions/IGameInfoAction';
 import {
   IPlayersAction,
@@ -74,6 +74,13 @@ class WebSocketListener extends React.Component<DispatchProp> {
         }
       });
       
+    });
+    
+    socket.on("found_winner", (winner: TicTacToe.IFoundWinnerBroadcast) => {
+      this.props.dispatch<IGameInfoAction>({
+        type: UPDATE_WINNER,
+        payload: winner.name
+      });
     });
     
     socket.on("connect", () => {

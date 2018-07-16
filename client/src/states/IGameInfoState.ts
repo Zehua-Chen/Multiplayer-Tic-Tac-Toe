@@ -18,6 +18,8 @@ export interface IGameInfoState {
      * If the client is still connected
      */
     connected: boolean;
+    
+    winner?: string;
 }
 
 /**
