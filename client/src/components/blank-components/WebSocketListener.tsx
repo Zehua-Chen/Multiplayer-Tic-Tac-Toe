@@ -66,6 +66,12 @@ class WebSocketListener extends React.Component<DispatchProp> {
       });
       
     });
+    
+    socket.on("update_moving", (data: TicTacToe.IUpdateMovingBroadcast) => {
+      if (data) {
+        
+      }
+    });
 
     socket.on("connect", () => {
       this.props.dispatch<IGameInfoAction>({ type: UPDATE_CONNECTION_STATUS, payload: true });

@@ -46,4 +46,6 @@ declare namespace TicTacToe {
         name: string;
         location: ILocation;
     }
+    
+    type IUpdateMovingBroadcast = IPlayer | undefined;
 }
