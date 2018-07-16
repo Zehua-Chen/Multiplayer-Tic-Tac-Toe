@@ -36,7 +36,7 @@ const style = {
     height: "50px",
     width: "50px",
     border: "transparent",
-    borderRadius: "25px",
+    borderRadius: "5px",
     color: "white",
     
     "&:focus": {

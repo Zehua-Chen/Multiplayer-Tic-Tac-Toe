@@ -9,7 +9,8 @@ import {
 } from '../../actions/IGameInfoAction';
 import {
   IPlayersAction,
-  ADD_PLAYER_NAME
+  ADD_PLAYER_NAME,
+  UPDATE_MOVING_PLAYER_NAME
 } from '../../actions/IPlayersAction';
 import { IBoardAction, UPDATE_BOARD_AT } from '../../actions/IBoardAction';
 
@@ -69,7 +70,10 @@ class WebSocketListener extends React.Component<DispatchProp> {
     
     socket.on("update_moving", (data: TicTacToe.IUpdateMovingBroadcast) => {
       if (data) {
-        
+        this.props.dispatch<IPlayersAction>({
+          type: UPDATE_MOVING_PLAYER_NAME,
+          payload: data.name
+        });
       }
     });
 
