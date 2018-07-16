@@ -30,7 +30,9 @@ const io = socketIO(server, { serveClient: false });
 
 var userCount = 0;
 
-/* Server */
+var emptyCells = 9;
+var totalCells = 9;
+
 var playerA: TicTacToe.IPlayer = { name: "" };
 var playerB: TicTacToe.IPlayer = {  name: "" };
 var board: Board;
@@ -38,6 +40,8 @@ var board: Board;
 var movingPlayer: TicTacToe.IPlayer | undefined;
 
 var gInvitationCode: string;
+
+/* Server */
 
 server.listen(PORT, () => {
     console.log(` Game hosted at http://localhost:${PORT}/`);
@@ -191,7 +195,7 @@ server.listen(PORT, () => {
     io.on("connection", (socket) => {
     
         userCount++;
-        io.emit(msg.UPDATED_USER_AMOUNT, userCount);
+        io.emit("update_user#", userCount);
         
         /* Listeners */
         
@@ -233,9 +237,16 @@ server.listen(PORT, () => {
                     
                     if (movingPlayer && movingPlayer.name != "") {
                         io.emit("update_moving", movingPlayer);
-                    } else {
-                        io.emit("update_moving", undefined);
                     }
+                    
+                    emptyCells--;
+                    
+                    var updateProgressData: TicTacToe.IUpdateProgressBroadcast = {
+                        remaining: emptyCells,
+                        total: totalCells
+                    };
+                    
+                    io.emit("update_progress", updateProgressData);
                 }
             }
         }); 

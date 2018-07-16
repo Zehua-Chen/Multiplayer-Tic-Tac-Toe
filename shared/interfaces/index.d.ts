@@ -3,11 +3,6 @@ declare namespace TicTacToe {
     export interface IPlayer {
         name: string;
     }
-
-    export interface IProgress {
-        readonly remaining: number;
-        readonly total: number;
-    }
     
     export interface ICreateGameRequest {
         name: string;
@@ -47,5 +42,10 @@ declare namespace TicTacToe {
         location: ILocation;
     }
     
-    type IUpdateMovingBroadcast = IPlayer | undefined;
+    type IUpdateMovingBroadcast = IPlayer;
+    
+    export interface IUpdateProgressBroadcast {
+        readonly remaining: number;
+        readonly total: number;
+    }
 }

@@ -40,13 +40,21 @@ class WebSocketListener extends React.Component<DispatchProp> {
   }
   
   setupWebSocket() {
-    socket.on("updated-user__amount", (data: TicTacToe.IViewersAmount) => {
+    socket.on("update_user#", (data: TicTacToe.IViewersAmount) => {
       this.props.dispatch<IGameInfoAction>({ type: UPDATE_VIEWERS, payload: data });
     });
 
-    socket.on("updated_progress", (data: TicTacToe.IProgress) => {
+    socket.on("update_progress", (data: TicTacToe.IUpdateProgressBroadcast) => {
       var { remaining, total } = data;
-      this.props.dispatch<IGameInfoAction>({ type: UPDATE_PROGRESS, payload: (total - remaining) / total });
+      var progress = (1 - remaining / total) * 100;
+      this.props.dispatch<IGameInfoAction>({ type: UPDATE_PROGRESS, payload: progress});
+    });
+    
+    socket.on("update_moving", (data: TicTacToe.IUpdateMovingBroadcast) => {
+      this.props.dispatch<IPlayersAction>({
+        type: UPDATE_MOVING_PLAYER_NAME,
+        payload: data.name
+      });
     });
     
     socket.on("new_player", (data: TicTacToe.IPlayer) => {
@@ -68,15 +76,6 @@ class WebSocketListener extends React.Component<DispatchProp> {
       
     });
     
-    socket.on("update_moving", (data: TicTacToe.IUpdateMovingBroadcast) => {
-      if (data) {
-        this.props.dispatch<IPlayersAction>({
-          type: UPDATE_MOVING_PLAYER_NAME,
-          payload: data.name
-        });
-      }
-    });
-
     socket.on("connect", () => {
       this.props.dispatch<IGameInfoAction>({ type: UPDATE_CONNECTION_STATUS, payload: true });
     });
