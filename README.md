@@ -1,8 +1,15 @@
 # Multiplayer Tic Tac Toe
 
-## Editing the Source Files
+## Building
 
-* **VS Code**: you do not have to do anything to edit the project in vs code, as Typescript is 
+1. Navigate to `./scripts` folder;
+2. Run `build.js` to build the entire project:
+    * Run `build-server.js` to build the server;
+    * Run `build-client.js` to build the web client;
+
+## Editing
+
+* **VS Code**: you do not have to do anything to edit the project in vs code, as Typescript is
 supported out of the box by VS Code;
 
 * **Atom**: install the package `atom-typescript` to enable autocomplete and syntax
