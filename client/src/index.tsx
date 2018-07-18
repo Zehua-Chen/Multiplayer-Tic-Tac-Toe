@@ -48,12 +48,12 @@ registerServiceWorker();
 
 /* Set up axios */
 
-axios.get<TicTacToe.IHostAddress>("/host_address").then((response) => {
+axios.get<TicTacToe.IHostAddressResponse>("/host_address").then((response) => {
   store.dispatch<IGameInfoAction>({ type: UPDATE_HOSTURL, payload: response.data });
 });
 
 // Get existing players 
-axios.get<TicTacToe.IPlayersResponse<string>>("/players").then((response) => {
+axios.get<TicTacToe.IPlayersResponse>("/players").then((response) => {
   
   var nameA;
   var nameB;
@@ -82,7 +82,7 @@ axios.get<TicTacToe.IPlayersResponse<string>>("/players").then((response) => {
   });
 });
 
-axios.get<TicTacToe.IBoardResponse<string>>("/board").then((response) => {
+axios.get<TicTacToe.IBoardResponse>("/board").then((response) => {
   
   var board = response.data;
   

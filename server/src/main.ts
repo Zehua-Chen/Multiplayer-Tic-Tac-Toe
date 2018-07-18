@@ -74,7 +74,7 @@ server.listen(PORT, () => {
             players[1] = gPlayerB;
         }
         
-        var response: TicTacToe.IPlayersResponse<string> = {
+        var response: TicTacToe.IPlayersResponse = {
             players: players
         }
         

@@ -6,7 +6,7 @@ export interface ICellInfo {
 }
 
 export interface IBoardAction extends Action<string> {
-    payload: TicTacToe.IBoardResponse<string> | ICellInfo;
+    payload: TicTacToe.IBoardResponse | ICellInfo;
 }
 
 export const UPDATE_BOARD = "UPDATE_BOARD";

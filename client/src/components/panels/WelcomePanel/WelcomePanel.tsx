@@ -62,7 +62,7 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
    */
   private closeWelcomePanel(thisPlayerName: string) {
     
-    axios.get<TicTacToe.IPlayersResponse<string>>("/players").then((response) => {
+    axios.get<TicTacToe.IPlayersResponse>("/players").then((response) => {
       
       var players = response.data.players;
       var otherPlayerName;

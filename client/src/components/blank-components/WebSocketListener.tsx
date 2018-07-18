@@ -40,7 +40,7 @@ class WebSocketListener extends React.Component<DispatchProp> {
   }
   
   setupWebSocket() {
-    socket.on("update_user#", (data: TicTacToe.IViewersAmount) => {
+    socket.on("update_user#", (data: TicTacToe.IUpdateUserAmount) => {
       this.props.dispatch<IGameInfoAction>({ type: UPDATE_VIEWERS, payload: data });
     });
 
