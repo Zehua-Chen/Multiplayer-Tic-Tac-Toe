@@ -26,5 +26,3 @@ fs.writeFileSync(outConfigDir, JSON.stringify(serverConfig));
 // Build server
 process.chdir(serverDir);
 child.spawn("npm", ["run", "build"]);
-
-
