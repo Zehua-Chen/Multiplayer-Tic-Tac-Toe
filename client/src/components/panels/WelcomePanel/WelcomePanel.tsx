@@ -6,11 +6,12 @@ import Password from '../../ui-components/Password';
 
 import { 
   IWelcomeAction, 
-  UPDATE_WELCOME_MODE, UPDATE_ERROR_MESSAGE 
+  UPDATE_WELCOME_MODE, UPDATE_ERROR_MESSAGE, 
+  UPDATE_INVITATION_CODE, UPDATE_PLAYER_NAME
 } from '../../../actions/IWelcomeAction';
 import {
   IPlayersAction,
-  UPDATE_PLAYER_NAMES
+  UPDATE_PLAYER_NAMES_LIST
 } from '../../../actions/IPlayersAction';
 import { ITotalState } from '../../../states';
 
@@ -23,6 +24,9 @@ import { ITotalState } from '../../../states';
 interface IWelcomePanelProps {
   mode: "create" | "join" | "hidden";
   errorMessage?: string;
+  
+  playerName: string;
+  invitationCode: string;
 }
 
 /**
@@ -58,7 +62,7 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
    */
   private closeWelcomePanel(thisPlayerName: string) {
     
-    axios.get<TicTacToe.IPlayersResponse<string>>("/players").then((response) => {
+    axios.get<TicTacToe.IPlayersResponse>("/players").then((response) => {
       
       var players = response.data.players;
       var otherPlayerName;
@@ -80,7 +84,7 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
         }
         
         this.props.dispatch<IPlayersAction>({
-          type: UPDATE_PLAYER_NAMES,
+          type: UPDATE_PLAYER_NAMES_LIST,
           payload: {
             thisPlayerName: thisPlayerName,
             otherPlayerName: otherPlayerName
@@ -101,14 +105,20 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
    * Handler for onChange of invitation code's input field.
    */
   invitationCodeChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ invitationCode: e.target.value });
+    this.props.dispatch<IWelcomeAction>({
+      type: UPDATE_INVITATION_CODE,
+      payload: e.target.value
+    });
   }
 
   /**
    * Handler for onChange of player name's input field.
    */
   playerNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ playerName: e.target.value });
+    this.props.dispatch<IWelcomeAction>({
+      type: UPDATE_PLAYER_NAME,
+      payload: e.target.value
+    });
   }
 
   /**
@@ -129,7 +139,7 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
    * Join a game session. Called by the "Join!" button.
    */
   joinGame = () => {
-    const { playerName, invitationCode } = this.state;
+    const { playerName, invitationCode } = this.props;
 
     var joinGameQuest: TicTacToe.ICreateGameRequest = {
       name: playerName,
@@ -160,7 +170,7 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
    */
   createGame = () => {
 
-    const { playerName, invitationCode } = this.state;
+    const { playerName, invitationCode } = this.props;
 
     var createGameRequest: TicTacToe.ICreateGameRequest = {
       name: playerName,
@@ -266,7 +276,7 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
                     className="form-control" type="text"
                     placeholder="Name"
                     onChange={this.playerNameChanged} 
-                    value={this.state.playerName} />
+                    value={this.props.playerName} />
                 </div>
               </div>
             </div>
@@ -280,7 +290,8 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
                   <Password
                     className="form-control"
                     placeholder="Invitation Code"
-                    onChange={this.invitationCodeChanged} value={this.state.invitationCode} />
+                    onChange={this.invitationCodeChanged} 
+                    value={this.props.invitationCode} />
                 </div>
               </div>
             </div>
@@ -305,8 +316,12 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
  * @param ownProps the props exposed to other components.
  */
 function mapStateToProps(state: ITotalState, ownProps: {}): IWelcomePanelProps {
-  const { mode, errorMessage } = state.welcome;
-  return { mode: mode, errorMessage: errorMessage };
+  const { mode, errorMessage, playerName, invitationCode } = state.welcome;
+  return { mode: mode, 
+    errorMessage: errorMessage,
+    playerName: playerName,
+    invitationCode: invitationCode
+  };
 }
 
 export default connect(mapStateToProps)(WelcomePanel);

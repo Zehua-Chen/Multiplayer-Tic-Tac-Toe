@@ -1,9 +1,9 @@
 import * as React from 'react';
 import injectSheet, { WithClasses } from 'react-jss';
 
-type Player = "me" | "enemy";
+type Player = "this" | "other";
 
-interface ISquareProps {
+interface ISquareProps extends React.HTMLProps<HTMLButtonElement> {
   player?: Player;
 }
 
@@ -36,7 +36,7 @@ const style = {
     height: "50px",
     width: "50px",
     border: "transparent",
-    borderRadius: "25px",
+    borderRadius: "5px",
     color: "white",
     
     "&:focus": {
@@ -49,29 +49,23 @@ type ClassKeys = "unsetSquare" | "setSquare";
 
 class Square extends React.Component<ISquareProps & WithClasses<ClassKeys>> {
   
-  mouseDown = () => {
-    console.log("Mouse down");
-  }
-  
-  mouseUp = () => {
-    console.log("Mouse up!");
-  }
-  
   render() {
     
-    const { player, classes } = this.props;
+    const { player, classes, ...others } = this.props;
     var className = classes.unsetSquare;
     
     if (player) {
-      if (player == "me") {
+      if (player == "this") {
         className = `${classes.setSquare} bg-primary`;
-      } else if (player == "enemy") {
+      } else if (player == "other") {
         className = `${classes.setSquare} bg-danger`;
       } 
     } 
     
     return (
-      <button className={className} onMouseDown={this.mouseDown}></button>
+      <button 
+        className={className} 
+        {...others}></button>
     );
     
   }

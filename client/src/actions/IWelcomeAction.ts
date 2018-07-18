@@ -15,5 +15,21 @@ export interface IWelcomeAction extends Action<string> {
     payload: string | "join" | "create" | "hidden";
 }
 
+/**
+ * Update the mode of the welcome panel.
+ */
 export const UPDATE_WELCOME_MODE = "UPDATE_WELCOME_MODE";
+/**
+ * Update the error message displayed in the welcome panel.
+ */
 export const UPDATE_ERROR_MESSAGE = "UPDATE_ERROR_MESSAGE";
+
+/**
+ * Update the name of the player displayed in the welcome panel.
+ */
+export const UPDATE_PLAYER_NAME = "UPDATE_PLAYER_NAME";
+
+/**
+ * Update the invitation code displayed in the welcome panel.
+ */
+export const UPDATE_INVITATION_CODE = "UPDATE_INVITATION_CODE";

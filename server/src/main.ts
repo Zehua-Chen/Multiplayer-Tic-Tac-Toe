@@ -1,5 +1,5 @@
 import express from 'express';
-import io from 'socket.io';
+import socketIO from 'socket.io';
 import bodyParser from 'body-parser';
 
 import * as http from 'http';
@@ -26,16 +26,24 @@ app.use(bodyParser.json());
 /* Configure server and web sockiet */
 
 const server = http.createServer(app);
-const socketIO = io(server, { serveClient: false });
+const io = socketIO(server, { serveClient: false });
 
-var userCount = 0;
+var gUserCount = 0;
+
+var gEmptyCells = 9;
+var gTotalCells = 9;
+
+var gWinner: TicTacToe.IPlayer | undefined;
+
+var gPlayerA: TicTacToe.IPlayer = { name: "" };
+var gPlayerB: TicTacToe.IPlayer = {  name: "" };
+var gBoard: Board;
+
+var gMovingPlayer: TicTacToe.IPlayer | undefined;
+
+var gInvitationCode: string;
 
 /* Server */
-var playerA: TicTacToe.IPlayer<string> = { name: "", character: "X" };
-var playerB: TicTacToe.IPlayer<string> = {  name: "", character: "Y"  };
-var board: Board<string>;
-
-var invitationCode: string;
 
 server.listen(PORT, () => {
     console.log(` Game hosted at http://localhost:${PORT}/`);
@@ -56,17 +64,17 @@ server.listen(PORT, () => {
         
         // Only return players whose names are not the default string: ""
         
-        var players = new Array<TicTacToe.IPlayer<string>>(2);
+        var players = new Array<TicTacToe.IPlayer>(2);
         
-        if (playerA.name != "") {
-            players[0] = playerA;
+        if (gPlayerA.name != "") {
+            players[0] = gPlayerA;
         }
         
-        if (playerB.name != "") {
-            players[1] = playerB;
+        if (gPlayerB.name != "") {
+            players[1] = gPlayerB;
         }
         
-        var response: TicTacToe.IPlayersResponse<string> = {
+        var response: TicTacToe.IPlayersResponse = {
             players: players
         }
         
@@ -74,19 +82,58 @@ server.listen(PORT, () => {
         
     })
     
+    app.get("/progress", (req, res) => {
+        var response: TicTacToe.IProgressResponse = {
+            remaining: gEmptyCells,
+            total: gTotalCells,
+        };
+        res.send(response);
+    });
+    
+    app.get("/winner", (req, res) => {
+        
+        var response: TicTacToe.IWinnerResponse = undefined;
+        
+        if (gMovingPlayer && gMovingPlayer.name != "") {
+            response = gWinner;    
+        }
+        
+        res.send(response);
+    });
+    
+    app.get("/board", (req, res) => {
+        
+        var boardContent = undefined;
+        if (gBoard) {
+            boardContent = gBoard.board;
+        }
+        
+        res.send(boardContent);
+    });
+    
     app.post("/create_game", (req, res) => {
         
         var response: TicTacToe.ICreateGameResponse = { success: false };
+        var body = <TicTacToe.ICreateGameRequest>req.body;
         
-        if (!board) {
-            var body = <TicTacToe.ICreateGameRequest>req.body;
+        // Check if name is emtpy;
+        if (body.name == "") {
+            response.success = false;
+            response.message = "Name cannot be \"\" (empty)";
+            res.send(response);
+            
+            return;
+        }
         
-            playerA.name = body.name;
-            invitationCode = body.invitationCode;
+        if (!gBoard) {
             
-            board = new Board<string>(3, "?");
+        
+            gPlayerA.name = body.name;
+            gInvitationCode = body.invitationCode;
             
-            if (!board) {
+            gBoard = new Board(3, "?");
+            
+            if (!gBoard) {
                 response.message = "Unable to create board.";
                 console.log("'/create_board': Unable to create board;");
             }
@@ -96,7 +143,7 @@ server.listen(PORT, () => {
             console.log(`'/create_game': new game created, creator = ${body.name}`);
             
             // Notify clients that a new player has joined the game
-            socketIO.emit("new_player", playerA);
+            io.emit("new_player", gPlayerA);
             
         // If the board is already created.
         } else {
@@ -113,23 +160,32 @@ server.listen(PORT, () => {
             success: false
         };
         
+        // Check if name is emtpy;
+        if (body.name == "") {
+            response.success = false;
+            response.message = "Name cannot be \"\" (empty)";
+            res.send(response);
+            
+            return;
+        }
+        
         // Determine if the second player is already in the game
-        if (playerB.name == "") {
+        if (gPlayerB.name == "") {
             
             // Determine if a game has been created
-            if (board) {
+            if (gBoard) {
             
                 // Determine if the invitation code is correct
-                if (body.invitationCode == invitationCode) {
+                if (body.invitationCode == gInvitationCode) {
                     
                     // Determine if there is a naming conflict
-                    if (body.name != playerA.name) {
-                        playerB.name = body.name;
+                    if (body.name != gPlayerA.name) {
+                        gPlayerB.name = body.name;
                         response.success = true;
-                        console.log(`'/join_game': new player joined = ${playerB.name};`);
+                        console.log(`'/join_game': new player joined = ${gPlayerB.name};`);
                         
                         // TODO: Action to perform after a new player has joined the game;
-                        socketIO.emit("new_player", playerB);
+                        io.emit("new_player", gPlayerB);
                         
                     } else {
                         // Tell the client that there is naming conflict
@@ -157,17 +213,86 @@ server.listen(PORT, () => {
         res.send(response);
     })
     
-    socketIO.on("connection", (socket) => {
+    io.on("connection", (socket) => {
     
-        userCount++;
-        socketIO.emit(msg.UPDATED_USER_AMOUNT, userCount);
+        gUserCount++;
+        io.emit("update_user#", gUserCount);
         
         /* Listeners */
+        
+        socket.on("move", (data) => {
+            
+            if (gWinner) {
+                return;
+            }
+            
+            var moveData = <TicTacToe.IMoveRequest>data;
+            
+            var y = moveData.location.y;
+            var x = moveData.location.x;
+            
+            const { 
+                name, invitationCode
+            } = moveData;
+            
+            // Make sure the user is authroized
+            if (invitationCode == gInvitationCode) {
+                
+                if (!gMovingPlayer || gMovingPlayer.name == name) {
+                    
+                    if (name == gPlayerA.name) {
+                        gBoard.setAt(y, x, gPlayerA);
+                        
+                        gMovingPlayer = gPlayerB;
+                    } else if (name == gPlayerB.name) {
+                        gBoard.setAt(y, x, gPlayerB);
+                        
+                        gMovingPlayer = gPlayerA;
+                    }
+                    
+                    console.log(`websocket: 'move': ${moveData.name} at (y: ${y}, x: ${x};`);
+                    console.log(gBoard.board);
+                    
+                    var broadCastData: TicTacToe.INewMoveBroadcast = {
+                        name: name,
+                        location: moveData.location
+                    };
+                    
+                    // Broadcast move message
+                    
+                    io.emit("new_move", broadCastData);
+                    
+                    // Update moving
+                    
+                    if (gMovingPlayer && gMovingPlayer.name != "") {
+                        io.emit("update_moving", gMovingPlayer);
+                    }
+                    
+                    // Update progress
+                    
+                    gEmptyCells--;
+                    
+                    var updateProgressData: TicTacToe.IUpdateProgressBroadcast = {
+                        remaining: gEmptyCells,
+                        total: gTotalCells
+                    };
+                    
+                    io.emit("update_progress", updateProgressData);
+                    
+                    // Update winner, if there is one.
+                    var winner = gBoard.findWinner();
+                    if (winner) {
+                        gWinner = winner;
+                        io.emit("found_winner", <TicTacToe.IFoundWinnerBroadcast>winner);
+                    }
+                }
+            }
+        }); 
     
         socket.on("disconnect", () => {
             console.log("User disconnected");
-            userCount--;
-            socketIO.emit(msg.UPDATED_USER_AMOUNT, userCount);
+            gUserCount--;
+            io.emit(msg.UPDATED_USER_AMOUNT, gUserCount);
         });
     
     });

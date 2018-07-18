@@ -6,7 +6,7 @@ import {
     UPDATE_OTHER_PLAYER_NAME,
     UPDATE_THIS_PLAYER_NAME,
     UPDATE_MOVING_PLAYER_NAME,
-    UPDATE_PLAYER_NAMES,
+    UPDATE_PLAYER_NAMES_LIST,
     ADD_PLAYER_NAME,
     IPlayerNames,
 } from '../actions/IPlayersAction';
@@ -33,7 +33,7 @@ function playersReducer(
             return { thisPlayerName: <string>action.payload, ...others };
             
         }
-        case UPDATE_PLAYER_NAMES:
+        case UPDATE_PLAYER_NAMES_LIST:
         {   
             let { otherPlayerName, thisPlayerName, ...others } = state;
             
@@ -55,10 +55,10 @@ function playersReducer(
         }
         case ADD_PLAYER_NAME: 
         {
-            var nameA = state.thisPlayerName;
-            var nameB = state.otherPlayerName;
+            let nameA = state.thisPlayerName;
+            let nameB = state.otherPlayerName;
             
-            var addedName = <string>action.payload;
+            let addedName = <string>action.payload;
             
             // If the added name is already there, then there is no need to 
             // add the name
@@ -81,7 +81,18 @@ function playersReducer(
         }
         case UPDATE_MOVING_PLAYER_NAME:
         {
-            return state;
+            const { thisPlayerName, otherPlayerName } = state;
+            
+            // If there is only one player
+            if (!thisPlayerName || !otherPlayerName) {
+                return state;
+            }
+            
+            return {
+                thisPlayerName: thisPlayerName,
+                otherPlayerName: otherPlayerName,
+                movingPlayerName: <string>action.payload
+            };
         }
         default:
             return state;

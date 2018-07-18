@@ -15,6 +15,16 @@ export interface IWelcomeState {
      * Error message returned from the server.
      */
     errorMessage?: string;
+    
+    /**
+     * The name of the player that is trying to create or join the game.
+     */
+    playerName: string;
+    
+    /**
+     * The invitation code of the player that is trying to create or join the game.
+     */
+    invitationCode: string;
 }
 
 /**
@@ -22,5 +32,7 @@ export interface IWelcomeState {
  * - mode: "join"
  */
 export const DEFAULT_WELCOMESTATE: IWelcomeState = {
-    mode: "join"
+    mode: "join",
+    playerName: "",
+    invitationCode: ""
 }
