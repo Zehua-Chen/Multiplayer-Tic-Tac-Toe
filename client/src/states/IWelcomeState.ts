@@ -16,7 +16,14 @@ export interface IWelcomeState {
      */
     errorMessage?: string;
     
+    /**
+     * The name of the player that is trying to create or join the game.
+     */
     playerName: string;
+    
+    /**
+     * The invitation code of the player that is trying to create or join the game.
+     */
     invitationCode: string;
 }
 

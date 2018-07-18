@@ -36,4 +36,7 @@ export const UPDATE_HOSTURL = "UPDATE_HOSTURL";
  */
 export const UPDATE_CONNECTION_STATUS = "UPDATE_CONNECTION_STATUS";
 
+/**
+ * Update the winner.
+ */
 export const UPDATE_WINNER = "UPDATE_WINNER";

@@ -6,6 +6,12 @@ import {
     UPDATE_BOARD, UPDATE_BOARD_AT 
 } from '../actions/IBoardAction';
 
+/**
+ * Reducer for IBoardState
+ * @param state existing state
+ * @param action action sent
+ * @return the new state.
+ */
 function boardReducer (
     state: IBoardState = DEFAULT_BOARDSTATE, 
     action: IBoardAction): IBoardState {

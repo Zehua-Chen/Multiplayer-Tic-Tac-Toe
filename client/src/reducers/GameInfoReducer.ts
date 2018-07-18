@@ -38,11 +38,13 @@ function gameInfoReducer(
             const { viewers, ...others } = state;
             return { viewers: <number>action.payload, ...others };
         }
+        // Update the connection status
         case UPDATE_CONNECTION_STATUS:
         {
             const { connected, ...others  } = state;
             return { connected: <boolean>action.payload, ...others };
         }
+        // Update the winner.
         case UPDATE_WINNER:
         {
             

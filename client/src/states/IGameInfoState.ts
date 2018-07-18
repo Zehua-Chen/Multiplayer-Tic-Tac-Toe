@@ -19,6 +19,11 @@ export interface IGameInfoState {
      */
     connected: boolean;
     
+    /**
+     * Name of the winner. 
+     * 
+     * Undefined if there is no winner.
+     */
     winner?: string;
 }
 
