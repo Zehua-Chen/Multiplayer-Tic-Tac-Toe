@@ -1,26 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import injectSheet, { WithClasses } from 'react-jss';
 
-const style = {
-  contentHeight: {
-    minHeight: "100vh"
-  }
-};
-
-type ClassKeys = "contentHeight";
+import * as styles from './AboutPage.css';
 
 /**
  * A page that shows with what dependencies the game is made.
  */
-class AboutPage extends React.Component<WithClasses<ClassKeys>> {
+class AboutPage extends React.Component {
   
   render() {
     
-    const { classes } = this.props;
-    
     return (
-      <div className={`container-fluid ${classes.contentHeight} bg-light`}>
+      <div className={`container-fluid ${styles.fullHeight} bg-light`}>
         <div className="container">
         
           <div className="row">
@@ -85,4 +76,4 @@ class AboutPage extends React.Component<WithClasses<ClassKeys>> {
   }
 }
 
-export default injectSheet(style)(AboutPage);
+export default AboutPage;

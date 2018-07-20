@@ -1,4 +1,4 @@
-.unsetSquare {
+.unset {
     height: 50px;
     width: 50px;
     /* Color copied from http://getbootstrap.com/docs/4.1/getting-started/theming/#color */
@@ -8,16 +8,16 @@
     transition: border-radius 0.2s ease-in-out, background 0.2s ease-in-out;
 }
 
-.unsetSquare:hover {
+.unset:hover {
   background: #343a40;
   border-radius: 5px;
 }
 
-.unsetSquare:focus {
+.unset:focus {
   outline: none !important;
 }
   
-.setSquare {
+.set {
   height: 50px;
   width: 50px;
   border: transparent;
@@ -25,6 +25,6 @@
   color: white;
 }
   
-.setSquare:focus {
+.set:focus {
   outline: none !important;
 }

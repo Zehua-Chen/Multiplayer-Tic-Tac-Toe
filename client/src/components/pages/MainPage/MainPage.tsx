@@ -1,46 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import injectSheet, { WithClasses } from 'react-jss';
 
-import { GameInfoPanel, BoardPanel, PlayersPanel, WelcomePanel } from '../panels';
-import { ITotalState } from '../../states';
-import { WebSocketListener } from '../blank-components';
+import { GameInfoPanel, BoardPanel, PlayersPanel, WelcomePanel } from '../../panels';
+import { ITotalState } from '../../../states';
+import { WebSocketListener } from '../../blank-components';
 
-const style = {
-  
-  fullheight: {
-    height: "100vh",
-  },
-  
-  sidebar: {
-    height: "100vh",
-    overflow: "scroll",
-  },
-    
-  "@media (max-width: 768px)": {
-    
-    fullheight: {
-      height: "auto",
-    },
-    
-    sidebar: {
-      height: "auto",
-      overflow: "initial",
-    }
-  }
-};
-
-type ClassKeys = "fullheight" | "sidebar";
+import * as styles from './MainPage.css';
 
 export interface IMainPageProps {
   connected: boolean;
 }
 
-class MainPage extends React.Component<IMainPageProps & WithClasses<ClassKeys>> {
+class MainPage extends React.Component<IMainPageProps> {
   render() {
-    
-    const { classes } = this.props;
 
     var connectedSidePanels = (
       <div>
@@ -72,11 +45,11 @@ class MainPage extends React.Component<IMainPageProps & WithClasses<ClassKeys>> 
           <WebSocketListener />
         </div>
 
-        <div className={`container-fluid ${classes.fullheight}`}>
+        <div className={`container-fluid ${styles.fullHeight}`}>
 
           {/* Main Content */}
 
-          <div className={`row ${classes.fullheight}`}>
+          <div className={`row ${styles.fullHeight}`}>
 
             {/* Board */}
 
@@ -86,7 +59,7 @@ class MainPage extends React.Component<IMainPageProps & WithClasses<ClassKeys>> 
 
             {/* ScorePanel */}
 
-            <div className={`col-md-4 ${classes.sidebar}`}>
+            <div className={`col-md-4 ${styles.sidebar}`}>
               {this.props.connected ? connectedSidePanels : disconnectedSidePanel}
               
               {/* Navigation Link to About Page */}
@@ -112,7 +85,4 @@ function mapStateToProps(state: ITotalState, ownProps: {}): IMainPageProps {
   return { connected: state.gameInfo.connected };
 }
 
-var injected = injectSheet(style)<IMainPageProps, ClassKeys>(MainPage);
-var connected = connect(mapStateToProps)(injected)
-
-export default connected;
+export default connect(mapStateToProps)(MainPage);

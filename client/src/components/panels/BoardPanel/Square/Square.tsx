@@ -14,13 +14,13 @@ class Square extends React.Component<ISquareProps> {
     
     const { player, ...others } = this.props;
     
-    var className = styles.unsetSquare;
+    var className = styles.unset;
     
     if (player) {
       if (player == "this") {
-        className = `${styles.setSquare} bg-primary`;
+        className = `${styles.set} bg-primary`;
       } else if (player == "other") {
-        className = `${styles.setSquare} bg-danger`;
+        className = `${styles.set} bg-danger`;
       }
     }
     
