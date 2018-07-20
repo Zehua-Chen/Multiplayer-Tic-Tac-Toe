@@ -1,0 +1,30 @@
+.unset {
+    height: 50px;
+    width: 50px;
+    /* Color copied from http://getbootstrap.com/docs/4.1/getting-started/theming/#color */
+    background: #e5e5e5;
+    border: transparent;
+    border-radius: 25px;
+    transition: border-radius 0.2s ease-in-out, background 0.2s ease-in-out;
+}
+
+.unset:hover {
+  background: #343a40;
+  border-radius: 5px;
+}
+
+.unset:focus {
+  outline: none !important;
+}
+  
+.set {
+  height: 50px;
+  width: 50px;
+  border: transparent;
+  border-radius: 5px;
+  color: white;
+}
+  
+.set:focus {
+  outline: none !important;
+}

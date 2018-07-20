@@ -22,7 +22,7 @@ interface IBoardProps {
   otherPlayerName?: string;
 }
 
-class Board extends React.Component<WithClasses<ClassKeys> & IBoardProps> {
+class BoardPanel extends React.Component<WithClasses<ClassKeys> & IBoardProps> {
   
   clicked(y: number, x: number) {
     
@@ -98,6 +98,6 @@ function mapStateToProps(state: ITotalState, ownProps: {}): IBoardProps {
   }
 }
 
-var injected = injectSheet(style)<{}, ClassKeys>(Board);
+var injected = injectSheet(style)<{}, ClassKeys>(BoardPanel);
 
 export default connect(mapStateToProps)(injected);
