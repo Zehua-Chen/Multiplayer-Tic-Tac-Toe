@@ -1,19 +1,11 @@
 import * as React from 'react';
-import injectSheet, { WithClasses } from 'react-jss';
 import { connect } from 'react-redux';
 
 import Square from './Square';
 import { ITotalState } from '../../../states';
-
 import socket from '../../../network';
 
-const style = {
-  board: {
-    margin: "auto",
-  }
-};
-
-type ClassKeys = "board";
+import * as styles from './BoardPanel.css';
 
 interface IBoardProps {
   board: string[][];
@@ -22,7 +14,7 @@ interface IBoardProps {
   otherPlayerName?: string;
 }
 
-class BoardPanel extends React.Component<WithClasses<ClassKeys> & IBoardProps> {
+class BoardPanel extends React.Component<IBoardProps> {
   
   clicked(y: number, x: number) {
     
@@ -40,7 +32,7 @@ class BoardPanel extends React.Component<WithClasses<ClassKeys> & IBoardProps> {
   public render() {
     
     const { 
-      classes, board, thisPlayerName, otherPlayerName
+      board, thisPlayerName, otherPlayerName
     } = this.props;
     
     // console.log(`This player = ${thisPlayerName}`);
@@ -80,7 +72,7 @@ class BoardPanel extends React.Component<WithClasses<ClassKeys> & IBoardProps> {
     });
     
     return (
-      <table className={classes.board}>
+      <table className={styles.board}>
         <tbody>
           {boardContent}
         </tbody>
@@ -98,6 +90,4 @@ function mapStateToProps(state: ITotalState, ownProps: {}): IBoardProps {
   }
 }
 
-var injected = injectSheet(style)<{}, ClassKeys>(BoardPanel);
-
-export default connect(mapStateToProps)(injected);
+export default connect(mapStateToProps)(BoardPanel);

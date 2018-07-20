@@ -1,13 +1,6 @@
 import React from 'react';
-import injectSheet, { WithClasses } from 'react-jss';
 
-const style = {
-  noMargin: {
-    margin: 0
-  }
-}
-
-type ClassKeys = "noMargin";
+import * as styles from './PlayersListItem.css';
 
 /**
  * Props for PlayersListItem
@@ -42,7 +35,7 @@ interface IPlayersListItemProps {
  * 
  * Display information regarding a player.
  */
-class PlayersListItem extends React.Component<IPlayersListItemProps & WithClasses<ClassKeys>> {
+class PlayersListItem extends React.Component<IPlayersListItemProps> {
   
   public static defaultProps: IPlayersListItemProps = {
     hostile: false,
@@ -51,7 +44,7 @@ class PlayersListItem extends React.Component<IPlayersListItemProps & WithClasse
 
   render() {
 
-    const { hostile, moving, playerName, classes } = this.props;
+    const { hostile, moving, playerName } = this.props;
     
     if (playerName) {
       var color = "bg-primary";
@@ -73,7 +66,7 @@ class PlayersListItem extends React.Component<IPlayersListItemProps & WithClasse
               {playerName}
             </div>
             <div className="col text-right">
-              <h5 className={classes.noMargin}>
+              <h5 className={styles.noMargin}>
                 <span className="badge badge-dark">Moving</span>
               </h5>
             </div>
@@ -98,4 +91,4 @@ class PlayersListItem extends React.Component<IPlayersListItemProps & WithClasse
   }
 }
 
-export default injectSheet(style)<IPlayersListItemProps, ClassKeys>(PlayersListItem);
+export default PlayersListItem;
