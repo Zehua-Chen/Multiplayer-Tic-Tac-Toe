@@ -5,10 +5,9 @@ import bodyParser from 'body-parser';
 import * as http from 'http';
 import * as path from 'path';
 import * as os from 'os';
-import * as msg from './messages';
 import { findIpv4 } from './util';
 
-import { Board } from './Game';
+import { Board } from './Board';
 
 /* Constants */
 
@@ -21,6 +20,7 @@ const PUBLIC_URL = `http://${IPV4}:${PORT}/`;
 const app = express();
 var staticPath = path.resolve(path.join(".", "/"), path.join(".", "public"));
 app.use(express.static(staticPath));
+
 app.use(bodyParser.json());
 
 /* Configure server and web sockiet */
@@ -46,6 +46,7 @@ var gInvitationCode: string;
 /* Server */
 
 server.listen(PORT, () => {
+    
     console.log(` Game hosted at http://localhost:${PORT}/`);
     console.log(` Game hosted at ${PUBLIC_URL}`);
     console.log();
@@ -292,7 +293,7 @@ server.listen(PORT, () => {
         socket.on("disconnect", () => {
             console.log("User disconnected");
             gUserCount--;
-            io.emit(msg.UPDATED_USER_AMOUNT, gUserCount);
+            io.emit("update_user#", gUserCount);
         });
     
     });
