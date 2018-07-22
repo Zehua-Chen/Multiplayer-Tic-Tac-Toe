@@ -1,5 +1,2 @@
-import { Board } from './Board';
-
-export {
-    Board
-}
+export * from './Game';
+export * from './Logger';

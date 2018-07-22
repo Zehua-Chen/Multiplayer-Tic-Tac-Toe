@@ -6,7 +6,7 @@ export interface IWelcomeState {
      * the mode of the welcome panel
      * - join: join a session already created
      * - create: create a new session
-     * - hidden: not showing the welcome panel. Will transition 
+     * - hidden: not showing the welcome panel. Will transition
      * to this mode after either "join" or "create"
      */
     mode: "join" | "create" | "hidden";
