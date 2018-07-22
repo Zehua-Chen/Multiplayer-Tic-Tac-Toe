@@ -1,12 +1,42 @@
 import { Response, Request } from 'express';
 
-import { Board } from "../Board";
+import { Board } from "./Board";
 
 export interface IGameLogger {
-    get(message: string, content: any): void;
-    post(message: string, content: any): void;
-    websocketGet(message: string, content: any): void;
-    websocketBroadcaset(message: string, content: any): void;
+    /**
+     * Log get 
+     * @param path path of http get
+     * @param content additiona text
+     */
+    get(path: string, content?: any): void;
+    /**
+     * Log post 
+     * @param path path of http post
+     * @param content additiona text
+     */
+    post(path: string, content?: any): void;
+    /**
+     * Log websocket receive 
+     * @param path path of websocket receive
+     * @param content additiona text
+     */
+    websocketReceive(path: string, content?: any): void;
+    /**
+     * Log websocket emit 
+     * @param path path of websocket emit
+     * @param content additiona text
+     */
+    websocketEmit(path: string, content?: any): void;
+    /**
+     * Log board
+     * @param board board
+     */
+    board(board: Board): void;
+    /**
+     * Log text
+     * @param content text
+     */
+    text(content: any): void;
 }
 
 export class Game {
@@ -49,6 +79,8 @@ export class Game {
         }
         
         res.send(response);
+        
+        this.logGet("/players");
     }
     
     public getProgress(req: Request, res: Response) {
@@ -59,6 +91,8 @@ export class Game {
         };
         
         res.send(response);
+        
+        this.logGet("/progress")
     }
     
     public getWinner(req: Request, res: Response) {
@@ -70,6 +104,8 @@ export class Game {
         }
         
         res.send(response);
+        
+        this.logGet("/winner");
     }
     
     public getBoard(req: Request, res: Response) {
@@ -80,6 +116,8 @@ export class Game {
         }
         
         res.send(boardContent);
+        
+        this.logGet("/board");
     }
     
     public createGame(req: Request, res: Response) {
@@ -98,7 +136,6 @@ export class Game {
         
         if (!this.board) {
             
-        
             this.playerA.name = body.name;
             this.invitationCode = body.invitationCode;
             
@@ -106,12 +143,14 @@ export class Game {
             
             if (!this.board) {
                 response.message = "Unable to create board.";
-                console.log("'/create_board': Unable to create board;");
+                // console.log("'/create_board': Unable to create board;");
+                this.logPost("/create_game", "Unable to create board");
             }
             
             
             response.success = true;
-            console.log(`'/create_game': new game created, creator = ${body.name}`);
+            // console.log(`'/create_game': new game created, creator = ${body.name}`);
+            this.logPost("/create_game", `new game created, creator = ${body.name}`);
             
             // Notify clients that a new player has joined the game
             this.io.emit("new_player", this.playerA);
@@ -153,7 +192,8 @@ export class Game {
                     if (body.name != this.playerA.name) {
                         this.playerB.name = body.name;
                         response.success = true;
-                        console.log(`'/join_game': new player joined = ${this.playerB.name};`);
+                        // console.log(`'/join_game': new player joined = ${this.playerB.name};`);
+                        this.logPost("/join_game", `new player joined = ${this.playerB.name}`);
                         
                         // TODO: Action to perform after a new player has joined the game;
                         this.io.emit("new_player", this.playerB);
@@ -161,23 +201,27 @@ export class Game {
                     } else {
                         // Tell the client that there is naming conflict
                         response.message = "Two players cannot have the same name.";
-                        console.log("/join_game': name conflict caused by the new player;");
+                        // console.log("/join_game': name conflict caused by the new player;");
+                        this.logPost("/join_game", "name conflict caused by the new player");
                     }
                     
                 } else {
                     // Tell the client that the invitation code is not right
                     response.message = "Incorrect invitation code;";
-                    console.log("'/join_game': incorrect invitation code;");
+                    // console.log("'/join_game': incorrect invitation code;");
+                    this.logPost("/join_game", "incorrect invitation code");
                 }
                 
             } else {
                 // Tell the client that a game has not been created
-                console.log("'/join_game': a game has not been created;");
+                // console.log("'/join_game': a game has not been created;");
+                this.logPost("/join_game", "a game has not been created");
                 response.message = "A game has not been created.";
             }
         } else {
             // Tell the client that max players has already been reached.
-            console.log("'/join_game': already have two player, cannot take any more;");
+            // console.log("'/join_game': already have two player, cannot take any more;");
+            this.logPost("'/join_game", "already have two player, cannot take any more;");
             response.message = "Max of two player reached.";
         }
         
@@ -214,8 +258,10 @@ export class Game {
                     this.movingPlayer = this.playerA;
                 }
                 
-                console.log(`websocket: 'move': ${moveData.name} at (y: ${y}, x: ${x};`);
-                console.log(this.board.board);
+                // console.log(`websocket: 'move': ${moveData.name} at (y: ${y}, x: ${x};`);
+                this.logWebsocketReceive("move", `${moveData.name} at (y: ${y}, x: ${x}`);
+                // console.log(this.board.board);
+                this.logBoard(this.board);
                 
                 var broadCastData: TicTacToe.INewMoveBroadcast = {
                     name: name,
@@ -225,11 +271,13 @@ export class Game {
                 // Broadcast move message
                 
                 this.io.emit("new_move", broadCastData);
+                this.logWebsocketEmit("new_move");
                 
                 // Update moving
                 
                 if (this.movingPlayer && this.movingPlayer.name != "") {
                     this.io.emit("update_moving", this.movingPlayer);
+                    this.logWebsocketEmit("update_progress", `new moving = ${this.movingPlayer.name}`);
                 }
                 
                 // Update progress
@@ -242,12 +290,14 @@ export class Game {
                 };
                 
                 this.io.emit("update_progress", updateProgressData);
+                this.logWebsocketEmit("update_progress");
                 
                 // Update winner, if there is one.
                 var winner = this.board.findWinner();
                 if (winner) {
                     this.winner = winner;
                     this.io.emit("found_winner", <TicTacToe.IFoundWinnerBroadcast>winner);
+                    this.logWebsocketEmit("found_winner", `winner = ${winner.name}`);
                 }
             }
         }
@@ -260,9 +310,73 @@ export class Game {
     
     public disconnet() {
         
-        console.log("User disconnected");
+        this.logText("User disconnected");
         this.userCount--;
         this.io.emit("update_user#", this.userCount);
         
+    }
+    
+    /**
+     * Log get 
+     * @param path path of http get
+     * @param content additiona text
+     */
+    protected logGet(path: string, content?: any) {
+        if (this.logger) {
+            this.logger.get(path, content);
+        }
+    }
+    
+    /**
+     * Log post 
+     * @param path path of http post
+     * @param content additiona text
+     */
+    protected logPost(path: string, content?: any) {
+        if (this.logger) {
+            this.logger.post(path, content);
+        }
+    }
+    
+    /**
+     * Log websocket receive 
+     * @param path path of websocket receive
+     * @param content additiona text
+     */
+    protected logWebsocketReceive(path: string, content?: any) {
+        if (this.logger) {
+            this.logger.websocketReceive(path, content);
+        }
+    }
+    
+    /**
+     * Log websocket emit 
+     * @param path path of websocket emit
+     * @param content additiona text
+     */
+    protected logWebsocketEmit(path: string, content?: any) {
+        if (this.logger) {
+            this.logger.websocketEmit(path, content);
+        }
+    }
+    
+    /**
+     * Log board
+     * @param board board
+     */
+    protected logBoard(board: Board) {
+        if (this.logger) {
+            this.logger.board(board);
+        }
+    }
+    
+    /**
+     * Log text
+     * @param content text
+     */
+    protected logText(content: any) {
+        if (this.logger) {
+            this.logger.text(content);
+        }
     }
 }

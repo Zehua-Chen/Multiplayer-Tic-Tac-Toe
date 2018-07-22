@@ -6,7 +6,7 @@ import * as http from 'http';
 import * as path from 'path';
 
 import { findIpv4 } from './util';
-import { Game } from './Game';
+import { Game, Logger } from './Game';
 
 /* Constants */
 
@@ -19,7 +19,6 @@ const PUBLIC_URL = `http://${IPV4}:${PORT}/`;
 const app = express();
 var staticPath = path.resolve(path.join(".", "/"), path.join(".", "public"));
 app.use(express.static(staticPath));
-
 app.use(bodyParser.json());
 
 /* Configure server and web sockiet */
@@ -27,7 +26,7 @@ app.use(bodyParser.json());
 const server = http.createServer(app);
 const io = socketIO(server, { serveClient: false });
 
-var game = new Game(io);
+var game = new Game(io, new Logger());
 
 /* Server */
 
