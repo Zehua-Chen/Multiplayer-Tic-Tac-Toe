@@ -1,5 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import * as TicTacToe from 'interfaces';
+
 import App from './App';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';

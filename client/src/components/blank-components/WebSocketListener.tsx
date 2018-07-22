@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect, DispatchProp } from 'react-redux';
+import * as TicTacToe from 'interfaces';
 
 import socket from '../../network';
 

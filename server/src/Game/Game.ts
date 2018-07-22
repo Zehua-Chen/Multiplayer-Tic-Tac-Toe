@@ -1,4 +1,5 @@
 import { Response, Request } from 'express';
+import * as TicTacToe from 'interfaces';
 
 import { Board } from "./Board";
 

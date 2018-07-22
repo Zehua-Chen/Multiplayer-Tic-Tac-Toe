@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { DispatchProp, connect } from 'react-redux';
+import * as TicTacToe from 'interfaces';
 
 import Password from '../../ui-components/Password';
 

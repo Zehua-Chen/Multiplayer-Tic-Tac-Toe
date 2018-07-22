@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "express": "^4.16.3",
+    "interfaces": "file:../shared/interfaces",
     "socket.io": "^2.1.1"
   }
 }

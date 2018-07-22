@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import * as TicTacToe from 'interfaces';
 
 import Square from './Square';
 import { ITotalState } from '../../../states';
