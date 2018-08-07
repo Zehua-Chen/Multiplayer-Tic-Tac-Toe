@@ -87,7 +87,7 @@ function mapStateToProps(state: ITotalState, ownProps: {}): IBoardProps {
     board: state.board.board,
     thisPlayerName: state.players.thisPlayerName,
     otherPlayerName: state.players.otherPlayerName,
-    invitationCode: state.welcome.invitationCode
+    invitationCode: state.welcome.invitationCode,
   }
 }
 
