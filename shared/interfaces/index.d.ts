@@ -113,6 +113,10 @@ interface IMoveRequest {
      */
     name: string;
     /**
+     * Password of the player
+     */
+    password: string;
+    /**
      * The invitation code that the player use to either join or create 
      * the game.
      */

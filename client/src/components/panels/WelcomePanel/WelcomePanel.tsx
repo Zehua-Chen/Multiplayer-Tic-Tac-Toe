@@ -307,7 +307,7 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
                   <label>Password</label>
                   <Password
                     className="form-control"
-                    placeholder="Invitation Code"
+                    placeholder="Password"
                     onChange={this.passwordChanged} 
                     value={this.props.password} />
                 </div>

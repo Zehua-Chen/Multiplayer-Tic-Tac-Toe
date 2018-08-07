@@ -188,19 +188,8 @@ export class Game {
             res.send(response);
             
             return;
-        
-        // Let returning player join the game 
-        // Retrurning player: player who has joined the game once.
-        } else if ((this.hostPlayer.name != "" && this.guestPlayer.name != "")
-            && (body.name == this.hostPlayer.name || body.name == this.guestPlayer.name) 
-            && (body.invitationCode == this.invitationCode)) {
-            
-            response.success = true;
-            res.send(response);
-            
-            return;
-            
-        }
+        } 
+
 
         
         // Determine if the second player is already in the game
@@ -214,7 +203,10 @@ export class Game {
                     
                     // Determine if there is a naming conflict
                     if (body.name != this.hostPlayer.name) {
+                        
                         this.guestPlayer.name = body.name;
+                        this.guestPlayer.password = body.password;
+                        
                         response.success = true;
                         // console.log(`'/join_game': new player joined = ${this.playerB.name};`);
                         this.logPost("/join_game", `new player joined = ${this.guestPlayer.name}`);
@@ -264,21 +256,25 @@ export class Game {
         var x = moveData.location.x;
         
         const { 
-            name, invitationCode
+            name, invitationCode, password
         } = moveData;
         
         // Make sure the user is authroized
         if (invitationCode == this.invitationCode) {
             
+            // if there is no moving player or if the moving player
+            // is the player who post "move"
             if (!this.movingPlayer || this.movingPlayer.name == name) {
                 
-                if (name == this.hostPlayer.name) {
+                // Authenticate
+                if (name == this.hostPlayer.name && password == this.hostPlayer.password) {
+                    
                     this.board.setAt(y, x, this.hostPlayer);
-                    
                     this.movingPlayer = this.guestPlayer;
-                } else if (name == this.guestPlayer.name) {
-                    this.board.setAt(y, x, this.guestPlayer);
                     
+                } else if (name == this.guestPlayer.name && password == this.guestPlayer.password) {
+                    
+                    this.board.setAt(y, x, this.guestPlayer);
                     this.movingPlayer = this.hostPlayer;
                 }
                 

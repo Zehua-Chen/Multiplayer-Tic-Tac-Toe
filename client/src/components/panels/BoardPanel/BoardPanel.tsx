@@ -11,6 +11,7 @@ import * as styles from './BoardPanel.css';
 interface IBoardProps {
   board: string[][];
   invitationCode: string;
+  password: string;
   thisPlayerName?: string;
   otherPlayerName?: string;
 }
@@ -22,6 +23,7 @@ class BoardPanel extends React.Component<IBoardProps> {
     if (this.props.thisPlayerName) {
       var moveRequest: TicTacToe.IMoveRequest = {
         name: this.props.thisPlayerName,
+        password: this.props.password,
         invitationCode: this.props.invitationCode,
         location: { y: y, x: x }
       };
@@ -88,6 +90,7 @@ function mapStateToProps(state: ITotalState, ownProps: {}): IBoardProps {
     thisPlayerName: state.players.thisPlayerName,
     otherPlayerName: state.players.otherPlayerName,
     invitationCode: state.welcome.invitationCode,
+    password: state.welcome.password
   }
 }
 
