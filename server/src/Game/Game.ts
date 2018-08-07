@@ -50,8 +50,16 @@ export class Game {
     protected winner?: TicTacToe.IPlayer;
     protected movingPlayer?: TicTacToe.IPlayer;
     
-    protected playerA: TicTacToe.IPlayer = { name: "" };
-    protected playerB: TicTacToe.IPlayer = { name: "" };
+    /**
+     * THe player who post "/create_game" is always going to be assigned to
+     * host player
+     */
+    protected hostPlayer: TicTacToe.IPlayer = { name: "" };
+    /**
+     * The player who post "/join_game" is always going to be assigned to 
+     * guest player
+     */
+    protected guestPlayer: TicTacToe.IPlayer = { name: "" };
     
     protected invitationCode: string = "";
     
@@ -67,12 +75,12 @@ export class Game {
         
         var players = new Array<TicTacToe.IPlayer>(2);
         
-        if (this.playerA.name != "") {
-            players[0] = this.playerA;
+        if (this.hostPlayer.name != "") {
+            players[0] = this.hostPlayer;
         }
         
-        if (this.playerB.name != "") {
-            players[1] = this.playerB;
+        if (this.guestPlayer.name != "") {
+            players[1] = this.guestPlayer;
         }
         
         var response: TicTacToe.IPlayersResponse = {
@@ -137,7 +145,7 @@ export class Game {
         
         if (!this.board) {
             
-            this.playerA.name = body.name;
+            this.hostPlayer.name = body.name;
             this.invitationCode = body.invitationCode;
             
             this.board = new Board(3, "?");
@@ -154,11 +162,11 @@ export class Game {
             this.logPost("/create_game", `new game created, creator = ${body.name}`);
             
             // Notify clients that a new player has joined the game
-            this.io.emit("new_player", this.playerA);
+            this.io.emit("new_player", this.hostPlayer);
             
         // If the board is already created.
         } else {
-            response.message = "There is a board already created.";
+            response.message = "A game has already been created. The server can only host one game";
         }
         
         res.send(response);
@@ -171,6 +179,7 @@ export class Game {
             success: false
         };
         
+                
         // Check if name is emtpy;
         if (body.name == "") {
             response.success = false;
@@ -178,10 +187,21 @@ export class Game {
             res.send(response);
             
             return;
+        
+        // Let returning player join the game
+        } else if ((body.name == this.hostPlayer.name || body.name == this.guestPlayer.name) 
+            && (body.invitationCode == this.invitationCode)) {
+            
+            response.success = true;
+            res.send(response);
+            
+            return;
+            
         }
+
         
         // Determine if the second player is already in the game
-        if (this.playerB.name == "") {
+        if (this.guestPlayer.name == "") {
             
             // Determine if a game has been created
             if (this.board) {
@@ -190,14 +210,14 @@ export class Game {
                 if (body.invitationCode == this.invitationCode) {
                     
                     // Determine if there is a naming conflict
-                    if (body.name != this.playerA.name) {
-                        this.playerB.name = body.name;
+                    if (body.name != this.hostPlayer.name) {
+                        this.guestPlayer.name = body.name;
                         response.success = true;
                         // console.log(`'/join_game': new player joined = ${this.playerB.name};`);
-                        this.logPost("/join_game", `new player joined = ${this.playerB.name}`);
+                        this.logPost("/join_game", `new player joined = ${this.guestPlayer.name}`);
                         
                         // TODO: Action to perform after a new player has joined the game;
-                        this.io.emit("new_player", this.playerB);
+                        this.io.emit("new_player", this.guestPlayer);
                         
                     } else {
                         // Tell the client that there is naming conflict
@@ -249,14 +269,14 @@ export class Game {
             
             if (!this.movingPlayer || this.movingPlayer.name == name) {
                 
-                if (name == this.playerA.name) {
-                    this.board.setAt(y, x, this.playerA);
+                if (name == this.hostPlayer.name) {
+                    this.board.setAt(y, x, this.hostPlayer);
                     
-                    this.movingPlayer = this.playerB;
-                } else if (name == this.playerB.name) {
-                    this.board.setAt(y, x, this.playerB);
+                    this.movingPlayer = this.guestPlayer;
+                } else if (name == this.guestPlayer.name) {
+                    this.board.setAt(y, x, this.guestPlayer);
                     
-                    this.movingPlayer = this.playerA;
+                    this.movingPlayer = this.hostPlayer;
                 }
                 
                 // console.log(`websocket: 'move': ${moveData.name} at (y: ${y}, x: ${x};`);
