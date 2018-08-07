@@ -25,6 +25,8 @@ export interface IWelcomeState {
      * The invitation code of the player that is trying to create or join the game.
      */
     invitationCode: string;
+    
+    password: string;
 }
 
 /**
@@ -34,5 +36,6 @@ export interface IWelcomeState {
 export const DEFAULT_WELCOMESTATE: IWelcomeState = {
     mode: "join",
     playerName: "",
-    invitationCode: ""
+    invitationCode: "",
+    password: ""
 }

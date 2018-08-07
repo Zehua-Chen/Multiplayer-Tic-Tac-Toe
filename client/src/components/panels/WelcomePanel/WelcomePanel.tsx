@@ -8,7 +8,7 @@ import Password from '../../ui-components/Password';
 import { 
   IWelcomeAction, 
   UPDATE_WELCOME_MODE, UPDATE_ERROR_MESSAGE, 
-  UPDATE_INVITATION_CODE, UPDATE_PLAYER_NAME
+  UPDATE_INVITATION_CODE, UPDATE_PLAYER_NAME, UPDATE_PASSWORD
 } from '../../../actions/IWelcomeAction';
 import {
   IPlayersAction,
@@ -28,6 +28,7 @@ interface IWelcomePanelProps {
   
   playerName: string;
   invitationCode: string;
+  password: string;
   
   connected: boolean;
 }
@@ -113,6 +114,16 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
       payload: e.target.value
     });
   }
+  
+  /**
+   * Handler for onChange of password 's input field.
+   */
+  passwordChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.props.dispatch<IWelcomeAction>({
+      type: UPDATE_PASSWORD,
+      payload: e.target.value
+    });
+  }
 
   /**
    * Handler for onChange of player name's input field.
@@ -142,10 +153,11 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
    * Join a game session. Called by the "Join!" button.
    */
   joinGame = () => {
-    const { playerName, invitationCode } = this.props;
+    const { playerName, invitationCode, password } = this.props;
 
     var joinGameQuest: TicTacToe.ICreateGameRequest = {
       name: playerName,
+      password: password,
       invitationCode: invitationCode
     };
     
@@ -173,11 +185,12 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
    */
   createGame = () => {
 
-    const { playerName, invitationCode } = this.props;
+    const { playerName, invitationCode, password } = this.props;
 
     var createGameRequest: TicTacToe.ICreateGameRequest = {
       name: playerName,
-      invitationCode: invitationCode
+      password: password,
+      invitationCode: invitationCode,
     };
 
     axios.post<TicTacToe.ICreateGameResponse>("/create_game", createGameRequest)
@@ -291,6 +304,21 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
             <div className="row">
               <div className="col">
                 <div className="form-group">
+                  <label>Password</label>
+                  <Password
+                    className="form-control"
+                    placeholder="Password"
+                    onChange={this.passwordChanged} 
+                    value={this.props.password} />
+                </div>
+              </div>
+            </div>
+            
+            {/* Invitation Code */}
+
+            <div className="row">
+              <div className="col">
+                <div className="form-group">
                   <label>Invitation Code</label>
                   <Password
                     className="form-control"
@@ -321,11 +349,12 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
  * @param ownProps the props exposed to other components.
  */
 function mapStateToProps(state: ITotalState, ownProps: {}): IWelcomePanelProps {
-  const { mode, errorMessage, playerName, invitationCode } = state.welcome;
+  const { mode, errorMessage, playerName, invitationCode, password } = state.welcome;
   return { mode: mode, 
     errorMessage: errorMessage,
     playerName: playerName,
     invitationCode: invitationCode,
+    password: password,
     connected: state.gameInfo.connected
   };
 }

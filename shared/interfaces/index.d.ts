@@ -6,6 +6,10 @@ export interface IPlayer {
      * Name of the player.
      */
     name: string;
+    /**
+     * Password of the player
+     */
+    password: string;
 }
 
 /**
@@ -18,6 +22,10 @@ export interface ICreateGameRequest {
      * Name of the player who create the game.
      */
     name: string;
+    /**
+     * Password of the player who create the game
+     */
+    password: string;
     /**
      * The invitation code that the other player use to join the game.
      */
@@ -105,6 +113,10 @@ interface IMoveRequest {
      */
     name: string;
     /**
+     * Password of the player
+     */
+    password: string;
+    /**
      * The invitation code that the player use to either join or create 
      * the game.
      */
@@ -128,6 +140,12 @@ type IProgressResponse = IUpdateProgressBroadcast;
  * The response returned in response to "/winner"
  */
 type IWinnerResponse = IFoundWinnerBroadcast | undefined;
+
+
+/**
+ * http: "/moving_player"
+ */
+type IMovingPlayerResponse = IPlayer | undefined;
 
 /**
  * websocket: "new_move"
