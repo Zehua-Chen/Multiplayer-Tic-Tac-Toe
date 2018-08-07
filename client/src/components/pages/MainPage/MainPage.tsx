@@ -17,10 +17,8 @@ class MainPage extends React.Component {
 
     return (
       <div>
-
-        <div>
-          <WebSocketListener />
-        </div>
+        
+        <WebSocketListener />
 
         <div className={`container-fluid ${styles.fullHeight}`}>
 
