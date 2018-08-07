@@ -15,6 +15,7 @@
   "devDependencies": {
     "@types/express": "^4.11.1",
     "@types/socket.io": "^1.4.34",
+    "interfaces": "file:../shared/interfaces",
     "mocha": "^5.2.0",
     "ts-loader": "^4.4.2",
     "ts-node": "^6.1.0",

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import * as TicTacToe from 'interfaces';
 
 import Square from './Square';
 import { ITotalState } from '../../../states';
@@ -10,6 +11,7 @@ import * as styles from './BoardPanel.css';
 interface IBoardProps {
   board: string[][];
   invitationCode: string;
+  password: string;
   thisPlayerName?: string;
   otherPlayerName?: string;
 }
@@ -21,6 +23,7 @@ class BoardPanel extends React.Component<IBoardProps> {
     if (this.props.thisPlayerName) {
       var moveRequest: TicTacToe.IMoveRequest = {
         name: this.props.thisPlayerName,
+        password: this.props.password,
         invitationCode: this.props.invitationCode,
         location: { y: y, x: x }
       };
@@ -86,7 +89,8 @@ function mapStateToProps(state: ITotalState, ownProps: {}): IBoardProps {
     board: state.board.board,
     thisPlayerName: state.players.thisPlayerName,
     otherPlayerName: state.players.otherPlayerName,
-    invitationCode: state.welcome.invitationCode
+    invitationCode: state.welcome.invitationCode,
+    password: state.welcome.password
   }
 }
 

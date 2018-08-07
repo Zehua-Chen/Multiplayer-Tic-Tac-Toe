@@ -1,49 +1,24 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { GameInfoPanel, BoardPanel, PlayersPanel, WelcomePanel } from '../../panels';
-import { ITotalState } from '../../../states';
+import { 
+  GameInfoPanel, 
+  BoardPanel, 
+  PlayersPanel, 
+  WelcomePanel, 
+  DisconnectedPanel 
+} from '../../panels';
 import { WebSocketListener } from '../../blank-components';
 
 import * as styles from './MainPage.css';
 
-export interface IMainPageProps {
-  connected: boolean;
-}
-
-class MainPage extends React.Component<IMainPageProps> {
+class MainPage extends React.Component {
   render() {
-
-    var connectedSidePanels = (
-      <div>
-        <div className="mt-3">
-          <WelcomePanel />
-        </div>
-        <div className="mt-2">
-          <GameInfoPanel />
-        </div>
-        <div className="mt-2 mb-3">
-          <PlayersPanel />
-        </div>
-      </div>
-    );
-
-    var disconnectedSidePanel = (
-      <div className="mt-3 card bg-danger text-white">
-        <div className="card-body">
-          <h5 className="card-title">Disconnected</h5>
-          <p>You are disconnected from the server. Your moves are blocked.</p>
-        </div>
-      </div>
-    );
 
     return (
       <div>
-
-        <div>
-          <WebSocketListener />
-        </div>
+        
+        <WebSocketListener />
 
         <div className={`container-fluid ${styles.fullHeight}`}>
 
@@ -60,10 +35,23 @@ class MainPage extends React.Component<IMainPageProps> {
             {/* ScorePanel */}
 
             <div className={`col-md-4 ${styles.sidebar}`}>
-              {this.props.connected ? connectedSidePanels : disconnectedSidePanel}
-              
+            
+              <div className="mt-3">
+                <DisconnectedPanel />
+              </div>
+            
+              <div className="mt-2">
+                <WelcomePanel />
+              </div>
+              <div className="mt-2">
+                <GameInfoPanel />
+              </div>
+              <div className="mt-2 mb-3">
+                <PlayersPanel />
+              </div>
+
               {/* Navigation Link to About Page */}
-              
+
               <div className="mt-3 mb-3 card">
                 <div className="card-header">
                   <h5>About</h5>
@@ -72,7 +60,7 @@ class MainPage extends React.Component<IMainPageProps> {
                   <Link className="btn btn-outline-dark" to="/about">Visit About Page</Link>
                 </div>
               </div>
-              
+
             </div>
           </div>
         </div>
@@ -81,8 +69,4 @@ class MainPage extends React.Component<IMainPageProps> {
   }
 }
 
-function mapStateToProps(state: ITotalState, ownProps: {}): IMainPageProps {
-  return { connected: state.gameInfo.connected };
-}
-
-export default connect(mapStateToProps)(MainPage);
+export default MainPage;

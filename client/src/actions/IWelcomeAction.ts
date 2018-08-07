@@ -33,3 +33,5 @@ export const UPDATE_PLAYER_NAME = "UPDATE_PLAYER_NAME";
  * Update the invitation code displayed in the welcome panel.
  */
 export const UPDATE_INVITATION_CODE = "UPDATE_INVITATION_CODE";
+
+export const UPDATE_PASSWORD = "UPDATE_PASSWORD";

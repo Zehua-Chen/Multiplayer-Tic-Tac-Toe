@@ -1,5 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import * as TicTacToe from 'interfaces';
+
 import App from './App';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
@@ -23,7 +25,8 @@ import {
 
 import {
   IPlayersAction,
-  UPDATE_PLAYER_NAMES_LIST
+  UPDATE_PLAYER_NAMES_LIST,
+  UPDATE_MOVING_PLAYER_NAME
 } from './actions/IPlayersAction';
 
 /**
@@ -111,4 +114,16 @@ axios.get<TicTacToe.IProgressResponse>("/progress").then((response) => {
     type: UPDATE_PROGRESS,
     payload: (1 - data.remaining / data.total) * 100
   });
+});
+
+axios.get<TicTacToe.IMovingPlayerNameResponse>("/moving_player_name").then((response) => {
+  var data = response.data;
+  
+  if (data) {
+    store.dispatch<IPlayersAction>({
+      type: UPDATE_MOVING_PLAYER_NAME,
+      payload: data
+    });
+  }
+  
 });

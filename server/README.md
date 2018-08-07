@@ -54,6 +54,11 @@ Get the winner of the game, if there is one.
 * Typescript: an object of type `IBoardResponse`;
 * Javascript: a two dimensional string array representing the board;
 
+#### `/moving_player`
+
+* Typescript: an object of type `IMovingPlayerResponse`;
+* Javascript an object containing the name of the moving player.
+
 ### Post
 
 #### `/create_game` 

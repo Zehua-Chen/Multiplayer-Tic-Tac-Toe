@@ -1,4 +1,5 @@
 import { Action } from 'redux';
+import * as TicTacToe from 'interfaces';
 
 /**
  * Information about a cell

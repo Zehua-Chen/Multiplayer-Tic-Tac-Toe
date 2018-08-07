@@ -19,8 +19,7 @@
     "noUnusedLocals": true,
     "allowSyntheticDefaultImports": true,
     "typeRoots": [
-      "node_modules/@types/",
-      "../shared/"
+      "node_modules/@types/"
     ]
   },
   "exclude": [

@@ -15,6 +15,7 @@ interface IPlayersPanelProps {
   firstPlayerName?: string;
   secondPlayerName?: string;
   movingPlayerName?: string;
+  connected: boolean;
 }
 
 /**
@@ -27,8 +28,10 @@ class PlayersPanel extends React.Component<IPlayersPanelProps> {
   render() {
     
     const { 
-      firstPlayerName, secondPlayerName, movingPlayerName
+      firstPlayerName, secondPlayerName, movingPlayerName, connected
     } = this.props;
+    
+    if (!connected) return null;
     
     // Determine what to show with the player list items
     
@@ -84,7 +87,8 @@ function mapStateToProps(state: ITotalState, ownProps: {}): IPlayersPanelProps {
   return {
     firstPlayerName: thisPlayerName,
     secondPlayerName: otherPlayerName,
-    movingPlayerName: movingPlayerName
+    movingPlayerName: movingPlayerName,
+    connected: state.gameInfo.connected
   }
 }
 

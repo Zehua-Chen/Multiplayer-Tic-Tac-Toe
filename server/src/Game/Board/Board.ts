@@ -1,3 +1,4 @@
+import * as TicTacToe from 'interfaces';
 /**
  * Tic Tac Toe Gameboard
  * T is the type of value each item in the board holds
