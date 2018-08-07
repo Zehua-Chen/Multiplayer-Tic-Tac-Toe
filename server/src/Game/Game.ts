@@ -54,12 +54,12 @@ export class Game {
      * THe player who post "/create_game" is always going to be assigned to
      * host player
      */
-    protected hostPlayer: TicTacToe.IPlayer = { name: "" };
+    protected hostPlayer: TicTacToe.IPlayer = { name: "", password: "" };
     /**
      * The player who post "/join_game" is always going to be assigned to 
      * guest player
      */
-    protected guestPlayer: TicTacToe.IPlayer = { name: "" };
+    protected guestPlayer: TicTacToe.IPlayer = { name: "", password: "" };
     
     protected invitationCode: string = "";
     
@@ -146,6 +146,7 @@ export class Game {
         if (!this.board) {
             
             this.hostPlayer.name = body.name;
+            this.hostPlayer.password = body.password;
             this.invitationCode = body.invitationCode;
             
             this.board = new Board(3, "?");

@@ -153,10 +153,11 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
    * Join a game session. Called by the "Join!" button.
    */
   joinGame = () => {
-    const { playerName, invitationCode } = this.props;
+    const { playerName, invitationCode, password } = this.props;
 
     var joinGameQuest: TicTacToe.ICreateGameRequest = {
       name: playerName,
+      password: password,
       invitationCode: invitationCode
     };
     
@@ -184,11 +185,12 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
    */
   createGame = () => {
 
-    const { playerName, invitationCode } = this.props;
+    const { playerName, invitationCode, password } = this.props;
 
     var createGameRequest: TicTacToe.ICreateGameRequest = {
       name: playerName,
-      invitationCode: invitationCode
+      password: password,
+      invitationCode: invitationCode,
     };
 
     axios.post<TicTacToe.ICreateGameResponse>("/create_game", createGameRequest)

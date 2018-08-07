@@ -6,6 +6,10 @@ export interface IPlayer {
      * Name of the player.
      */
     name: string;
+    /**
+     * Password of the player
+     */
+    password: string;
 }
 
 /**
@@ -18,6 +22,10 @@ export interface ICreateGameRequest {
      * Name of the player who create the game.
      */
     name: string;
+    /**
+     * Password of the player who create the game
+     */
+    password: string;
     /**
      * The invitation code that the other player use to join the game.
      */
