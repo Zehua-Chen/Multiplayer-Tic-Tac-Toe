@@ -50,6 +50,7 @@ server.listen(PORT, () => {
     app.get("/progress", game.getProgress.bind(game));
     app.get("/winner", game.getWinner.bind(game));
     app.get("/board", game.getBoard.bind(game));
+    app.get("/moving_player", game.getMovingPlayer.bind(game));
     
     app.post("/create_game", game.createGame.bind(game));
     app.post("/join_game", game.joinGame.bind(game))

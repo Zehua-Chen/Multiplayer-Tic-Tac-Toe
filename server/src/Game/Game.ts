@@ -130,6 +130,15 @@ export class Game {
 
         this.logGet("/board");
     }
+    
+    public getMovingPlayer(req: Request, res: Response) {
+        var movingPlayer = undefined;
+                
+        if (this.playerWhoJustMoved == this.hostPlayer) movingPlayer = this.guestPlayer;
+        else movingPlayer = this.hostPlayer;
+        
+        res.send(movingPlayer);
+    }
 
     public createGame(req: Request, res: Response) {
 
@@ -331,7 +340,7 @@ export class Game {
                 
                 var movingPlayer;
                 
-                if (this.hostPlayer == this.playerWhoJustMoved) movingPlayer = this.guestPlayer;
+                if (this.playerWhoJustMoved == this.hostPlayer) movingPlayer = this.guestPlayer;
                 else movingPlayer = this.hostPlayer;
                 
                 if (movingPlayer && movingPlayer.name != "") {

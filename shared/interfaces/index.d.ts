@@ -141,6 +141,12 @@ type IProgressResponse = IUpdateProgressBroadcast;
  */
 type IWinnerResponse = IFoundWinnerBroadcast | undefined;
 
+
+/**
+ * http: "/moving_player"
+ */
+type IMovingPlayerResponse = IPlayer | undefined;
+
 /**
  * websocket: "new_move"
  * 

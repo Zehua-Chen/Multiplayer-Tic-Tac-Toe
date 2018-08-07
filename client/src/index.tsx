@@ -25,7 +25,8 @@ import {
 
 import {
   IPlayersAction,
-  UPDATE_PLAYER_NAMES_LIST
+  UPDATE_PLAYER_NAMES_LIST,
+  UPDATE_MOVING_PLAYER_NAME
 } from './actions/IPlayersAction';
 
 /**
@@ -113,4 +114,16 @@ axios.get<TicTacToe.IProgressResponse>("/progress").then((response) => {
     type: UPDATE_PROGRESS,
     payload: (1 - data.remaining / data.total) * 100
   });
+});
+
+axios.get<TicTacToe.IMovingPlayerResponse>("/moving_player").then((response) => {
+  var data = response.data;
+  
+  if (data) {
+    store.dispatch<IPlayersAction>({
+      type: UPDATE_MOVING_PLAYER_NAME,
+      payload: data.name
+    });
+  }
+  
 });
