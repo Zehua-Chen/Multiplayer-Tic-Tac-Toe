@@ -54,12 +54,12 @@ export class Game {
      * THe player who post "/create_game" is always going to be assigned to
      * host player
      */
-    protected hostPlayer: TicTacToe.IPlayer = { name: "", password: "" };
+    protected hostPlayer?: TicTacToe.IPlayer;
     /**
      * The player who post "/join_game" is always going to be assigned to 
      * guest player
      */
-    protected guestPlayer: TicTacToe.IPlayer = { name: "", password: "" };
+    protected guestPlayer?: TicTacToe.IPlayer;
 
     protected invitationCode: string = "";
 
@@ -75,11 +75,11 @@ export class Game {
 
         var players = new Array<TicTacToe.IPlayer>(2);
 
-        if (this.hostPlayer.name != "") {
+        if (this.hostPlayer && this.hostPlayer.name != "") {
             players[0] = this.hostPlayer;
         }
 
-        if (this.guestPlayer.name != "") {
+        if (this.guestPlayer && this.guestPlayer.name != "") {
             players[1] = this.guestPlayer;
         }
 
@@ -145,8 +145,11 @@ export class Game {
 
         if (!this.board) {
 
-            this.hostPlayer.name = body.name;
-            this.hostPlayer.password = body.password;
+            this.hostPlayer = {
+                name: body.name,
+                password: body.password
+            };
+
             this.invitationCode = body.invitationCode;
 
             this.board = new Board(3, "?");
@@ -198,7 +201,7 @@ export class Game {
             if (body.invitationCode == this.invitationCode) {
 
                 // Returning Users
-                if (this.hostPlayer.name != "" && this.hostPlayer.name == body.name) {
+                if (this.hostPlayer && this.hostPlayer.name == body.name) {
 
                     if (this.hostPlayer.password == body.password) {
                         response.success = true;
@@ -206,22 +209,24 @@ export class Game {
                         response.message = "Incorrect Password";
                     }
 
-                } else if (this.guestPlayer.name != "" && this.guestPlayer.name == body.name) {
+                } else if (this.guestPlayer && this.guestPlayer.name == body.name) {
 
-                    if (this.guestPlayer.password = body.password) {
+                    if (this.guestPlayer.password == body.password) {
                         response.success = true;
                     } else {
                         response.message = "Incorrect Password";
                     }
 
-                } else if (this.guestPlayer.name == "") {
+                } else if (!this.guestPlayer) {
                     // If the second player has not been assigned
 
                     // Determine if there is a naming conflict
-                    if (body.name != this.hostPlayer.name) {
+                    if (body.name != this.hostPlayer!.name) {
 
-                        this.guestPlayer.name = body.name;
-                        this.guestPlayer.password = body.password;
+                        this.guestPlayer = {
+                            name: body.name,
+                            password: body.password
+                        };
 
                         response.success = true;
                         // console.log(`'/join_game': new player joined = ${this.playerB.name};`);
@@ -287,12 +292,16 @@ export class Game {
             if (!this.movingPlayer || this.movingPlayer.name == name) {
 
                 // Authenticate
-                if (name == this.hostPlayer.name && password == this.hostPlayer.password) {
+                if (this.hostPlayer
+                    && name == this.hostPlayer.name
+                    && password == this.hostPlayer.password) {
 
                     this.board.setAt(y, x, this.hostPlayer);
                     this.movingPlayer = this.guestPlayer;
 
-                } else if (name == this.guestPlayer.name && password == this.guestPlayer.password) {
+                } else if (this.guestPlayer
+                    && name == this.guestPlayer.name
+                    && password == this.guestPlayer.password) {
 
                     this.board.setAt(y, x, this.guestPlayer);
                     this.movingPlayer = this.hostPlayer;
