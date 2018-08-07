@@ -116,13 +116,13 @@ axios.get<TicTacToe.IProgressResponse>("/progress").then((response) => {
   });
 });
 
-axios.get<TicTacToe.IMovingPlayerResponse>("/moving_player").then((response) => {
+axios.get<TicTacToe.IMovingPlayerNameResponse>("/moving_player_name").then((response) => {
   var data = response.data;
   
   if (data) {
     store.dispatch<IPlayersAction>({
       type: UPDATE_MOVING_PLAYER_NAME,
-      payload: data.name
+      payload: data
     });
   }
   

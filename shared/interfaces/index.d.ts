@@ -143,9 +143,9 @@ type IWinnerResponse = IFoundWinnerBroadcast | undefined;
 
 
 /**
- * http: "/moving_player"
+ * http: "/moving_player_name"
  */
-type IMovingPlayerResponse = IPlayer | undefined;
+type IMovingPlayerNameResponse = string | undefined;
 
 /**
  * websocket: "new_move"
