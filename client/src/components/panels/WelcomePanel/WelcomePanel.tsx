@@ -28,6 +28,8 @@ interface IWelcomePanelProps {
   
   playerName: string;
   invitationCode: string;
+  
+  connected: boolean;
 }
 
 /**
@@ -198,7 +200,9 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
 
   public render() {
 
-    const { mode, errorMessage } = this.props;
+    const { mode, errorMessage, connected } = this.props;
+    
+    if (!connected) return null;
     
     // Hidden mode, return null to get rid of the welcome panel.
     
@@ -321,7 +325,8 @@ function mapStateToProps(state: ITotalState, ownProps: {}): IWelcomePanelProps {
   return { mode: mode, 
     errorMessage: errorMessage,
     playerName: playerName,
-    invitationCode: invitationCode
+    invitationCode: invitationCode,
+    connected: state.gameInfo.connected
   };
 }
 

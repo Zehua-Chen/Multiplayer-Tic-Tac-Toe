@@ -20,6 +20,8 @@ export interface IGameInfoProps {
   progress: number;
   
   winner?: string;
+  
+  connected: boolean;
 }
 
 /**
@@ -30,7 +32,9 @@ class GameInfoPanel extends React.Component<IGameInfoProps> {
 
   render() {
 
-    const { hostUrl, viewers, progress, winner } = this.props;
+    const { hostUrl, viewers, progress, winner, connected } = this.props;
+    
+    if (!connected) return null;
     
     var winnerItem = null;
     
@@ -72,13 +76,14 @@ class GameInfoPanel extends React.Component<IGameInfoProps> {
 }
 
 function mapStateToProps(state: ITotalState, ownProps: {}): IGameInfoProps {
-  const { progress, hostUrl, viewers, winner } = state.gameInfo;
+  const { progress, hostUrl, viewers, winner, connected } = state.gameInfo;
   
   return { 
     progress: progress, 
     hostUrl: hostUrl, 
     viewers: viewers,
-    winner: winner
+    winner: winner,
+    connected: connected
   };
 }
 

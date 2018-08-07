@@ -9,6 +9,7 @@ import socket from '../../../network';
 import * as styles from './BoardPanel.css';
 
 interface IBoardProps {
+  connected: boolean;
   board: string[][];
   invitationCode: string;
   thisPlayerName?: string;
@@ -33,8 +34,10 @@ class BoardPanel extends React.Component<IBoardProps> {
   public render() {
     
     const { 
-      board, thisPlayerName, otherPlayerName
+      board, thisPlayerName, otherPlayerName, connected
     } = this.props;
+    
+    if (!connected) return null;
     
     // console.log(`This player = ${thisPlayerName}`);
     // console.log(`Other player = ${otherPlayerName}`);
@@ -87,7 +90,8 @@ function mapStateToProps(state: ITotalState, ownProps: {}): IBoardProps {
     board: state.board.board,
     thisPlayerName: state.players.thisPlayerName,
     otherPlayerName: state.players.otherPlayerName,
-    invitationCode: state.welcome.invitationCode
+    invitationCode: state.welcome.invitationCode,
+    connected: state.gameInfo.connected
   }
 }
 
