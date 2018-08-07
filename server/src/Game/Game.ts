@@ -48,7 +48,7 @@ export class Game {
     protected totalCells = 9;
 
     protected winner?: TicTacToe.IPlayer;
-    protected movingPlayer?: TicTacToe.IPlayer;
+    protected playerWhoJustMoved?: TicTacToe.IPlayer;
 
     /**
      * THe player who post "/create_game" is always going to be assigned to
@@ -65,6 +65,8 @@ export class Game {
 
     protected board?: Board;
 
+    protected firstMove = true;
+    
     public constructor(
         private io: SocketIO.Server,
         private logger?: IGameLogger
@@ -108,7 +110,7 @@ export class Game {
 
         var response: TicTacToe.IWinnerResponse = undefined;
 
-        if (this.movingPlayer && this.movingPlayer.name != "") {
+        if (this.playerWhoJustMoved && this.playerWhoJustMoved.name != "") {
             response = this.winner;
         }
 
@@ -271,6 +273,7 @@ export class Game {
 
     public move(data: any) {
 
+        // if there is winner or no game, no move can be made.
         if (this.winner || !this.board) {
             return;
         }
@@ -287,24 +290,26 @@ export class Game {
         // Make sure the user is authroized
         if (invitationCode == this.invitationCode) {
 
-            // if there is no moving player or if the moving player
-            // is the player who post "move"
-            if (!this.movingPlayer || this.movingPlayer.name == name) {
+            // if no player has just moved, or the player who just moved is 
+            // different from who is making a move now.
+            if (!this.playerWhoJustMoved || this.playerWhoJustMoved.name != name) {
 
-                // Authenticate
+                // Authenticate Password
                 if (this.hostPlayer
                     && name == this.hostPlayer.name
                     && password == this.hostPlayer.password) {
 
                     this.board.setAt(y, x, this.hostPlayer);
-                    this.movingPlayer = this.guestPlayer;
+                    this.playerWhoJustMoved = this.hostPlayer;
 
                 } else if (this.guestPlayer
                     && name == this.guestPlayer.name
                     && password == this.guestPlayer.password) {
 
                     this.board.setAt(y, x, this.guestPlayer);
-                    this.movingPlayer = this.hostPlayer;
+                    this.playerWhoJustMoved = this.guestPlayer;
+                } else {
+                    return;
                 }
 
                 // console.log(`websocket: 'move': ${moveData.name} at (y: ${y}, x: ${x};`);
@@ -323,10 +328,15 @@ export class Game {
                 this.logWebsocketEmit("new_move");
 
                 // Update moving
-
-                if (this.movingPlayer && this.movingPlayer.name != "") {
-                    this.io.emit("update_moving", this.movingPlayer);
-                    this.logWebsocketEmit("update_progress", `new moving = ${this.movingPlayer.name}`);
+                
+                var movingPlayer;
+                
+                if (this.hostPlayer == this.playerWhoJustMoved) movingPlayer = this.guestPlayer;
+                else movingPlayer = this.hostPlayer;
+                
+                if (movingPlayer && movingPlayer.name != "") {
+                    this.io.emit("update_moving", movingPlayer);
+                    this.logWebsocketEmit("update_progress", `new moving = ${movingPlayer!.name}`);
                 }
 
                 // Update progress
