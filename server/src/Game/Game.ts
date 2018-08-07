@@ -171,6 +171,7 @@ export class Game {
             success: false
         };
         
+                
         // Check if name is emtpy;
         if (body.name == "") {
             response.success = false;
@@ -178,7 +179,18 @@ export class Game {
             res.send(response);
             
             return;
+        
+        // Let returning player join the game
+        } else if ((body.name == this.playerA.name || body.name == this.playerB.name) 
+            && (body.invitationCode == this.invitationCode)) {
+            
+            response.success = true;
+            res.send(response);
+            
+            return;
+            
         }
+
         
         // Determine if the second player is already in the game
         if (this.playerB.name == "") {
