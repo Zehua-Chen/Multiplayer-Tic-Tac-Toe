@@ -188,8 +188,10 @@ export class Game {
             
             return;
         
-        // Let returning player join the game
-        } else if ((body.name == this.hostPlayer.name || body.name == this.guestPlayer.name) 
+        // Let returning player join the game 
+        // Retrurning player: player who has joined the game once.
+        } else if ((this.hostPlayer.name != "" && this.guestPlayer.name != "")
+            && (body.name == this.hostPlayer.name || body.name == this.guestPlayer.name) 
             && (body.invitationCode == this.invitationCode)) {
             
             response.success = true;

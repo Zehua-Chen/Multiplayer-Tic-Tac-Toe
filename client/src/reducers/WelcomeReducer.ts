@@ -6,7 +6,8 @@ import {
     UPDATE_ERROR_MESSAGE, 
     UPDATE_WELCOME_MODE, 
     UPDATE_PLAYER_NAME,
-    UPDATE_INVITATION_CODE
+    UPDATE_INVITATION_CODE,
+    UPDATE_PASSWORD
 } from '../actions/IWelcomeAction';
 
 /**
@@ -41,6 +42,11 @@ function welcomeReducer(
         {
             let { invitationCode, ...others } = state;
             return { invitationCode: action.payload, ...others };
+        }
+        case UPDATE_PASSWORD:
+        {
+            let { password, ...others } = state;
+            return { password: action.payload, ...others };
         }
         // IMPORTANT! return the state if no action performed
         default:

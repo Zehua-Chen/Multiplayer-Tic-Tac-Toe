@@ -40,7 +40,7 @@ class GameInfoPanel extends React.Component<IGameInfoProps> {
     
     if (winner) {
       winnerItem = (
-        <li className="list-group-item">
+        <li className="list-group-item bg-success text-white">
           { winner } wins!
         </li>
       );
@@ -55,6 +55,8 @@ class GameInfoPanel extends React.Component<IGameInfoProps> {
 
         <ul className="list-group list-group-flush">
 
+          {winnerItem}
+          
           <li className="list-group-item">
             Game hosted at <a href={hostUrl}>{hostUrl}</a>
           </li>
@@ -67,8 +69,6 @@ class GameInfoPanel extends React.Component<IGameInfoProps> {
             <label>Progress</label>
             <ProgressBar value={progress} />
           </li>
-          
-          {winnerItem}
         </ul>
       </div>
     );
