@@ -1,5 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
+import * as animation from '../SidePanel.animate.css';
 
 import PlayerList from './PlayersList';
 import PlayerListItem from './PlayersListItem';
@@ -25,7 +28,22 @@ interface IPlayersPanelProps {
  * - if the player is moving.
  */
 class PlayersPanel extends React.Component<IPlayersPanelProps> {
-  render() {
+  
+  public render() {
+    var pageContent = this.renderPageContent();
+    return (
+      <ReactCSSTransitionGroup 
+        transitionName={{ 
+          enter: animation.sidePanelEnter, enterActive: animation.sidePanelEnterActive,
+          leave: animation.sidePanelLeave, leaveActive: animation.sidePanelLeaveActive
+        }}
+        transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+        {pageContent}
+      </ReactCSSTransitionGroup>
+    );
+  }
+  
+  renderPageContent() {
     
     const { 
       firstPlayerName, secondPlayerName, movingPlayerName, connected

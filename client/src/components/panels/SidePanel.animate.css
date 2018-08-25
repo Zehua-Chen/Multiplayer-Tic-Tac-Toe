@@ -1,0 +1,17 @@
+.sidePanelEnter {
+  opacity: 0;
+}
+
+.sidePanelEnter.sidePanelEnterActive {
+  opacity: 1;
+  transition: 300ms ease-in-out;
+}
+
+.sidePanelLeave {
+  opacity: 1;
+}
+
+.sidePanelLeave.sidePanelLeaveActive {
+  opacity: 0;
+  transition: 300ms ease-in-out;
+}

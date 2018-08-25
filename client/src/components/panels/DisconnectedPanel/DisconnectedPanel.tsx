@@ -1,5 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
+import * as animation from '../SidePanel.animate.css';
+
 import { ITotalState } from '../../../states';
 
 interface IDisconnectedPanelProps {
@@ -7,7 +11,22 @@ interface IDisconnectedPanelProps {
 }
 
 class DisconnectedPanel extends React.Component<IDisconnectedPanelProps> {
+  
   render() {
+    var pageContent = this.renderPageContent();
+    return (
+      <ReactCSSTransitionGroup 
+        transitionName={{ 
+          enter: animation.sidePanelEnter, enterActive: animation.sidePanelEnterActive,
+          leave: animation.sidePanelLeave, leaveActive: animation.sidePanelLeaveActive
+        }}
+        transitionEnterTimeout={0} transitionLeaveTimeout={0}>
+        {pageContent}
+      </ReactCSSTransitionGroup>
+    );
+  }
+  
+  renderPageContent() {
     
     if (this.props.connected) return null;
     

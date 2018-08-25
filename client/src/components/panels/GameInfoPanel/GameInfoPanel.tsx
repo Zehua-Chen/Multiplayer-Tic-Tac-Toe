@@ -1,5 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
+import * as animation from '../SidePanel.animate.css';
 
 import ProgressBar from '../../ui-components/ProgressBar';
 
@@ -31,6 +34,20 @@ export interface IGameInfoProps {
 class GameInfoPanel extends React.Component<IGameInfoProps> {
 
   render() {
+    var pageContent = this.renderPageContent();
+    return (
+      <ReactCSSTransitionGroup 
+        transitionName={{ 
+          enter: animation.sidePanelEnter, enterActive: animation.sidePanelEnterActive,
+          leave: animation.sidePanelLeave, leaveActive: animation.sidePanelLeaveActive
+        }}
+        transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+        {pageContent}
+      </ReactCSSTransitionGroup>
+    );
+  }
+  
+  renderPageContent() {
 
     const { hostUrl, viewers, progress, winner, connected } = this.props;
     

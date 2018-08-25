@@ -1,9 +1,11 @@
 import React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import axios from 'axios';
 import { DispatchProp, connect } from 'react-redux';
 import * as TicTacToe from 'interfaces';
 
 import Password from '../../ui-components/Password';
+import * as animation from '../SidePanel.animate.css';
 
 import { 
   IWelcomeAction, 
@@ -210,8 +212,23 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
         }
       });
   }
-
+  
   public render() {
+    var pageContent = this.renderPageContent();
+    return (
+      <ReactCSSTransitionGroup 
+        transitionName={{ 
+          enter: animation.sidePanelEnter, enterActive: animation.sidePanelEnterActive,
+          leave: animation.sidePanelLeave, leaveActive: animation.sidePanelLeaveActive
+        }}
+        transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+        {pageContent}
+      </ReactCSSTransitionGroup>
+    );
+  }
+  
+
+  public renderPageContent() {
 
     const { mode, errorMessage, connected } = this.props;
     
