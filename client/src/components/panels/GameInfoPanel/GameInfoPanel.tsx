@@ -41,7 +41,7 @@ class GameInfoPanel extends React.Component<IGameInfoProps> {
           enter: animation.sidePanelEnter, enterActive: animation.sidePanelEnterActive,
           leave: animation.sidePanelLeave, leaveActive: animation.sidePanelLeaveActive
         }}
-        transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+        transitionEnterTimeout={300} transitionLeaveTimeout={1}>
         {pageContent}
       </ReactCSSTransitionGroup>
     );
@@ -64,7 +64,7 @@ class GameInfoPanel extends React.Component<IGameInfoProps> {
     }
 
     return (
-      <div className="card">
+      <div className="card" key={3}>
 
         <div className="card-header">
           <h5>Game Info</h5>

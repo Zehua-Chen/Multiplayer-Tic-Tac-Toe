@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-import * as animation from '../SidePanel.animate.css';
+import * as animation from './DisconnetedPanel.css';
 
 import { ITotalState } from '../../../states';
 
@@ -17,10 +17,10 @@ class DisconnectedPanel extends React.Component<IDisconnectedPanelProps> {
     return (
       <ReactCSSTransitionGroup 
         transitionName={{ 
-          enter: animation.sidePanelEnter, enterActive: animation.sidePanelEnterActive,
-          leave: animation.sidePanelLeave, leaveActive: animation.sidePanelLeaveActive
+          enter: animation.enter, enterActive: animation.enterActive,
+          leave: animation.leave, leaveActive: animation.leaveActive
         }}
-        transitionEnterTimeout={0} transitionLeaveTimeout={0}>
+        transitionEnterTimeout={300} transitionLeaveTimeout={1}>
         {pageContent}
       </ReactCSSTransitionGroup>
     );
@@ -31,7 +31,7 @@ class DisconnectedPanel extends React.Component<IDisconnectedPanelProps> {
     if (this.props.connected) return null;
     
     return (
-      <div className="mt-3 card bg-danger text-white">
+      <div key={4} className="mt-3 card bg-danger text-white">
         <div className="card-body">
           <h5 className="card-title">Disconnected</h5>
           <p>You are disconnected from the server. Your moves are blocked.</p>

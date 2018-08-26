@@ -37,7 +37,7 @@ class PlayersPanel extends React.Component<IPlayersPanelProps> {
           enter: animation.sidePanelEnter, enterActive: animation.sidePanelEnterActive,
           leave: animation.sidePanelLeave, leaveActive: animation.sidePanelLeaveActive
         }}
-        transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+        transitionEnterTimeout={300} transitionLeaveTimeout={1}>
         {pageContent}
       </ReactCSSTransitionGroup>
     );
@@ -74,7 +74,7 @@ class PlayersPanel extends React.Component<IPlayersPanelProps> {
     
     return (
 
-      <div className="card">
+      <div className="card" key={2}>
 
         <div className="card-header">
           <h5>Players</h5>
