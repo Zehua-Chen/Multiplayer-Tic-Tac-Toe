@@ -1,5 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
+import * as styles from './GameInfoPanel.css';
 
 import ProgressBar from '../../ui-components/ProgressBar';
 
@@ -31,6 +34,20 @@ export interface IGameInfoProps {
 class GameInfoPanel extends React.Component<IGameInfoProps> {
 
   render() {
+    var pageContent = this.renderPageContent();
+    return (
+      <ReactCSSTransitionGroup 
+        transitionName={{ 
+          enter: styles.enter, enterActive: styles.enterActive,
+          leave: styles.leave, leaveActive: styles.leaveActive
+        }}
+        transitionEnterTimeout={300} transitionLeaveTimeout={1}>
+        {pageContent}
+      </ReactCSSTransitionGroup>
+    );
+  }
+  
+  renderPageContent() {
 
     const { hostUrl, viewers, progress, winner, connected } = this.props;
     
@@ -47,7 +64,7 @@ class GameInfoPanel extends React.Component<IGameInfoProps> {
     }
 
     return (
-      <div className="card">
+      <div className="card" key={3}>
 
         <div className="card-header">
           <h5>Game Info</h5>

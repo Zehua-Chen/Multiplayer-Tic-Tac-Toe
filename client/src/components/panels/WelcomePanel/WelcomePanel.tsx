@@ -1,9 +1,11 @@
 import React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import axios from 'axios';
 import { DispatchProp, connect } from 'react-redux';
 import * as TicTacToe from 'interfaces';
 
 import Password from '../../ui-components/Password';
+import * as styles from './WelcomePanel.css';
 
 import { 
   IWelcomeAction, 
@@ -210,8 +212,23 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
         }
       });
   }
-
+  
   public render() {
+    var pageContent = this.renderPageContent();
+    return (
+      <ReactCSSTransitionGroup 
+        transitionName={{ 
+          enter: styles.enter, enterActive: styles.enterActive,
+          leave: styles.leave, leaveActive: styles.leaveActive,
+        }}
+        transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+        {pageContent}
+      </ReactCSSTransitionGroup>
+    );
+  }
+  
+
+  public renderPageContent() {
 
     const { mode, errorMessage, connected } = this.props;
     
@@ -273,7 +290,7 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
     }
 
     return (
-      <div className="card bg-dark text-white">
+      <div className="card bg-dark text-white" key={0}>
         <div className="card-header">
           <h5>Welcome</h5>
         </div>
