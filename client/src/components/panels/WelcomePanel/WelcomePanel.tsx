@@ -5,7 +5,7 @@ import { DispatchProp, connect } from 'react-redux';
 import * as TicTacToe from 'interfaces';
 
 import Password from '../../ui-components/Password';
-import * as animation from '../SidePanel.animate.css';
+import * as styles from './WelcomePanel.css';
 
 import { 
   IWelcomeAction, 
@@ -218,8 +218,8 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
     return (
       <ReactCSSTransitionGroup 
         transitionName={{ 
-          enter: animation.sidePanelEnter, enterActive: animation.sidePanelEnterActive,
-          leave: animation.sidePanelLeave, leaveActive: animation.sidePanelLeaveActive
+          enter: styles.enter, enterActive: styles.enterActive,
+          leave: styles.leave, leaveActive: styles.leaveActive
         }}
         transitionEnterTimeout={300} transitionLeaveTimeout={300}>
         {pageContent}
