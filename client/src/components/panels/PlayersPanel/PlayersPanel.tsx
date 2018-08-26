@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-import * as animation from '../SidePanel.animate.css';
+import * as styles from './PlayersPanel.css';
 
 import PlayerList from './PlayersList';
 import PlayerListItem from './PlayersListItem';
@@ -34,8 +34,8 @@ class PlayersPanel extends React.Component<IPlayersPanelProps> {
     return (
       <ReactCSSTransitionGroup 
         transitionName={{ 
-          enter: animation.sidePanelEnter, enterActive: animation.sidePanelEnterActive,
-          leave: animation.sidePanelLeave, leaveActive: animation.sidePanelLeaveActive
+          enter: styles.enter, enterActive: styles.enterActive,
+          leave: styles.leave, leaveActive: styles.leaveActive
         }}
         transitionEnterTimeout={300} transitionLeaveTimeout={1}>
         {pageContent}

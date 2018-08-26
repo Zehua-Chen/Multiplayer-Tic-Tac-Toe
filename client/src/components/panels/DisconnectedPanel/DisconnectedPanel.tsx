@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-import * as animation from './DisconnetedPanel.css';
+import * as styles from './DisconnetedPanel.css';
 
 import { ITotalState } from '../../../states';
 
@@ -17,8 +17,8 @@ class DisconnectedPanel extends React.Component<IDisconnectedPanelProps> {
     return (
       <ReactCSSTransitionGroup 
         transitionName={{ 
-          enter: animation.enter, enterActive: animation.enterActive,
-          leave: animation.leave, leaveActive: animation.leaveActive
+          enter: styles.enter, enterActive: styles.enterActive,
+          leave: styles.leave, leaveActive: styles.leaveActive
         }}
         transitionEnterTimeout={300} transitionLeaveTimeout={1}>
         {pageContent}

@@ -13,5 +13,5 @@
 
 .leave.leaveActive {
   opacity: 0;
-  transition: 300ms ease-in-out;
+  transition: 0ms ease-in-out;
 }

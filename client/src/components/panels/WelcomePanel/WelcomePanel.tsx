@@ -219,7 +219,7 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
       <ReactCSSTransitionGroup 
         transitionName={{ 
           enter: styles.enter, enterActive: styles.enterActive,
-          leave: styles.leave, leaveActive: styles.leaveActive
+          leave: styles.leave, leaveActive: styles.leaveActive,
         }}
         transitionEnterTimeout={300} transitionLeaveTimeout={300}>
         {pageContent}
@@ -290,7 +290,7 @@ class WelcomePanel extends React.Component<IWelcomePanelProps & DispatchProp, IW
     }
 
     return (
-      <div className="card bg-dark text-white">
+      <div className="card bg-dark text-white" key={0}>
         <div className="card-header">
           <h5>Welcome</h5>
         </div>
