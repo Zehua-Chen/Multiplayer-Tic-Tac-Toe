@@ -1,5 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
+import * as styles from './PlayersPanel.css';
 
 import PlayerList from './PlayersList';
 import PlayerListItem from './PlayersListItem';
@@ -25,7 +28,22 @@ interface IPlayersPanelProps {
  * - if the player is moving.
  */
 class PlayersPanel extends React.Component<IPlayersPanelProps> {
-  render() {
+  
+  public render() {
+    var pageContent = this.renderPageContent();
+    return (
+      <ReactCSSTransitionGroup 
+        transitionName={{ 
+          enter: styles.enter, enterActive: styles.enterActive,
+          leave: styles.leave, leaveActive: styles.leaveActive
+        }}
+        transitionEnterTimeout={300} transitionLeaveTimeout={1}>
+        {pageContent}
+      </ReactCSSTransitionGroup>
+    );
+  }
+  
+  renderPageContent() {
     
     const { 
       firstPlayerName, secondPlayerName, movingPlayerName, connected
@@ -56,7 +74,7 @@ class PlayersPanel extends React.Component<IPlayersPanelProps> {
     
     return (
 
-      <div className="card">
+      <div className="card" key={2}>
 
         <div className="card-header">
           <h5>Players</h5>
