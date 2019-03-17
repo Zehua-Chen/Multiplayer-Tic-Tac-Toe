@@ -1,27 +1,28 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import withStyles from 'react-jss';
 import * as TicTacToe from 'interfaces';
-
 import Square from './Square';
-import { ITotalState } from '../../../states';
 import socket from '../../../network';
+import mapStateToProps from './mapStateToProps';
 
-import * as styles from './BoardPanel.css';
+const style = {
+  board: {
+    margin: "auto",
+  }
+};
 
-interface IBoardProps {
-  board: string[][];
-  invitationCode: string;
-  password: string;
-  thisPlayerName?: string;
-  otherPlayerName?: string;
-}
-
-class BoardPanel extends React.Component<IBoardProps> {
+class BoardPanel extends React.Component {
   
-  clicked(y: number, x: number) {
+  /**
+   * Click button
+   * @param {number} y 
+   * @param {number} x 
+   */
+  clicked(y, x) {
     
     if (this.props.thisPlayerName) {
-      var moveRequest: TicTacToe.IMoveRequest = {
+      var moveRequest = {
         name: this.props.thisPlayerName,
         password: this.props.password,
         invitationCode: this.props.invitationCode,
@@ -32,10 +33,10 @@ class BoardPanel extends React.Component<IBoardProps> {
     }
   }
   
-  public render() {
+  render() {
     
     const { 
-      board, thisPlayerName, otherPlayerName
+      board, thisPlayerName, otherPlayerName, classes
     } = this.props;
     
     // console.log(`This player = ${thisPlayerName}`);
@@ -75,7 +76,7 @@ class BoardPanel extends React.Component<IBoardProps> {
     });
     
     return (
-      <table className={styles.board}>
+      <table className={classes.board}>
         <tbody>
           {boardContent}
         </tbody>
@@ -84,14 +85,6 @@ class BoardPanel extends React.Component<IBoardProps> {
   }
 }
 
-function mapStateToProps(state: ITotalState, ownProps: {}): IBoardProps {
-  return { 
-    board: state.board.board,
-    thisPlayerName: state.players.thisPlayerName,
-    otherPlayerName: state.players.otherPlayerName,
-    invitationCode: state.welcome.invitationCode,
-    password: state.welcome.password
-  }
-}
-
-export default connect(mapStateToProps)(BoardPanel);
+export default connect(mapStateToProps)(
+  withStyles(style)(BoardPanel)
+);
