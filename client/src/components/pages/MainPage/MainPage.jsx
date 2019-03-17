@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import withStyles from 'react-jss';
 
 import { 
   GameInfoPanel, 
@@ -10,21 +11,42 @@ import {
 } from '../../panels';
 import { WebSocketListener } from '../../blank-components';
 
-import * as styles from './MainPage.css';
+
+const style = {
+  fullHeight: {
+    height: "100vh",
+    
+    "@media (max-width: 768px)": {
+      height: "auto"
+    }
+  },
+  
+  sidebar: {
+    height: "100vh",
+    overflow: "scroll",
+    
+    "@media (max-width: 768px)": {
+      height: "auto",
+      overflow: "initial"
+    }
+  },
+};
 
 class MainPage extends React.Component {
   render() {
-
+    
+    const { classes } = this.props;
+    
     return (
       <div>
         
         <WebSocketListener />
 
-        <div className={`container-fluid ${styles.fullHeight}`}>
+        <div className={`container-fluid ${classes.fullHeight}`}>
 
           {/* Main Content */}
 
-          <div className={`row ${styles.fullHeight}`}>
+          <div className={`row ${classes.fullHeight}`}>
 
             {/* Board */}
 
@@ -34,7 +56,7 @@ class MainPage extends React.Component {
 
             {/* ScorePanel */}
 
-            <div className={`col-md-4 ${styles.sidebar}`}>
+            <div className={`col-md-4 ${classes.sidebar}`}>
             
               <div className="mt-3">
                 <DisconnectedPanel />
@@ -69,4 +91,4 @@ class MainPage extends React.Component {
   }
 }
 
-export default MainPage;
+export default withStyles(style)(MainPage);

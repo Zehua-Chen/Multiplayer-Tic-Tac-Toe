@@ -1,9 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-import * as styles from './AboutPage.css';
+import withStyles from 'react-jss';
 
 const linkToGithub = "https://github.com/Zehua-Chen/Multiplayer-Tic-Tac-Toe/";
+
+const style = {
+  fullHeight: {
+    minHeight: "100vh"
+  },
+  
+  steps: {
+    listStyleType: "decimal"
+  },  
+};
 
 /**
  * A page that shows with what dependencies the game is made.
@@ -11,9 +20,11 @@ const linkToGithub = "https://github.com/Zehua-Chen/Multiplayer-Tic-Tac-Toe/";
 class AboutPage extends React.Component {
 
   render() {
+    
+    const { classes } = this.props;
 
     return (
-      <div className={`${styles.fullHeight} bg-light`}>
+      <div className={`${classes.fullHeight} bg-light`}>
         {/* 
         Has to use navbar-expand to force navitems to be put horizontally
         no matter the size of the view port
@@ -66,7 +77,7 @@ class AboutPage extends React.Component {
           </div>
           <div className="row">
             <div className="col">
-              <ul className={styles.steps}>
+              <ul className={classes.steps}>
                 <li>Download Repository (<code>MIT License</code>)</li>
                 <li>Navigate to <code>./server</code> folder and run <code>npm install</code>;</li>
                 <li>Navigate to <code>./client</code> folder and run <code>npm install</code>;</li>
@@ -91,4 +102,4 @@ class AboutPage extends React.Component {
   }
 }
 
-export default AboutPage;
+export default withStyles(style)(AboutPage);
