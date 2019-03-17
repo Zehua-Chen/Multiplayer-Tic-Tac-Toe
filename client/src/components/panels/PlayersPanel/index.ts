@@ -1,3 +1,3 @@
-import PlayersPanel from './PlayersPanel';
+import PlayersPanel from "./PlayersPanel";
 
 export default PlayersPanel;

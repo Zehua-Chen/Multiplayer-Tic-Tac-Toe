@@ -1,3 +1,3 @@
-import PlayersListItem from './PlayersListItem';
+import PlayersListItem from "./PlayersListItem";
 
 export default PlayersListItem;

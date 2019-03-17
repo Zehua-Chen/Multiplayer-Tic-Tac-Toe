@@ -1,3 +1,3 @@
-import GameInfoPanel from './GameInfoPanel';
+import GameInfoPanel from "./GameInfoPanel";
 
 export default GameInfoPanel;
