@@ -1,7 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import withStyles from "react-jss";
-import * as TicTacToe from "interfaces";
 import Square from "./Square";
 import socket from "../../../network";
 import mapStateToProps from "./mapStateToProps";
@@ -46,11 +45,11 @@ class BoardPanel extends React.Component {
 
         // Find the right configuration of Square to be wrapped
         // inside "td" element
-        if (cell == "?") {
+        if (cell === "?") {
           square = <Square onClick={onClickHandler} />;
-        } else if (thisPlayerName && cell == thisPlayerName) {
+        } else if (thisPlayerName && cell === thisPlayerName) {
           square = <Square player="this" />;
-        } else if (otherPlayerName && cell == otherPlayerName) {
+        } else if (otherPlayerName && cell === otherPlayerName) {
           square = <Square player="other" />;
         }
 

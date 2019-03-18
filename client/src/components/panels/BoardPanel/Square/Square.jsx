@@ -44,9 +44,9 @@ class Square extends React.Component {
     var className = classes.unset;
 
     if (player) {
-      if (player == "this") {
+      if (player === "this") {
         className = `${classes.set} bg-primary`;
-      } else if (player == "other") {
+      } else if (player === "other") {
         className = `${classes.set} bg-danger`;
       }
     }

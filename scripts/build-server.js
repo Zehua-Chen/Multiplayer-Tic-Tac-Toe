@@ -25,4 +25,9 @@ fs.writeFileSync(outConfigDir, JSON.stringify(serverConfig));
 
 // Build server
 process.chdir(serverDir);
-child.spawn("npm", ["run", "build"]);
+
+if (!fs.existsSync(path.join("..", "build"))) {
+    fs.mkdirSync(path.join("..", "build"));
+}
+
+child.spawnSync("npm", ["run", "build"]);

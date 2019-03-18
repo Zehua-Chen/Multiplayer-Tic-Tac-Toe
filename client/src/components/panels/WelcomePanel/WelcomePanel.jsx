@@ -1,25 +1,20 @@
 import React from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import axios from "axios";
-import { DispatchProp, connect } from "react-redux";
+import { connect } from "react-redux";
 import withStyles from "react-jss";
 
 import Password from "../../ui-components/Password";
 import mapStateToProps from "./mapStateToProps";
-import * as styles from "./WelcomePanel.css";
 
 import {
-  IWelcomeAction,
   UPDATE_WELCOME_MODE,
   UPDATE_ERROR_MESSAGE,
   UPDATE_INVITATION_CODE,
   UPDATE_PLAYER_NAME,
   UPDATE_PASSWORD
 } from "../../../actions/IWelcomeAction";
-import {
-  IPlayersAction,
-  UPDATE_PLAYER_NAMES_LIST
-} from "../../../actions/IPlayersAction";
+import { UPDATE_PLAYER_NAMES_LIST } from "../../../actions/IPlayersAction";
 
 const style = {
   enter: {
@@ -72,13 +67,13 @@ class WelcomePanel extends React.Component {
         var playerB = players[1];
 
         if (playerA) {
-          if (playerA.name != thisPlayerName) {
+          if (playerA.name !== thisPlayerName) {
             otherPlayerName = playerA.name;
           }
         }
 
         if (playerB) {
-          if (playerB.name != thisPlayerName) {
+          if (playerB.name !== thisPlayerName) {
             otherPlayerName = playerB.name;
           }
         }
@@ -209,9 +204,9 @@ class WelcomePanel extends React.Component {
       <ReactCSSTransitionGroup
         transitionName={{
           enter: classes.enter,
-          enterActive: `${classes.enter} ${classes.enterActive}`,
+          enterActive: classes.enterActive,
           leave: classes.leave,
-          leaveActive: `${classes.leave} ${classes.leaveActive}`
+          leaveActive: classes.leaveActive
         }}
         transitionEnterTimeout={300}
         transitionLeaveTimeout={300}
@@ -228,7 +223,7 @@ class WelcomePanel extends React.Component {
 
     // Hidden mode, return null to get rid of the welcome panel.
 
-    if (mode == "hidden") {
+    if (mode === "hidden") {
       return null;
     }
 
@@ -242,7 +237,7 @@ class WelcomePanel extends React.Component {
 
     var actions = <div />;
 
-    if (mode == "create") {
+    if (mode === "create") {
       actions = (
         <div>
           <button
@@ -259,7 +254,7 @@ class WelcomePanel extends React.Component {
           </button>
         </div>
       );
-    } else if (mode == "join") {
+    } else if (mode === "join") {
       actions = (
         <div>
           <button

@@ -1,9 +1,7 @@
 const child = require('child_process');
 
-child.spawn("node", ["build-server.js"]).stdout.on("data", function(data) {
-    console.log(data.toString());
-});
+console.log("build client");
+child.spawnSync("node", ["build-client.js"]);
 
-child.spawn("node", ["build-client.js"]).stdout.on("data", function(data) {
-    console.log(data.toString());
-});
+console.log("build server");
+child.spawnSync("node", ["build-server.js"]);

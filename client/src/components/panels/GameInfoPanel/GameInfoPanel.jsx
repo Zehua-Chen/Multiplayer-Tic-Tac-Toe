@@ -37,9 +37,9 @@ class GameInfoPanel extends React.Component {
       <ReactCSSTransitionGroup
         transitionName={{
           enter: classes.enter,
-          enterActive: `${classes.enter} ${classes.enterActive}`,
+          enterActive: classes.enterActive,
           leave: classes.leave,
-          leaveActive: `${classes.leave} ${classes.leaveActive}`
+          leaveActive: classes.leaveActive
         }}
         transitionEnterTimeout={300}
         transitionLeaveTimeout={1}

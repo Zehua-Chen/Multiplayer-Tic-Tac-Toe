@@ -41,9 +41,9 @@ class PlayersPanel extends React.Component {
       <ReactCSSTransitionGroup
         transitionName={{
           enter: classes.enter,
-          enterActive: `${classes.enter} ${classes.enterActive}`,
+          enterActive: classes.enterActive,
           leave: classes.leave,
-          leaveActive: `${classes.enter} ${classes.leaveActive}`
+          leaveActive: classes.leaveActive
         }}
         transitionEnterTimeout={300}
         transitionLeaveTimeout={1}
@@ -69,7 +69,7 @@ class PlayersPanel extends React.Component {
     var secondPlayer = <PlayerListItem />;
 
     if (firstPlayerName) {
-      if (firstPlayerName == movingPlayerName) {
+      if (firstPlayerName === movingPlayerName) {
         firstPlayer = <PlayerListItem playerName={firstPlayerName} moving />;
       } else {
         firstPlayer = <PlayerListItem playerName={firstPlayerName} />;
@@ -77,7 +77,7 @@ class PlayersPanel extends React.Component {
     }
 
     if (secondPlayerName) {
-      if (secondPlayerName == movingPlayerName) {
+      if (secondPlayerName === movingPlayerName) {
         secondPlayer = (
           <PlayerListItem playerName={secondPlayerName} moving hostile />
         );
