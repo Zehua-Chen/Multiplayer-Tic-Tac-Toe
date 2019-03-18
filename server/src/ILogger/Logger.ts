@@ -1,7 +1,7 @@
-import { IGameLogger } from "./Game";
-import { Board } from "./Board";
+import IGameLogger from "./ILogger";
+import Board from "../Board";
 
-export class Logger implements IGameLogger {
+class Logger implements IGameLogger {
   get(path: string, content?: any): void {
     if (content) {
       console.log(`(get): '${path}', ${content};`);
@@ -42,3 +42,5 @@ export class Logger implements IGameLogger {
     console.log(content);
   }
 }
+
+export default Logger;

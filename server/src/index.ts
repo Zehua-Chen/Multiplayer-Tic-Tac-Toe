@@ -6,7 +6,8 @@ import * as http from "http";
 import * as path from "path";
 
 import { findIpv4 } from "./util";
-import { Game, Logger } from "./Game";
+import Controller from "./Controller";
+import { Logger } from './ILogger';
 
 /* Constants */
 
@@ -26,7 +27,7 @@ app.use(bodyParser.json());
 const server = http.createServer(app);
 const io = socketIO(server, { serveClient: false });
 
-var game = new Game(io, new Logger());
+var game = new Controller(io, new Logger());
 
 /* Server */
 

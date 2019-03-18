@@ -5,7 +5,7 @@ import * as TicTacToe from "interfaces";
  *
  * 2D array convention: board[y][x]
  */
-export class Board {
+class Board {
   /**
    * board holding the current state of the board
    */
@@ -303,3 +303,5 @@ export class Board {
     return player;
   }
 }
+
+export default Board;
