@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface IBoardProps {
   board: string[][];
@@ -8,8 +8,6 @@ interface IBoardProps {
   otherPlayerName?: string;
 }
 
-declare class BoardPanel extends React.Component<IBoardProps> {
-  
-}
+declare class BoardPanel extends React.Component<IBoardProps> {}
 
 export default BoardPanel;

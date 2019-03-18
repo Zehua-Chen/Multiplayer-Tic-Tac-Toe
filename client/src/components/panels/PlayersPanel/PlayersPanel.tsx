@@ -1,17 +1,17 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import React from "react";
+import { connect } from "react-redux";
+import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 
-import * as styles from './PlayersPanel.css';
+import * as styles from "./PlayersPanel.css";
 
-import PlayerList from './PlayersList';
-import PlayerListItem from './PlayersListItem';
-import { ITotalState } from '../../../states';
+import PlayerList from "./PlayersList";
+import PlayerListItem from "./PlayersListItem";
+import { ITotalState } from "../../../states";
 
 /**
  * Props used with connect(mapStateToProps)(Component)
  * to pass information from redux-managed state to the component.
- * 
+ *
  * THIS PROP IS NOT AVAILABLE IN OTHER COMPONENTS
  */
 interface IPlayersPanelProps {
@@ -28,54 +28,59 @@ interface IPlayersPanelProps {
  * - if the player is moving.
  */
 class PlayersPanel extends React.Component<IPlayersPanelProps> {
-  
   public render() {
     var pageContent = this.renderPageContent();
     return (
-      <ReactCSSTransitionGroup 
-        transitionName={{ 
-          enter: styles.enter, enterActive: styles.enterActive,
-          leave: styles.leave, leaveActive: styles.leaveActive
+      <ReactCSSTransitionGroup
+        transitionName={{
+          enter: styles.enter,
+          enterActive: styles.enterActive,
+          leave: styles.leave,
+          leaveActive: styles.leaveActive
         }}
-        transitionEnterTimeout={300} transitionLeaveTimeout={1}>
+        transitionEnterTimeout={300}
+        transitionLeaveTimeout={1}
+      >
         {pageContent}
       </ReactCSSTransitionGroup>
     );
   }
-  
+
   renderPageContent() {
-    
-    const { 
-      firstPlayerName, secondPlayerName, movingPlayerName, connected
+    const {
+      firstPlayerName,
+      secondPlayerName,
+      movingPlayerName,
+      connected
     } = this.props;
-    
+
     if (!connected) return null;
-    
+
     // Determine what to show with the player list items
-    
-    var firstPlayer = <PlayerListItem />
-    var secondPlayer = <PlayerListItem />
-    
+
+    var firstPlayer = <PlayerListItem />;
+    var secondPlayer = <PlayerListItem />;
+
     if (firstPlayerName) {
       if (firstPlayerName == movingPlayerName) {
-        firstPlayer = <PlayerListItem playerName={firstPlayerName} moving/>
+        firstPlayer = <PlayerListItem playerName={firstPlayerName} moving />;
       } else {
-        firstPlayer = <PlayerListItem playerName={firstPlayerName}/>
+        firstPlayer = <PlayerListItem playerName={firstPlayerName} />;
       }
     }
-    
+
     if (secondPlayerName) {
       if (secondPlayerName == movingPlayerName) {
-        secondPlayer = <PlayerListItem playerName={secondPlayerName} moving hostile/>
+        secondPlayer = (
+          <PlayerListItem playerName={secondPlayerName} moving hostile />
+        );
       } else {
-        secondPlayer = <PlayerListItem playerName={secondPlayerName} hostile/>
+        secondPlayer = <PlayerListItem playerName={secondPlayerName} hostile />;
       }
     }
-    
+
     return (
-
       <div className="card" key={2}>
-
         <div className="card-header">
           <h5>Players</h5>
         </div>
@@ -84,14 +89,13 @@ class PlayersPanel extends React.Component<IPlayersPanelProps> {
           {firstPlayer}
           {secondPlayer}
         </PlayerList>
-
       </div>
     );
   }
 }
 
 /**
- * Function that transfer information from the state managed by redux to 
+ * Function that transfer information from the state managed by redux to
  * PlayersPanel component
  * @param state the total state managed by redux
  * @param ownProps props available to other components
@@ -99,15 +103,15 @@ class PlayersPanel extends React.Component<IPlayersPanelProps> {
  */
 function mapStateToProps(state: ITotalState, ownProps: {}): IPlayersPanelProps {
   const { thisPlayerName, otherPlayerName, movingPlayerName } = state.players;
-  
+
   // console.log(state.players);
-  
+
   return {
     firstPlayerName: thisPlayerName,
     secondPlayerName: otherPlayerName,
     movingPlayerName: movingPlayerName,
     connected: state.gameInfo.connected
-  }
+  };
 }
 
 export default connect(mapStateToProps)(PlayersPanel);

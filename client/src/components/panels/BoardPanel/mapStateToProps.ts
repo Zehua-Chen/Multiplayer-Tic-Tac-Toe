@@ -1,4 +1,4 @@
-import { ITotalState } from '../../../states';
+import { ITotalState } from "../../../states";
 
 interface IBoardProps {
   board: string[][];
@@ -9,13 +9,13 @@ interface IBoardProps {
 }
 
 function mapStateToProps(state: ITotalState, ownProps: {}): IBoardProps {
-  return { 
+  return {
     board: state.board.board,
     thisPlayerName: state.players.thisPlayerName,
     otherPlayerName: state.players.otherPlayerName,
     invitationCode: state.welcome.invitationCode,
     password: state.welcome.password
-  }
+  };
 }
 
 export default mapStateToProps;

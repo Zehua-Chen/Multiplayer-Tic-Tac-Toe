@@ -1,5 +1,5 @@
-import React from 'react';
-import withStyles from 'react-jss';
+import React from "react";
+import withStyles from "react-jss";
 
 const style = {
   unset: {
@@ -11,41 +11,38 @@ const style = {
     borderRadius: 25,
     transition: [
       ["border-radius", "0.2s", "ease-in-out"],
-      ["background", "0.2s", "ease-in-out"],
+      ["background", "0.2s", "ease-in-out"]
     ],
-    
+
     "&:hover": {
       background: "#343a40",
-      borderRadius: 5,
+      borderRadius: 5
     },
-    
+
     "&:focus": {
-      outline: "none !important",
-    },
+      outline: "none !important"
+    }
   },
-  
+
   set: {
     height: 50,
     width: 50,
     border: "transparent",
     borderRadius: 5,
     color: "white",
-    
+
     "&:focus": {
-      outline: "none !important",
+      outline: "none !important"
     }
   }
-
 };
 
 class Square extends React.Component {
-  
   render() {
-    
     const { player, classes, ...others } = this.props;
-    
+
     var className = classes.unset;
-    
+
     if (player) {
       if (player == "this") {
         className = `${classes.set} bg-primary`;
@@ -53,13 +50,8 @@ class Square extends React.Component {
         className = `${classes.set} bg-danger`;
       }
     }
-    
-    return (
-      <button 
-        className={className} 
-        {...others}></button>
-    );
-    
+
+    return <button className={className} {...others} />;
   }
 }
 

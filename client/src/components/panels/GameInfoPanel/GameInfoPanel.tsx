@@ -1,12 +1,12 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import React from "react";
+import { connect } from "react-redux";
+import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 
-import * as styles from './GameInfoPanel.css';
+import * as styles from "./GameInfoPanel.css";
 
-import ProgressBar from '../../ui-components/ProgressBar';
+import ProgressBar from "../../ui-components/ProgressBar";
 
-import { ITotalState } from '../../../states';
+import { ITotalState } from "../../../states";
 
 export interface IGameInfoProps {
   /**
@@ -21,9 +21,9 @@ export interface IGameInfoProps {
    * Progress of the game, out of 100.
    */
   progress: number;
-  
+
   winner?: string;
-  
+
   connected: boolean;
 }
 
@@ -32,48 +32,48 @@ export interface IGameInfoProps {
  * the amount of people watching the game.
  */
 class GameInfoPanel extends React.Component<IGameInfoProps> {
-
   render() {
     var pageContent = this.renderPageContent();
     return (
-      <ReactCSSTransitionGroup 
-        transitionName={{ 
-          enter: styles.enter, enterActive: styles.enterActive,
-          leave: styles.leave, leaveActive: styles.leaveActive
+      <ReactCSSTransitionGroup
+        transitionName={{
+          enter: styles.enter,
+          enterActive: styles.enterActive,
+          leave: styles.leave,
+          leaveActive: styles.leaveActive
         }}
-        transitionEnterTimeout={300} transitionLeaveTimeout={1}>
+        transitionEnterTimeout={300}
+        transitionLeaveTimeout={1}
+      >
         {pageContent}
       </ReactCSSTransitionGroup>
     );
   }
-  
-  renderPageContent() {
 
+  renderPageContent() {
     const { hostUrl, viewers, progress, winner, connected } = this.props;
-    
+
     if (!connected) return null;
-    
+
     var winnerItem = null;
-    
+
     if (winner) {
       winnerItem = (
         <li className="list-group-item bg-success text-white">
-          { winner } wins!
+          {winner} wins!
         </li>
       );
     }
 
     return (
       <div className="card" key={3}>
-
         <div className="card-header">
           <h5>Game Info</h5>
         </div>
 
         <ul className="list-group list-group-flush">
-
           {winnerItem}
-          
+
           <li className="list-group-item">
             Game hosted at <a href={hostUrl}>{hostUrl}</a>
           </li>
@@ -94,10 +94,10 @@ class GameInfoPanel extends React.Component<IGameInfoProps> {
 
 function mapStateToProps(state: ITotalState, ownProps: {}): IGameInfoProps {
   const { progress, hostUrl, viewers, winner, connected } = state.gameInfo;
-  
-  return { 
-    progress: progress, 
-    hostUrl: hostUrl, 
+
+  return {
+    progress: progress,
+    hostUrl: hostUrl,
     viewers: viewers,
     winner: winner,
     connected: connected
