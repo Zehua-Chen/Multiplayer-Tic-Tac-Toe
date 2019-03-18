@@ -61,22 +61,18 @@ function buildServer(serverPath, outputDir) {
   // if server executable is not there
   if (!fs.existsSync(serverExecutable)) {
     // Build the server
-    console.log("building server executable");
+    console.log("building server executable: " + serverExecutable);
     compileServerExecutable(serverExecutable);
-  
-    process.chdir(parentDir);
-    return;
   }
   
   // if server config file is not there
   if (!fs.existsSync(serverConfig)) {
     // Generate project config file
-    console.log("making server configuration file")
+    console.log("making server configuration file: " + serverConfig)
     var configFile = makeConfigFile(serverPath);
     fs.writeFileSync(path.join(outputDir, "package.json"), configFile);
-    
-    process.chdir(parentDir);
-    return;
   }
+  
+  process.chdir(parentDir);
 }
 module.exports = buildServer;

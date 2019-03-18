@@ -15,16 +15,14 @@ function buildClient(clientPath, outputDir) {
   
   var clientOutputDir = path.join(outputDir, "public")
   
-  if (fs.existsSync(clientOutputDir)) {
-    process.chdir(parentDir);
-    return;
+  // if client folder does not exist
+  if (!fs.existsSync(clientOutputDir)) {
+    console.log("building client :" + clientOutputDir);
+    // run build script
+    childProc.spawnSync("npm", ["run", "build"]);
+    // move build artifact to public folder in build dir
+    fs.renameSync(path.join(".", "build"), clientOutputDir);
   }
-  
-  console.log("building client " + clientOutputDir);
-  // run build script
-  childProc.spawnSync("npm", ["run", "build"]);
-  // move build artifact to public folder in build dir
-  fs.renameSync(path.join(".", "build"), clientOutputDir);
   
   // Change to root project directory
   process.chdir(parentDir);
