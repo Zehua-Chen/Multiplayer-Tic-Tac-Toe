@@ -1,7 +1,7 @@
-// const child = require('child_process');
-// const process = require('process');
-// const path = require('path');
-// const fs = require('fs');
+const childProc = require('child_process');
+const process = require('process');
+const path = require('path');
+const fs = require('fs');
 
 // const serverDir = path.resolve(__dirname, path.join("..", "server"));
 // const configPath = path.join(serverDir, "package.json");
@@ -10,14 +10,6 @@
 
 // const dependencies = require(configPath).dependencies;
 
-// var serverConfig = {
-//     name: "server",
-//     version: "1.0.0",
-//     scripts: {
-//         start: "node server.js"
-//     },
-//     dependencies: dependencies
-// };
 
 // const outConfigDir = path.resolve(path.join("..", "build", "package.json"));
 // fs.writeFileSync(outConfigDir, JSON.stringify(serverConfig));
@@ -31,6 +23,60 @@
 // }
 
 // child.spawnSync("npm", ["run", "build"]);
-module.exports = function(serverPath, outputDir) {
-  console.log("building server");
+
+function makeConfigFile(serverPath) {
+  var serverConfig = require(path.join(serverPath, "package.json"));
+  var config = {
+    name: "server",
+    version: "1.0.0",
+    scripts: {
+        start: "node server.js"
+    },
+    dependencies: serverConfig.dependencies
+  };
+  
+  return JSON.stringify(config);
 }
+
+function compileServerExecutable(outputFile) {
+  // Build server index.ts
+  childProc.spawnSync("npm", ["run", "build"]);
+  // Move server.js to output dir
+  fs.renameSync(path.join(".", "server.js"), outputFile);
+}
+
+/**
+ * 
+ * @param {string} serverPath 
+ * @param {string} outputDir 
+ */
+function buildServer(serverPath, outputDir) {
+  var parentDir = process.cwd();
+  // Move to the right working directory
+  process.chdir(serverPath);
+  
+  var serverExecutable = path.join(outputDir, "server.js");
+  var serverConfig = path.join(outputDir, "package.json");
+  
+  // if server executable is not there
+  if (!fs.existsSync(serverExecutable)) {
+    // Build the server
+    console.log("building server executable");
+    compileServerExecutable(serverExecutable);
+  
+    process.chdir(parentDir);
+    return;
+  }
+  
+  // if server config file is not there
+  if (!fs.existsSync(serverConfig)) {
+    // Generate project config file
+    console.log("making server configuration file")
+    var configFile = makeConfigFile(serverPath);
+    fs.writeFileSync(path.join(outputDir, "package.json"), configFile);
+    
+    process.chdir(parentDir);
+    return;
+  }
+}
+module.exports = buildServer;

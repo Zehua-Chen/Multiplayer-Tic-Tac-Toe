@@ -24,5 +24,5 @@ if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir);
 }
 
-buildClient(path.join(".", "client"), outputDir);
-buildServer(path.join(".", "server"), outputDir);
+buildClient(path.resolve(path.join(".", "client")), outputDir);
+buildServer(path.resolve(path.join(".", "server")), outputDir);

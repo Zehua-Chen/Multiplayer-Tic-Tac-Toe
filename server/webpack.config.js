@@ -3,7 +3,7 @@ const path = require("path");
 // Used to ignore all modules in ./node_modules
 const nodeExternals = require("webpack-node-externals");
 
-var outDir = path.join("..", "build");
+var outDir = path.join(".");
 var mainDir = path.join(".", "src", "index.ts");
 
 module.exports = {
