@@ -1,46 +1,45 @@
 import React from "react";
 import { connect } from "react-redux";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
-
-import * as styles from "./GameInfoPanel.css";
-
+import withStyles from "react-jss";
 import ProgressBar from "../../ui-components/ProgressBar";
+import mapStateToProps from "./mapStateToProps";
 
-import { ITotalState } from "../../../states";
+const style = {
+  enter: {
+    opacity: 0
+  },
 
-export interface IGameInfoProps {
-  /**
-   * Web app location on local network.
-   */
-  hostUrl: string;
-  /**
-   * Amount of people watching.
-   */
-  viewers: number;
-  /**
-   * Progress of the game, out of 100.
-   */
-  progress: number;
+  enterActive: {
+    opacity: 1,
+    transition: "300ms ease-in-out"
+  },
 
-  winner?: string;
+  leave: {
+    opacity: 1
+  },
 
-  connected: boolean;
-}
+  leaveActive: {
+    opacity: 0,
+    transition: "0ms ease-in-out"
+  }
+};
 
 /**
  * Game info displays the address at which the web app is hosted, and
  * the amount of people watching the game.
  */
-class GameInfoPanel extends React.Component<IGameInfoProps> {
+class GameInfoPanel extends React.Component {
   render() {
     var pageContent = this.renderPageContent();
+    const { classes } = this.props;
     return (
       <ReactCSSTransitionGroup
         transitionName={{
-          enter: styles.enter,
-          enterActive: styles.enterActive,
-          leave: styles.leave,
-          leaveActive: styles.leaveActive
+          enter: classes.enter,
+          enterActive: `${classes.enter} ${classes.enterActive}`,
+          leave: classes.leave,
+          leaveActive: `${classes.leave} ${classes.leaveActive}`
         }}
         transitionEnterTimeout={300}
         transitionLeaveTimeout={1}
@@ -92,16 +91,4 @@ class GameInfoPanel extends React.Component<IGameInfoProps> {
   }
 }
 
-function mapStateToProps(state: ITotalState, ownProps: {}): IGameInfoProps {
-  const { progress, hostUrl, viewers, winner, connected } = state.gameInfo;
-
-  return {
-    progress: progress,
-    hostUrl: hostUrl,
-    viewers: viewers,
-    winner: winner,
-    connected: connected
-  };
-}
-
-export default connect(mapStateToProps)(GameInfoPanel);
+export default connect(mapStateToProps)(withStyles(style)(GameInfoPanel));

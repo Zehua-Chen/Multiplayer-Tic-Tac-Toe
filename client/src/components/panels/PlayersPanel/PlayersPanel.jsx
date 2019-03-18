@@ -1,25 +1,31 @@
 import React from "react";
 import { connect } from "react-redux";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
-
-import * as styles from "./PlayersPanel.css";
+import withStyles from "react-jss";
 
 import PlayerList from "./PlayersList";
 import PlayerListItem from "./PlayersListItem";
-import { ITotalState } from "../../../states";
+import mapStateToProps from "./mapStateToProps";
 
-/**
- * Props used with connect(mapStateToProps)(Component)
- * to pass information from redux-managed state to the component.
- *
- * THIS PROP IS NOT AVAILABLE IN OTHER COMPONENTS
- */
-interface IPlayersPanelProps {
-  firstPlayerName?: string;
-  secondPlayerName?: string;
-  movingPlayerName?: string;
-  connected: boolean;
-}
+const style = {
+  enter: {
+    opacity: 0
+  },
+
+  enterActive: {
+    opacity: 1,
+    transition: "300ms ease-in-out"
+  },
+
+  leave: {
+    opacity: 1
+  },
+
+  leaveActive: {
+    opacity: 0,
+    transition: "0ms ease-in-out"
+  }
+};
 
 /**
  * Panel that display the following information about the two players
@@ -27,16 +33,17 @@ interface IPlayersPanelProps {
  * - faction
  * - if the player is moving.
  */
-class PlayersPanel extends React.Component<IPlayersPanelProps> {
-  public render() {
+class PlayersPanel extends React.Component {
+  render() {
     var pageContent = this.renderPageContent();
+    const { classes } = this.props;
     return (
       <ReactCSSTransitionGroup
         transitionName={{
-          enter: styles.enter,
-          enterActive: styles.enterActive,
-          leave: styles.leave,
-          leaveActive: styles.leaveActive
+          enter: classes.enter,
+          enterActive: `${classes.enter} ${classes.enterActive}`,
+          leave: classes.leave,
+          leaveActive: `${classes.enter} ${classes.leaveActive}`
         }}
         transitionEnterTimeout={300}
         transitionLeaveTimeout={1}
@@ -94,24 +101,4 @@ class PlayersPanel extends React.Component<IPlayersPanelProps> {
   }
 }
 
-/**
- * Function that transfer information from the state managed by redux to
- * PlayersPanel component
- * @param state the total state managed by redux
- * @param ownProps props available to other components
- * @return information that PlayersPanel need.
- */
-function mapStateToProps(state: ITotalState, ownProps: {}): IPlayersPanelProps {
-  const { thisPlayerName, otherPlayerName, movingPlayerName } = state.players;
-
-  // console.log(state.players);
-
-  return {
-    firstPlayerName: thisPlayerName,
-    secondPlayerName: otherPlayerName,
-    movingPlayerName: movingPlayerName,
-    connected: state.gameInfo.connected
-  };
-}
-
-export default connect(mapStateToProps)(PlayersPanel);
+export default connect(mapStateToProps)(withStyles(style)(PlayersPanel));

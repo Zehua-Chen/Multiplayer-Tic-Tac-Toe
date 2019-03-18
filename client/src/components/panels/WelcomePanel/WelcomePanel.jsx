@@ -2,9 +2,10 @@ import React from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import axios from "axios";
 import { DispatchProp, connect } from "react-redux";
-import * as TicTacToe from "interfaces";
+import withStyles from "react-jss";
 
 import Password from "../../ui-components/Password";
+import mapStateToProps from "./mapStateToProps";
 import * as styles from "./WelcomePanel.css";
 
 import {
@@ -19,43 +20,33 @@ import {
   IPlayersAction,
   UPDATE_PLAYER_NAMES_LIST
 } from "../../../actions/IPlayersAction";
-import { ITotalState } from "../../../states";
 
-/**
- * Props used with connect(mapStateToProps)(Component)
- * to pass information from redux-managed state to the component.
- *
- * THIS PROP IS NOT AVAILABLE IN OTHER COMPONENTS
- */
-interface IWelcomePanelProps {
-  mode: "create" | "join" | "hidden";
-  errorMessage?: string;
+const style = {
+  enter: {
+    opacity: 0
+  },
 
-  playerName: string;
-  invitationCode: string;
-  password: string;
+  enterActive: {
+    opacity: 1,
+    transition: "300ms ease-in-out"
+  },
 
-  connected: boolean;
-}
+  leave: {
+    opacity: 1
+  },
 
-/**
- * The state holding the current name of the player and the current invitation code.
- * These two variables are not available to other components at the momemnet.
- */
-export interface IWelcomePanelState {
-  playerName: string;
-  invitationCode: string;
-}
+  leaveActive: {
+    opacity: 0,
+    transition: "300ms ease-in-out"
+  }
+};
 
 /**
  * Welcome panel offers the user the option to either create a new game
  * or joing an existing game.
  */
-class WelcomePanel extends React.Component<
-  IWelcomePanelProps & DispatchProp,
-  IWelcomePanelState
-> {
-  constructor(props: IWelcomePanelProps & DispatchProp) {
+class WelcomePanel extends React.Component {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -71,8 +62,8 @@ class WelcomePanel extends React.Component<
    * @argument thisPlayerName the name of the player who has this instance
    * of the web app. The string is used to udpate "this player"
    */
-  private closeWelcomePanel(thisPlayerName: string) {
-    axios.get<TicTacToe.IPlayersResponse>("/players").then(response => {
+  closeWelcomePanel(thisPlayerName) {
+    axios.get("/players").then(response => {
       var players = response.data.players;
       var otherPlayerName;
 
@@ -92,7 +83,7 @@ class WelcomePanel extends React.Component<
           }
         }
 
-        this.props.dispatch<IPlayersAction>({
+        this.props.dispatch({
           type: UPDATE_PLAYER_NAMES_LIST,
           payload: {
             thisPlayerName: thisPlayerName,
@@ -103,7 +94,7 @@ class WelcomePanel extends React.Component<
     });
 
     // Hide the welcome panel
-    this.props.dispatch<IWelcomeAction>({
+    this.props.dispatch({
       type: UPDATE_WELCOME_MODE,
       payload: "hidden"
     });
@@ -112,8 +103,8 @@ class WelcomePanel extends React.Component<
   /**
    * Handler for onChange of invitation code's input field.
    */
-  invitationCodeChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.dispatch<IWelcomeAction>({
+  invitationCodeChanged = e => {
+    this.props.dispatch({
       type: UPDATE_INVITATION_CODE,
       payload: e.target.value
     });
@@ -122,8 +113,8 @@ class WelcomePanel extends React.Component<
   /**
    * Handler for onChange of password 's input field.
    */
-  passwordChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.dispatch<IWelcomeAction>({
+  passwordChanged = e => {
+    this.props.dispatch({
       type: UPDATE_PASSWORD,
       payload: e.target.value
     });
@@ -132,8 +123,8 @@ class WelcomePanel extends React.Component<
   /**
    * Handler for onChange of player name's input field.
    */
-  playerNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.dispatch<IWelcomeAction>({
+  playerNameChanged = e => {
+    this.props.dispatch({
       type: UPDATE_PLAYER_NAME,
       payload: e.target.value
     });
@@ -143,7 +134,7 @@ class WelcomePanel extends React.Component<
    * Change from "join" mode to "create" mode. Called by the "Create?" button.
    */
   switchToCreateGame = () => {
-    this.props.dispatch<IWelcomeAction>({
+    this.props.dispatch({
       type: UPDATE_WELCOME_MODE,
       payload: "create"
     });
@@ -153,7 +144,7 @@ class WelcomePanel extends React.Component<
    * Change from "create" mode to "join" mode. Called by the "Create?" button.
    */
   switchToJoinGame = () => {
-    this.props.dispatch<IWelcomeAction>({
+    this.props.dispatch({
       type: UPDATE_WELCOME_MODE,
       payload: "join"
     });
@@ -165,7 +156,7 @@ class WelcomePanel extends React.Component<
   joinGame = () => {
     const { playerName, invitationCode, password } = this.props;
 
-    var joinGameQuest: TicTacToe.ICreateGameRequest = {
+    var joinGameQuest = {
       name: playerName,
       password: password,
       invitationCode: invitationCode
@@ -173,19 +164,17 @@ class WelcomePanel extends React.Component<
 
     // this.recordPlayerName(playerName);
 
-    axios
-      .post<TicTacToe.ICreateGameResponse>("/join_game", joinGameQuest)
-      .then(response => {
-        var data = response.data;
-        if (data.success) {
-          this.closeWelcomePanel(playerName);
-        } else if (data.message) {
-          this.props.dispatch<IWelcomeAction>({
-            type: UPDATE_ERROR_MESSAGE,
-            payload: data.message
-          });
-        }
-      });
+    axios.post("/join_game", joinGameQuest).then(response => {
+      var data = response.data;
+      if (data.success) {
+        this.closeWelcomePanel(playerName);
+      } else if (data.message) {
+        this.props.dispatch({
+          type: UPDATE_ERROR_MESSAGE,
+          payload: data.message
+        });
+      }
+    });
   };
 
   /**
@@ -194,36 +183,35 @@ class WelcomePanel extends React.Component<
   createGame = () => {
     const { playerName, invitationCode, password } = this.props;
 
-    var createGameRequest: TicTacToe.ICreateGameRequest = {
+    var createGameRequest = {
       name: playerName,
       password: password,
       invitationCode: invitationCode
     };
 
-    axios
-      .post<TicTacToe.ICreateGameResponse>("/create_game", createGameRequest)
-      .then(response => {
-        var data = response.data;
-        if (data.success) {
-          this.closeWelcomePanel(playerName);
-        } else if (data.message) {
-          this.props.dispatch<IWelcomeAction>({
-            type: UPDATE_ERROR_MESSAGE,
-            payload: data.message
-          });
-        }
-      });
+    axios.post("/create_game", createGameRequest).then(response => {
+      var data = response.data;
+      if (data.success) {
+        this.closeWelcomePanel(playerName);
+      } else if (data.message) {
+        this.props.dispatch({
+          type: UPDATE_ERROR_MESSAGE,
+          payload: data.message
+        });
+      }
+    });
   };
 
-  public render() {
+  render() {
     var pageContent = this.renderPageContent();
+    const { classes } = this.props;
     return (
       <ReactCSSTransitionGroup
         transitionName={{
-          enter: styles.enter,
-          enterActive: styles.enterActive,
-          leave: styles.leave,
-          leaveActive: styles.leaveActive
+          enter: classes.enter,
+          enterActive: `${classes.enter} ${classes.enterActive}`,
+          leave: classes.leave,
+          leaveActive: `${classes.leave} ${classes.leaveActive}`
         }}
         transitionEnterTimeout={300}
         transitionLeaveTimeout={300}
@@ -233,7 +221,7 @@ class WelcomePanel extends React.Component<
     );
   }
 
-  public renderPageContent() {
+  renderPageContent() {
     const { mode, errorMessage, connected } = this.props;
 
     if (!connected) return null;
@@ -375,27 +363,4 @@ class WelcomePanel extends React.Component<
   }
 }
 
-/**
- * Map state managed by redux to props
- * @param state the total state managed by redux
- * @param ownProps the props exposed to other components.
- */
-function mapStateToProps(state: ITotalState, ownProps: {}): IWelcomePanelProps {
-  const {
-    mode,
-    errorMessage,
-    playerName,
-    invitationCode,
-    password
-  } = state.welcome;
-  return {
-    mode: mode,
-    errorMessage: errorMessage,
-    playerName: playerName,
-    invitationCode: invitationCode,
-    password: password,
-    connected: state.gameInfo.connected
-  };
-}
-
-export default connect(mapStateToProps)(WelcomePanel);
+export default connect(mapStateToProps)(withStyles(style)(WelcomePanel));

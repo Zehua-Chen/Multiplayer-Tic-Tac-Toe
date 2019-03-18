@@ -1,7 +1,7 @@
 import React from "react";
 
 interface IDisconnectedPanelProps {
-  connected: boolean;
+  // connected: boolean;
 }
 
 declare class DisconnectedPanel extends React.Component<
