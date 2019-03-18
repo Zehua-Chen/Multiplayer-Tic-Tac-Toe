@@ -7,7 +7,7 @@ import * as path from "path";
 
 import { findIpv4 } from "./util";
 import Controller from "./Controller";
-import { Logger } from './ILogger';
+import { Logger } from "./ILogger";
 
 /* Constants */
 

@@ -1,6 +1,6 @@
 import { Response, Request } from "express";
 import * as TicTacToe from "interfaces";
-import ILogger from '../ILogger';
+import ILogger from "../ILogger";
 import Board from "../Board";
 
 class Controller {
@@ -29,11 +29,8 @@ class Controller {
 
   protected firstMove = true;
 
-  public constructor(
-    private io: SocketIO.Server,
-    private logger?: ILogger
-  ) {}
-
+  public constructor(private io: SocketIO.Server, private logger?: ILogger) {}
+  
   public getPlayers(req: Request, res: Response) {
     var players = new Array<TicTacToe.IPlayer>(2);
 
