@@ -1,3 +1,3 @@
-import WelcomePanel from './WelcomePanel';
+import WelcomePanel from "./WelcomePanel";
 
 export default WelcomePanel;

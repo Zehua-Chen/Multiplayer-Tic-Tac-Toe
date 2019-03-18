@@ -1,5 +1,3 @@
-import WebSocketListener from './WebSocketListener';
+import WebSocketListener from "./WebSocketListener";
 
-export {
-    WebSocketListener
-}
+export { WebSocketListener };

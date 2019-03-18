@@ -1,9 +1,28 @@
-const child = require('child_process');
+const fs = require('fs');
+const path = require('path');
+const childProc = require('child_process');
+const buildServer = require('./buildServer');
+const buildClient = require('./buildClient');
 
-child.spawn("node", ["build-server.js"]).stdout.on("data", function(data) {
-    console.log(data.toString());
-});
+// Change to project root dir
+if (!fs.existsSync("client") || !fs.existsSync("server")) {
+  process.chdir(path.join(".."));
+}
 
-child.spawn("node", ["build-client.js"]).stdout.on("data", function(data) {
-    console.log(data.toString());
-});
+// node build.js <output = build>
+var outputDir = "build";
+
+// node build.js <output>
+if (process.argv.length > 2) {
+  outputDir = process.argv[2];
+}
+
+outputDir = path.resolve(outputDir);
+
+if (!fs.existsSync(outputDir)) {
+  console.log("creating output directory: " + outputDir);
+  fs.mkdirSync(outputDir);
+}
+
+buildClient(path.resolve(path.join(".", "client")), outputDir);
+buildServer(path.resolve(path.join(".", "server")), outputDir);

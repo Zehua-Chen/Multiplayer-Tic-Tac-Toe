@@ -1,3 +1,3 @@
-import DisconnectedPanel from './DisconnectedPanel';
+import DisconnectedPanel from "./DisconnectedPanel";
 
 export default DisconnectedPanel;

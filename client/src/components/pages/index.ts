@@ -1,7 +1,4 @@
-import MainPage from './MainPage';
-import AboutPage from './AboutPage';
+import MainPage from "./MainPage";
+import AboutPage from "./AboutPage";
 
-export {
-    MainPage,
-    AboutPage
-}
+export { MainPage, AboutPage };

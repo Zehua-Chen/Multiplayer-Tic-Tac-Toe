@@ -1,5 +1,5 @@
-import io from 'socket.io-client';
+import io from "socket.io-client";
 
-var socket = io()
+var socket = io();
 
 export default socket;

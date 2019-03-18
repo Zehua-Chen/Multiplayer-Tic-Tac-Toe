@@ -4,11 +4,12 @@
   "description": "server for the tic tac toe game",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/main.ts",
+    "start": "ts-node src/index.ts",
     "pretest": "tsc",
     "test": "mocha",
     "compile": "tsc --p tsconfig.json",
-    "build": "webpack-cli --config webpack.config.js"
+    "build": "webpack-cli --config webpack.config.js",
+    "format": "prettier --write ./*.js \"./src/**/*.ts\""
   },
   "author": "",
   "license": "ISC",
