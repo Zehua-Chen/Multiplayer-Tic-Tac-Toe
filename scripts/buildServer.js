@@ -3,27 +3,12 @@ const process = require('process');
 const path = require('path');
 const fs = require('fs');
 
-// const serverDir = path.resolve(__dirname, path.join("..", "server"));
-// const configPath = path.join(serverDir, "package.json");
-
-// // COnfigure configuration file
-
-// const dependencies = require(configPath).dependencies;
-
-
-// const outConfigDir = path.resolve(path.join("..", "build", "package.json"));
-// fs.writeFileSync(outConfigDir, JSON.stringify(serverConfig));
-
-
-// // Build server
-// process.chdir(serverDir);
-
-// if (!fs.existsSync(path.join("..", "build"))) {
-//     fs.mkdirSync(path.join("..", "build"));
-// }
-
-// child.spawnSync("npm", ["run", "build"]);
-
+/**
+ * Make a configuration file from package.json stored in a folder at a
+ * a specified path
+ * @param {string} serverPath the folder that contains package.json
+ * @returns {string} a string version of the project file
+ */
 function makeConfigFile(serverPath) {
   var serverConfig = require(path.join(serverPath, "package.json"));
   var config = {
@@ -46,7 +31,8 @@ function compileServerExecutable(outputFile) {
 }
 
 /**
- * 
+ * Build server stored a specified path and move the artifacts into an output 
+ * directory
  * @param {string} serverPath 
  * @param {string} outputDir 
  */
@@ -75,4 +61,5 @@ function buildServer(serverPath, outputDir) {
   
   process.chdir(parentDir);
 }
+
 module.exports = buildServer;
