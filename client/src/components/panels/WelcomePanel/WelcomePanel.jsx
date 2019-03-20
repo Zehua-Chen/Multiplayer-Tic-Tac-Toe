@@ -4,7 +4,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 import withStyles from "react-jss";
 
-import Password from "../../ui-components/Password";
+import Password from "../../ui/Password";
 import mapStateToProps from "./mapStateToProps";
 
 import {

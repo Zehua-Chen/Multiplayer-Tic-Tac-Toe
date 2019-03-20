@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import withStyles from "react-jss";
-import ProgressBar from "../../ui-components/ProgressBar";
+import ProgressBar from "../../ui/ProgressBar";
 import mapStateToProps from "./mapStateToProps";
 
 const style = {

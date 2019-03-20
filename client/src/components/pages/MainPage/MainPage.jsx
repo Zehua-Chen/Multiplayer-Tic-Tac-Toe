@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import withStyles from "react-jss";
-
 import {
   GameInfoPanel,
   BoardPanel,
@@ -9,7 +8,7 @@ import {
   WelcomePanel,
   DisconnectedPanel
 } from "../../panels";
-import { WebSocketListener } from "../../blank-components";
+import { WebSocketListener } from "../../blank";
 
 const style = {
   fullHeight: {
