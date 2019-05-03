@@ -1,9 +1,7 @@
 using System;
 using Xunit;
 
-using TicTacToe;
-
-namespace TicTacToeTest
+namespace TicTacToe.Tests
 {
     public class BoardTest
     {

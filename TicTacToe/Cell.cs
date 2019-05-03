@@ -1,11 +1,13 @@
 using System;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("TicTacToeTests")]
 namespace TicTacToe
 {
     /// <summary>
     /// A cell inside the tic tac toe board
     /// </summary>
-    public struct Cell 
+    internal struct Cell 
     {
         /// <summary>
         /// Value held by the cell
