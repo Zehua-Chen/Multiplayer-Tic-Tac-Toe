@@ -7,6 +7,8 @@ namespace TicTacToe
     {
         internal Board _board;
         
+        private int _nextValue = -1;
+        
         public string Winner
         {
             get { return null; }
@@ -27,9 +29,40 @@ namespace TicTacToe
         {
             TPlayer temp = new TPlayer();
             temp.Session = this;
-            temp.Value = 0;
+            temp.Value = _nextValue;
+            
+            switch (_nextValue)
+            {
+                case -1:
+                    _nextValue = 1;
+                    break;
+                case 1:
+                    _nextValue = 2;
+                    break;
+                case 2:
+                default:
+                    throw new SessionAlreadyFullException();
+            }
+            
             
             return temp;
+        }
+        
+        public int this[uint y, uint x]
+        {
+            get { return _board[y, x]; }
+        }
+        
+        internal void Move(uint y, uint x, int value)
+        {
+            if (_board[y, x] == 0)
+            {
+                _board[y, x] = value;
+            }
+            else
+            {
+                throw new SessionInvalidMoveException(y, x);
+            }
         }
     }
 }

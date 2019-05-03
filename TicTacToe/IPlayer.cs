@@ -10,7 +10,7 @@ namespace TicTacToe
     {
         public static void MakeMove(this IPlayer player, uint y, uint x)
         {
-            player.Session._board[y, x] = player.Value;
+            player.Session.Move(y, x, player.Value);
         }
     }
 }
