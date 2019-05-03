@@ -9,3 +9,5 @@ build/
 
 # macOS-Generated Files
 *.DS_Store
+
+obj/
