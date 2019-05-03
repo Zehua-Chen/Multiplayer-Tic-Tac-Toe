@@ -10,9 +10,9 @@ namespace TicTacToe.Tests
         {
             Board board = new Board(3);
             
-            for (uint y = 0; y < 3; y++)
+            for (int y = 0; y < 3; y++)
             {
-                for (uint x = 0; x < 3; x++)
+                for (int x = 0; x < 3; x++)
                 {
                     Assert.Equal(0, board[y, x]);
                 }

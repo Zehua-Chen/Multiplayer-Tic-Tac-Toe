@@ -3,33 +3,29 @@ using System.Collections.Generic;
 
 namespace TicTacToe
 {
-    public class Session 
+    public class Session
     {
         internal Board _board;
         
         private int _nextValue = -1;
+        private Dictionary<int, Player> _valuesToPlayers = new Dictionary<int, Player>();
         
-        public string Winner
-        {
-            get { return null; }
-        }
+        public event EventHandler<Player> HasWinner;
+        public event EventHandler<(int, int)> MovementMade;
         
-        public Session()
-        {
-            
-        }
-        
-        public void ConfigureBoard(uint dimension)
+        public void ConfigureBoard(int dimension)
         {
             _board = new Board(dimension);
         }
         
         public TPlayer CreatePlayer<TPlayer>()
-            where TPlayer: IPlayer, new()
+            where TPlayer: Player, new()
         {
             TPlayer temp = new TPlayer();
             temp.Session = this;
             temp.Value = _nextValue;
+            
+            _valuesToPlayers.Add(_nextValue, temp);
             
             switch (_nextValue)
             {
@@ -48,20 +44,30 @@ namespace TicTacToe
             return temp;
         }
         
-        public int this[uint y, uint x]
+        public int this[int y, int x]
         {
             get { return _board[y, x]; }
         }
         
-        internal void Move(uint y, uint x, int value)
+        // Private, internal methods
+        
+        internal void Move(int y, int x, int value)
         {
             if (_board[y, x] == 0)
             {
                 _board[y, x] = value;
+                this.MovementMade?.Invoke(this, (y, x));
             }
             else
             {
                 throw new SessionInvalidMoveException(y, x);
+            }
+            
+            int winnerValue = _board.Winner;
+            
+            if (winnerValue != 0)
+            {
+                this.HasWinner?.Invoke(this, _valuesToPlayers[winnerValue]);
             }
         }
     }

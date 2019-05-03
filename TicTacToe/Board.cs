@@ -13,7 +13,7 @@ namespace TicTacToe
         /// Dimension (height and width) of the board
         /// </summary>
         /// <value>the dimension</value>
-        public uint Dimension { get; private set; }
+        public int Dimension { get; private set; }
         
         /// <summary>
         /// The 1d array that holds the cells
@@ -31,11 +31,11 @@ namespace TicTacToe
             {
                 // Find horizontal winner
                 
-                for (uint y = 0; y < this.Dimension; y++)
+                for (int y = 0; y < this.Dimension; y++)
                 {
                     int sum = 0;
                     
-                    for (uint x = 0; x < this.Dimension; x++)
+                    for (int x = 0; x < this.Dimension; x++)
                     {
                         sum += this[y, x];
                     }
@@ -52,11 +52,11 @@ namespace TicTacToe
                 
                 // Find horizontal winner
                 
-                for (uint x = 0; x < this.Dimension; x++)
+                for (int x = 0; x < this.Dimension; x++)
                 {
                     int sum = 0;
                     
-                    for (uint y = 0; y < this.Dimension; y++)
+                    for (int y = 0; y < this.Dimension; y++)
                     {
                         sum += this[y, x];
                     }
@@ -75,7 +75,7 @@ namespace TicTacToe
                 
                 int diagnolSum = 0;
                 
-                for (uint i = 0; i < this.Dimension; i++)
+                for (int i = 0; i < this.Dimension; i++)
                 {
                     diagnolSum += this[i, i];
                 }
@@ -93,7 +93,7 @@ namespace TicTacToe
                 
                 diagnolSum = 0;
                 
-                for (uint i = this.Dimension - 1; i >= 0; i--)
+                for (int i = this.Dimension - 1; i >= 0; i--)
                 {
                     diagnolSum += this[i, i];
                 }
@@ -117,12 +117,12 @@ namespace TicTacToe
         /// <param name="dimension">
         /// the dimension to create the board with
         /// </param>
-        public Board(uint dimension)
+        public Board(int dimension)
         {
             this.Dimension = dimension;
             this.Cells = new Cell[this.Dimension * this.Dimension];
             
-            for (int i = 0; i < this.Dimension; i++)
+            for (int i = 0; i < this.Dimension * this.Dimension; i++)
             {
                 this.Cells[i].Occupant = 0;
             }
@@ -132,7 +132,7 @@ namespace TicTacToe
         /// Access the value of the occupant at a location
         /// </summary>
         /// <value>the occupant of a cell</value>
-        public int this[uint y, uint x]
+        public int this[int y, int x]
         {
             get { return this.Cells[LinearIndex(y, x)].Occupant; }
             set { this.Cells[LinearIndex(y, x)].Occupant = value; }
@@ -144,9 +144,9 @@ namespace TicTacToe
         /// <param name="y">y</param>
         /// <param name="x">x</param>
         /// <returns>1d index</returns>
-        private uint LinearIndex(uint y, uint x)
+        private int LinearIndex(int y, int x)
         {
-            return y + x * this.Dimension;
+            return y * this.Dimension + x;
         }
     }
 }

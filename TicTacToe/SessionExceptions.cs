@@ -4,18 +4,26 @@ namespace TicTacToe
 {
     public class SessionInvalidMoveException: Exception
     {
-        uint _y;
-        uint _x;
+        int _y;
+        int _x;
         
-        public SessionInvalidMoveException(uint y, uint x)
+        public SessionInvalidMoveException(int y, int x)
         {
             _y = y;
             _x = x;
+        }
+        
+        public override string ToString()
+        {
+            return $"Cannot make move at (${_y}, ${_x})";
         }
     }
     
     public class SessionAlreadyFullException: Exception
     {
-        
+        public override string ToString() 
+        {
+            return "This session already have enough players";
+        }
     }
 }
