@@ -2,11 +2,27 @@
 
 namespace TicTacToe
 {
+    /// <summary>
+    /// Board of the tic tac toe game
+    /// </summary>
     public struct Board
     {
+        /// <summary>
+        /// Dimension (height and width) of the board
+        /// </summary>
+        /// <value>the dimension</value>
         public uint Dimension { get; private set; }
+        
+        /// <summary>
+        /// The 1d array that holds the cells
+        /// </summary>
+        /// <value>an array that holds the cells</value>
         public Cell[] Cells { get; private set; }
         
+        /// <summary>
+        /// Winner of the game
+        /// </summary>
+        /// <value>1 or -1 if there is winner, 0 if there is no winner</value>
         public int Winner
         {
             get 
@@ -93,6 +109,12 @@ namespace TicTacToe
             }
         }
         
+        /// <summary>
+        /// Create a board using a dimension
+        /// </summary>
+        /// <param name="dimension">
+        /// the dimension to create the board with
+        /// </param>
         public Board(uint dimension)
         {
             this.Dimension = dimension;
@@ -104,12 +126,22 @@ namespace TicTacToe
             }
         }
         
+        /// <summary>
+        /// Access the value of the occupant at a location
+        /// </summary>
+        /// <value>the occupant of a cell</value>
         public int this[uint y, uint x]
         {
             get { return this.Cells[LinearIndex(y, x)].Occupant; }
             set { this.Cells[LinearIndex(y, x)].Occupant = value; }
         }
         
+        /// <summary>
+        /// Compute the 1d index from the 2d location
+        /// </summary>
+        /// <param name="y">y</param>
+        /// <param name="x">x</param>
+        /// <returns>1d index</returns>
         private uint LinearIndex(uint y, uint x)
         {
             return y + x * this.Dimension;
