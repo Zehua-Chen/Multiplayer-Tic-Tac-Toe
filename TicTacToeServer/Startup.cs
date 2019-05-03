@@ -2,9 +2,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+using TicTacToeServer.Hubs;
 
 namespace TicTacToeServer
 {
@@ -27,6 +30,8 @@ namespace TicTacToeServer
             {
                 configuration.RootPath = "ClientApp/build";
             });
+            
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,8 +43,14 @@ namespace TicTacToeServer
             }
 
             // app.UseHttpsRedirection();
+            app.UseMvc();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+            
+            app.UseSignalR((routes) => 
+            {
+                routes.MapHub<GameHub>("/game");
+            });
 
             app.UseSpa(spa =>
             {

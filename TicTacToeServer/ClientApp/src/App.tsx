@@ -1,26 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+// import axios from "axios";
+import { HubConnectionBuilder, HubConnection } from "@aspnet/signalr";
 
-const App: React.FC = () => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface IAppState {
+  body: string
+}
+
+class App extends Component<{}, IAppState> {
+  
+  connection: HubConnection | undefined;
+  
+  constructor(props: any) {
+    super(props);
+    
+    this.state = {
+      body: ""
+    };
+  }
+  
+  componentDidMount() {
+    this.connection = new HubConnectionBuilder()
+      .withUrl("/game")
+      .build();
+      
+      this.connection.start().catch((err) => {
+      this.setState({ body: "error" });
+    });
+      
+    this.connection.on("received", () => {
+      this.setState({ body: "message received" });
+    })
+  }
+  
+  onClicked = () => {
+    this.connection!.send("broadCast");
+  }
+  
+  render() {
+    return (
+      <div>
+        {this.state.body}
+        <button onClick={this.onClicked}>Click Me!</button>
+      </div>
+    );
+  }
 }
 
 export default App;
