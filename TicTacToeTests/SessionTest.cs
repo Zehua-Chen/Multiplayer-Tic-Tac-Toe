@@ -11,7 +11,7 @@ namespace TicTacToe.Tests
         {
             Session session = new Session();
             
-            session.ConfigureBoard(3);
+            session.Size = 3;
             
             Player playerA = session.CreatePlayer<Player>();
             Player playerB = session.CreatePlayer<Player>();
@@ -27,27 +27,25 @@ namespace TicTacToe.Tests
         {
             Session session = new Session();
             
-            session.ConfigureBoard(3);
+            session.Size = 3;
             
             Player playerA = session.CreatePlayer<Player>();
             Player playerB = session.CreatePlayer<Player>();
             
             Assert.NotEqual(0, playerA.Value);
             
-            int movedY = 0;
-            int movedX = 0;
+            Location location = new Location();
             
-            session.MovementMade += (object sender, (int, int) location) => 
+            session.MovementMade += (object sender, Location l) => 
             {
-                movedY = location.Item1;
-                movedX = location.Item2;
+                location = l;
             };
             
             playerA.MakeMove(2, 1);
             
             Assert.Equal(playerA.Value, session[2, 1]);
-            Assert.Equal(2, movedY);
-            Assert.Equal(1, movedX);
+            Assert.Equal(2, location.Y);
+            Assert.Equal(1, location.X);
             
             Assert.Throws<SessionInvalidMoveException>(() => 
             {
@@ -60,7 +58,7 @@ namespace TicTacToe.Tests
         {
             Session session = new Session();
             
-            session.ConfigureBoard(3);
+            session.Size = 3;
             
             Player playerA = session.CreatePlayer<Player>();
             Player playerB = session.CreatePlayer<Player>();
