@@ -10,11 +10,11 @@ import { withStyles } from "@material-ui/core/styles";
 
 const _options = [
   { title: "Create a New Game", path: "/app/create_game" },
-  { title: "Join an Existing Game", path: "/app/" },
-  { title: "About", path: "/app/" },
+  { title: "Join an Existing Game", path: "/app/join_game" },
+  { title: "About", path: "/app/about" }
 ];
 
-const _styles = (theme) => ({
+const _styles = theme => ({
   container: {
     minHeight: "100vh",
     display: "flex",
@@ -28,22 +28,24 @@ const _styles = (theme) => ({
     textAlign: "center",
     background: theme.palette.primary.main,
     paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2
   },
   cardTitle: {
-    color: theme.palette.primary.contrastText,
+    color: theme.palette.primary.contrastText
   }
 });
 
 class WelcomeMenu extends Component {
   render() {
     const { classes } = this.props;
-    
+
     return (
       <div className={classes.container}>
         <Card className={classes.card}>
           <CardContent className={classes.cardTitleContainer}>
-            <Typography className={classes.cardTitle} variant="h5">Welcome!</Typography>
+            <Typography className={classes.cardTitle} variant="h5">
+              Welcome!
+            </Typography>
           </CardContent>
           <CardContent>
             <List>
