@@ -1,52 +1,32 @@
 import React, { Component } from 'react';
-import axios from "axios";
-import { HubConnectionBuilder, HubConnection } from "@aspnet/signalr";
+import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
+import { withTheme, WithTheme } from "@material-ui/core/styles";
+import WelcomeMenu from "./components/pages/WelcomeMenu";
+import CreateGame from "./components/pages/CreateGame";
 
-interface IAppState {
-  body: string
-}
-
-class App extends Component<{}, IAppState> {
-  
-  connection: HubConnection | undefined;
-  
-  constructor(props: any) {
-    super(props);
-    
-    this.state = {
-      body: ""
-    };
-  }
+class App extends Component<WithTheme> {
   
   componentDidMount() {
-    this.connection = new HubConnectionBuilder()
-      .withUrl("/game")
-      .build();
-      
-      this.connection.start().catch((err) => {
-      this.setState({ body: "error" });
-    });
-      
-    this.connection.on("received", () => {
-      this.setState({ body: "message received" });
-    })
+    document.body.style.background = this.props.theme.palette.background.default;
   }
   
-  onClicked = () => {
-    // this.connection!.send("broadCast");
-    axios.post("/api/game/create", {
-      size: 20
-    });
+  componentWillUnmount() {
+    document.body.style.background = "";
   }
   
   render() {
     return (
-      <div>
-        {this.state.body}
-        <button onClick={this.onClicked}>Create Game</button>
-      </div>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/app/create_game" component={CreateGame} />
+          <Route path="/app" component={WelcomeMenu} />
+          <Route path="/" exact render={() => {
+            return <Redirect to="/app" />
+          }} />
+        </Switch>
+      </BrowserRouter>
     );
   }
 }
 
-export default App;
+export default withTheme()(App);
