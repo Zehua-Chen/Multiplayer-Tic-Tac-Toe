@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import axios from "axios";
+import axios from "axios";
 import { HubConnectionBuilder, HubConnection } from "@aspnet/signalr";
 
 interface IAppState {
@@ -33,14 +33,17 @@ class App extends Component<{}, IAppState> {
   }
   
   onClicked = () => {
-    this.connection!.send("broadCast");
+    // this.connection!.send("broadCast");
+    axios.post("/api/game/create", {
+      size: 20
+    });
   }
   
   render() {
     return (
       <div>
         {this.state.body}
-        <button onClick={this.onClicked}>Click Me!</button>
+        <button onClick={this.onClicked}>Create Game</button>
       </div>
     );
   }

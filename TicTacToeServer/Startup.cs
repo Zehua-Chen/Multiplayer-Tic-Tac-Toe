@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using TicTacToeServer.Hubs;
+using TicTacToeServer.Services;
 
 namespace TicTacToeServer
 {
@@ -32,6 +33,8 @@ namespace TicTacToeServer
             });
             
             services.AddSignalR();
+            
+            services.AddSingleton(typeof(IGameService), typeof(GameService));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
