@@ -1,13 +1,28 @@
+import {
+  IStatisticsAction,
+  UPDATE_GAME_COUNT
+} from "../actions/statisticsActions";
+
 export interface IStatisticsState {
-  hasGame: boolean
+  gameCount: number;
 }
 
 const defaultState: IStatisticsState = {
-  hasGame: false
-}
+  gameCount: 0
+};
 
-function statisticsReducer(state = defaultState): IStatisticsState {
-  return state;
+function statisticsReducer(
+  state = defaultState,
+  action: IStatisticsAction
+): IStatisticsState {
+  switch (action.type) {
+    case UPDATE_GAME_COUNT: {
+      const { gameCount, ...others } = state;
+      return { gameCount: action.payload, ...others };
+    }
+    default:
+      return state;
+  }
 }
 
 export default statisticsReducer;
