@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("TicTacToeTests")]
+[assembly: InternalsVisibleTo("TicTacToe.Tests")]
 namespace TicTacToe
 {
     /// <summary>

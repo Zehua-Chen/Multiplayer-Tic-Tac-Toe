@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 using TicTacToeServer.Models;
 using TicTacToeServer.Services;
@@ -13,10 +14,15 @@ namespace TicTacToeServer.Controllers
     public class GameController : Controller
     {
         IGameService _gameService;
+        ILogger<GameController> _logger;
         
-        public GameController(IGameService gameSerivce)
+        public GameController(
+            IGameService gameSerivce, 
+            ILogger<GameController> logger
+        )
         {
             _gameService = gameSerivce;
+            _logger = logger;
         }
         
         [HttpPost("create")]
@@ -26,12 +32,7 @@ namespace TicTacToeServer.Controllers
         )
         {
             _gameService.Create(gameConfig);
-        }
-        
-        [HttpGet("shit")]
-        public ActionResult<GameConfiguration> GetShit()
-        {
-            return new GameConfiguration{ Size = 12 };
+            _logger.LogInformation($"Created game board of size {gameConfig.Size}");
         }
     }
 }

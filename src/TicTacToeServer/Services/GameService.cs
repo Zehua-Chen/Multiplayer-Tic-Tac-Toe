@@ -8,11 +8,15 @@ namespace TicTacToeServer.Services
     public interface IGameService
     {
         void Create(GameConfiguration config);
+        
+        event EventHandler<Session> CreateNewSession;
     }
     
     public class GameService: IGameService
     {
-        Session _session = new Session();
+        Session _session;
+        
+        public event EventHandler<Session> CreateNewSession;
         
         public GameService()
         {
@@ -20,8 +24,10 @@ namespace TicTacToeServer.Services
         
         public void Create(GameConfiguration config)
         {
-            Console.WriteLine($"create game of size {config.Size}");
+            _session = new Session();
             _session.Size = config.Size;
+            
+            this.CreateNewSession?.Invoke(this, _session);
         }
     }
 }

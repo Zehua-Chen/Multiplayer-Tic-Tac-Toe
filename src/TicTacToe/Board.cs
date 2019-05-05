@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("TicTacToeTests")]
+[assembly: InternalsVisibleTo("TicTacToe.Tests")]
 namespace TicTacToe
 {
     /// <summary>
@@ -31,80 +31,36 @@ namespace TicTacToe
             {
                 // Find horizontal winner
                 
-                for (int y = 0; y < this.Size; y++)
+                int winner = FindVerticalWinner();
+                
+                if (winner != 0)
                 {
-                    int sum = 0;
-                    
-                    for (int x = 0; x < this.Size; x++)
-                    {
-                        sum += this[y, x];
-                    }
-                    
-                    if (sum == this.Size * 1)
-                    {
-                        return 1;
-                    }
-                    else if (sum == this.Size * -1)
-                    {
-                        return -1;
-                    }
+                    return winner;
                 }
                 
                 // Find horizontal winner
                 
-                for (int x = 0; x < this.Size; x++)
+                winner = FindHorizontalWinner();
+                
+                if (winner != 0)
                 {
-                    int sum = 0;
-                    
-                    for (int y = 0; y < this.Size; y++)
-                    {
-                        sum += this[y, x];
-                    }
-                    
-                    if (sum == this.Size * 1)
-                    {
-                        return 1;
-                    }
-                    else if (sum == this.Size * -1)
-                    {
-                        return -1;
-                    }
+                    return winner;
                 }
                 
                 // Find bottom left to top right winner
                 
-                int diagnolSum = 0;
+                winner = FindLeftDiagnolWinner();
                 
-                for (int i = 0; i < this.Size; i++)
+                if (winner != 0)
                 {
-                    diagnolSum += this[i, i];
+                    return winner;
                 }
                 
-                if (diagnolSum == this.Size * 1)
-                {
-                    return 1;
-                }
-                else if (diagnolSum == this.Size * -1)
-                {
-                    return -1;
-                }
+                winner = FindRightDiagnolWinner();
                 
-                // Find top left to bottom right winner
-                
-                diagnolSum = 0;
-                
-                for (int i = this.Size - 1; i >= 0; i--)
+                if (winner != 0)
                 {
-                    diagnolSum += this[i, i];
-                }
-                
-                if (diagnolSum == this.Size * 1)
-                {
-                    return 1;
-                }
-                else if (diagnolSum == this.Size * -1)
-                {
-                    return -1;
+                    return winner;
                 }
                 
                 return 0;
@@ -147,6 +103,78 @@ namespace TicTacToe
         private int LinearIndex(int y, int x)
         {
             return y * this.Size + x;
+        }
+        
+        private int FindHorizontalWinner()
+        {
+            for (int y = 0; y < this.Size; y++)
+            {
+                int sum = 0;
+                
+                for (int x = 0; x < this.Size; x++)
+                {
+                    sum += this[y, x];
+                }
+                
+                sum = sum / this.Size;
+                
+                if (sum != 0)
+                {
+                    return sum;
+                }
+            }
+            
+            return 0;
+        }
+        
+        private int FindVerticalWinner()
+        {
+            for (int x = 0; x < this.Size; x++)
+            {
+                int sum = 0;
+                
+                for (int y = 0; y < this.Size; y++)
+                {
+                    sum += this[y, x];
+                }
+                
+                sum = sum / this.Size;
+                
+                if (sum != 0)
+                {
+                    return sum;
+                }
+            }
+                
+            return 0;
+        }
+        
+        private int FindLeftDiagnolWinner()
+        {
+            int sum = 0;
+                
+            for (int i = 0; i < this.Size; i++)
+            {
+                sum += this[i, i];
+            }
+            
+            sum = sum / this.Size;
+                
+            return sum;
+        }
+        
+        private int FindRightDiagnolWinner()
+        {
+            int sum = 0;
+                
+            for (int i = 0; i < this.Size; i++)
+            {
+                sum += this[i, i];
+            }
+            
+            sum = sum / this.Size;
+                
+            return sum;
         }
     }
 }
