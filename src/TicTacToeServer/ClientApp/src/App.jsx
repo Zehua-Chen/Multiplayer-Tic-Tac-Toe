@@ -56,7 +56,7 @@ class App extends Component {
    * @param panel
    * @param {string} panelFlag
    */
-  switchSidePanel(panel, panelFlag) {
+  toggleOrSwitchSidePanel(panel, panelFlag) {
     const { sidePanelsContent, sidePanelContentFlag } = this.state;
 
     if (sidePanelContentFlag === panelFlag) {
@@ -74,15 +74,28 @@ class App extends Component {
   }
 
   onCreateGameClicked = () => {
-    this.switchSidePanel(<CreateGamePanel />, "create");
+    this.toggleOrSwitchSidePanel(
+      <CreateGamePanel onClose={this.onSidePanelClose} />,
+      "create"
+    );
   };
 
   onJoinGameClicked = () => {
-    this.switchSidePanel(<JoinGamePanel />, "join");
+    this.toggleOrSwitchSidePanel(
+      <JoinGamePanel onClose={this.onSidePanelClose} />,
+      "join"
+    );
   };
 
   onSettingsClicked = () => {
-    this.switchSidePanel(<SettingsPanel />, "settings");
+    this.toggleOrSwitchSidePanel(
+      <SettingsPanel onClose={this.onSidePanelClose} />,
+      "settings"
+    );
+  };
+
+  onSidePanelClose = () => {
+    this.setState({ sidePanelsContent: null, sidePanelContentFlag: "" });
   };
 
   render() {
