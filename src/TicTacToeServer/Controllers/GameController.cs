@@ -26,13 +26,38 @@ namespace TicTacToeServer.Controllers
         }
         
         [HttpPost("create")]
-        public void Create(
+        public ActionResult<CreateGameResponse> Create(
             [FromBody]
-            GameConfiguration gameConfig
+            CreateGameRequest request
         )
         {
-            _gameService.Create(gameConfig);
-            _logger.LogInformation($"Created game board of size {gameConfig.Size}");
+            if (request == null)
+            {
+                _logger.LogError("Request is null");
+
+                return new CreateGameResponse
+                {
+                    Success = false,
+                    Message = "Request is null"
+                };
+            }
+
+            if (_gameService.HasSession)
+            {
+                return new CreateGameResponse
+                {
+                    Success = false,
+                    Message = "Already have a game in session"
+                };
+            }
+
+            _gameService.Create(request);
+            _logger.LogInformation($"Created game board of size {request.Size}");
+            
+            return new CreateGameResponse
+            {
+                Success = true,
+            };
         }
     }
 }
