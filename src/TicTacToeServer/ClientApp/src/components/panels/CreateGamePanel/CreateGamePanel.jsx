@@ -7,6 +7,8 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 
+import { createGame } from "../../../services/createGame";
+
 const _styles = theme => ({
   inputRow: {
     marginTop: theme.spacing.unit,
@@ -40,7 +42,15 @@ class CreateGamePanel extends Component {
     this.props.onClose();
   };
 
-  onCreateClicked = () => {};
+  onCreateClicked = async () => {
+    const { size, username, invitationCode } = this.state;
+
+    var response = await createGame({
+      size,
+      username,
+      invitationCode
+    });
+  };
 
   render() {
     const { classes } = this.props;

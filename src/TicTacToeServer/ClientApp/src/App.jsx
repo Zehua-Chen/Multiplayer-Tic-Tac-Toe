@@ -12,6 +12,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import CreateGamePanel from "./components/panels/CreateGamePanel";
 import JoinGamePanel from "./components/panels/JoinGamePanel";
 import SettingsPanel from "./components/panels/SettingsPanel";
+import NotificationPanel from "./components/panels/NotificationPanel";
 
 const _styles = theme => ({
   rootContainer: {},
@@ -139,6 +140,7 @@ class App extends Component {
         <div className={classes.mainContentContainer}>
           <div className={classes.sidePanelsContainer}>{sidePanelsContent}</div>
         </div>
+        <NotificationPanel />
       </div>
     );
   }
